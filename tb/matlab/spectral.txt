@@ -1,0 +1,18 @@
+clear;
+
+d = importdata('master_test_0.txt');
+%d = importdata('master_test_1.txt');
+%d = importdata('noise_test_0.txt');
+%d = importdata('hb_test_0.txt');
+%d = importdata('sine_test.txt');
+d = d/2^23;
+Fs = 768e3;
+NumHarmonics = 20;
+[thd_db,harmpow,harmfreq] = thd(d,Fs,NumHarmonics);
+percent_thd = 100*(10^(thd_db/20))
+T = table(harmfreq,harmpow,'VariableNames',{'Frequency','Power'})
+enob=(-thd_db - 1.76)/6.02
+snr(d,Fs, 2);figure;
+sinad(d,Fs);figure;
+thd(d,Fs,NumHarmonics);figure;
+sfdr(d, Fs);

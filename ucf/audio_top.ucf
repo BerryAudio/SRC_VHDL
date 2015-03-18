@@ -1,0 +1,53 @@
+CONFIG VCCAUX  = 3.3;
+CONFIG ENABLE_SUSPEND  = FILTERED;
+
+NET "clk_24" TNM_NET = "clk_24";
+TIMESPEC TS_clk_24 = PERIOD "clk_24" 40.6901 ns HIGH 50 %;
+
+NET "clk_22" TNM_NET = "clk_22";
+TIMESPEC TS_clk_22 = PERIOD "clk_22" 44.2885 ns HIGH 50 %;
+
+NET "clk_22" LOC = P50; NET "clk_22" IOSTANDARD = LVCMOS33;
+NET "clk_24" LOC = P55; NET "clk_24" IOSTANDARD = LVCMOS33;
+
+NET "ctrl_rdy" LOC = P65; NET "ctrl_rdy" IOSTANDARD = LVCMOS33;
+NET "ctrl_lock" LOC = P66; NET "ctrl_lock" IOSTANDARD = LVCMOS33;
+NET "ctrl_rst" LOC = P67; NET "ctrl_rst" IOSTANDARD = LVCMOS33;
+NET "i2s_bclk" LOC = P80; NET "i2s_bclk" IOSTANDARD = LVCMOS33;
+NET "i2s_data" LOC = P78; NET "i2s_data" IOSTANDARD = LVCMOS33;
+NET "i2s_lrck" LOC = P79; NET "i2s_lrck" IOSTANDARD = LVCMOS33;
+
+NET "spi_clk" LOC = P102; NET "spi_clk" IOSTANDARD = LVCMOS33;
+NET "spi_miso" LOC = P101; NET "spi_mosi" IOSTANDARD = LVCMOS33;
+NET "spi_mosi" LOC = P100; NET "spi_miso" IOSTANDARD = LVCMOS33;
+NET "spi_cs_n[0]" LOC = P99; NET "spi_cs_n[0]" IOSTANDARD = LVCMOS33;
+NET "spi_cs_n[1]" LOC = P98; NET "spi_cs_n[1]" IOSTANDARD = LVCMOS33;
+NET "spi_cs_n[2]" LOC = P97; NET "spi_cs_n[2]" IOSTANDARD = LVCMOS33;
+
+NET "spdif_o" LOC = P112; NET "spdif_o" IOSTANDARD = LVCMOS33;
+NET "spdif_chan0" LOC = P117; NET "spdif_chan0" IOSTANDARD = LVCMOS33;
+NET "spdif_chan1" LOC = P116; NET "spdif_chan1" IOSTANDARD = LVCMOS33;
+NET "spdif_chan2" LOC = P115; NET "spdif_chan2" IOSTANDARD = LVCMOS33;
+NET "spdif_chan3" LOC = P114; NET "spdif_chan3" IOSTANDARD = LVCMOS33;
+
+NET "dsp0_rst" LOC = P1; NET "dsp0_rst" IOSTANDARD = LVCMOS33;
+NET "dsp0_mute" LOC = P2; NET "dsp0_mute" IOSTANDARD = LVCMOS33;
+NET "dsp0_i2s_bclk" LOC = P5; NET "dsp0_i2s_bclk" IOSTANDARD = LVCMOS33;
+NET "dsp0_i2s_lrck" LOC = P6; NET "dsp0_i2s_lrck" IOSTANDARD = LVCMOS33;
+NET "dsp0_i2s_data0" LOC = P7; NET "dsp0_i2s_data0" IOSTANDARD = LVCMOS33;
+NET "dsp0_i2s_data1" LOC = P8; NET "dsp0_i2s_data1" IOSTANDARD = LVCMOS33;
+NET "dsp0_spi_clk" LOC = P9; NET "dsp0_spi_clk" IOSTANDARD = LVCMOS33;
+NET "dsp0_spi_cs_n" LOC = P10; NET "dsp0_spi_cs_n" IOSTANDARD = LVCMOS33;
+NET "dsp0_spi_miso" LOC = P11; NET "dsp0_spi_miso" IOSTANDARD = LVCMOS33;
+NET "dsp0_spi_mosi" LOC = P12; NET "dsp0_spi_mosi" IOSTANDARD = LVCMOS33;
+
+NET "dsp1_rst" LOC = P23; NET "dsp1_rst" IOSTANDARD = LVCMOS33;
+NET "dsp1_mute" LOC = P24; NET "dsp1_mute" IOSTANDARD = LVCMOS33;
+NET "dsp1_i2s_bclk" LOC = P26; NET "dsp1_i2s_bclk" IOSTANDARD = LVCMOS33;
+NET "dsp1_i2s_lrck" LOC = P27; NET "dsp1_i2s_lrck" IOSTANDARD = LVCMOS33;
+NET "dsp1_i2s_data0" LOC = P29; NET "dsp1_i2s_data0" IOSTANDARD = LVCMOS33;
+NET "dsp1_i2s_data1" LOC = P30; NET "dsp1_i2s_data1" IOSTANDARD = LVCMOS33;
+NET "dsp1_spi_clk" LOC = P32; NET "dsp1_spi_clk" IOSTANDARD = LVCMOS33;
+NET "dsp1_spi_cs_n" LOC = P33; NET "dsp1_spi_cs_n" IOSTANDARD = LVCMOS33;
+NET "dsp1_spi_miso" LOC = P34; NET "dsp1_spi_miso" IOSTANDARD = LVCMOS33;
+NET "dsp1_spi_mosi" LOC = P35; NET "dsp1_spi_mosi" IOSTANDARD = LVCMOS33;

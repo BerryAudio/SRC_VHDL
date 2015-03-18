@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/charlie/projects/SRC_V1.0.1/audio_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="audio" />
+            <top_module name="audio_tb" />
+            <top_module name="fixed_float_types" />
+            <top_module name="fixed_pkg" />
+            <top_module name="float_pkg" />
+            <top_module name="math_real" />
+            <top_module name="numeric_std" />
+            <top_module name="sig_gen_pkg" />
+            <top_module name="src" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_signed" />
+            <top_module name="std_logic_textio" />
+            <top_module name="textio" />
+            <top_module name="utils" />
+            <top_module name="vcomponents" />
+            <top_module name="vital_primitives" />
+            <top_module name="vital_timing" />
+            <top_module name="vpkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="21" />
+   <wvobject fp_name="/audio_tb/clk_24" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_24</obj_property>
+      <obj_property name="ObjectShortName">clk_24</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/clk_22" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_22</obj_property>
+      <obj_property name="ObjectShortName">clk_22</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/ctrl_rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ctrl_rst</obj_property>
+      <obj_property name="ObjectShortName">ctrl_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/ctrl_lock" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ctrl_lock</obj_property>
+      <obj_property name="ObjectShortName">ctrl_lock</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/ctrl_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ctrl_rdy</obj_property>
+      <obj_property name="ObjectShortName">ctrl_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="group57" type="group">
+      <obj_property name="label">SPI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/uut/INST_SPI/o_data" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SPI/spi_buf_en" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">spi_buf_en[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_buf_en[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SPI/buf_clk_edge" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">buf_clk_edge</obj_property>
+         <obj_property name="ObjectShortName">buf_clk_edge</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SPI/buf_clk" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">buf_clk[2:0]</obj_property>
+         <obj_property name="ObjectShortName">buf_clk[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SPI/data" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">data[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spi_cs_n[0]" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">spi_cs_n[0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spi_clk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spi_clk</obj_property>
+         <obj_property name="ObjectShortName">spi_clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spi_mosi" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spi_mosi</obj_property>
+         <obj_property name="ObjectShortName">spi_mosi</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spi_miso" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spi_miso</obj_property>
+         <obj_property name="ObjectShortName">spi_miso</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/spi_register" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">spi_register[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_register[7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group55" type="group">
+      <obj_property name="label">SPDIF</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/spdif_chan0" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spdif_chan0</obj_property>
+         <obj_property name="ObjectShortName">spdif_chan0</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spdif_chan1" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spdif_chan1</obj_property>
+         <obj_property name="ObjectShortName">spdif_chan1</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spdif_chan2" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spdif_chan2</obj_property>
+         <obj_property name="ObjectShortName">spdif_chan2</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spdif_chan3" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spdif_chan3</obj_property>
+         <obj_property name="ObjectShortName">spdif_chan3</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/spdif_o" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">spdif_o</obj_property>
+         <obj_property name="ObjectShortName">spdif_o</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group58" type="group">
+      <obj_property name="label">I2S INPUT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/i2s_lrck" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i2s_lrck</obj_property>
+         <obj_property name="ObjectShortName">i2s_lrck</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/i2s_bclk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i2s_bclk</obj_property>
+         <obj_property name="ObjectShortName">i2s_bclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/i2s_data" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i2s_data</obj_property>
+         <obj_property name="ObjectShortName">i2s_data</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group143" type="group">
+      <obj_property name="label">I2S OUTPUT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/o_data_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data_en</obj_property>
+         <obj_property name="ObjectShortName">o_data_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/o_data0" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data0[23:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data0[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/o_data1" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data1[23:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data1[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group54" type="group">
+      <obj_property name="label">DSP OUTPUT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/dsp0_i2s_lrck" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">dsp0_i2s_lrck</obj_property>
+         <obj_property name="ObjectShortName">dsp0_i2s_lrck</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/dsp0_i2s_bclk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">dsp0_i2s_bclk</obj_property>
+         <obj_property name="ObjectShortName">dsp0_i2s_bclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/dsp0_i2s_data0" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">dsp0_i2s_data0</obj_property>
+         <obj_property name="ObjectShortName">dsp0_i2s_data0</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/dsp0_i2s_data1" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">dsp0_i2s_data1</obj_property>
+         <obj_property name="ObjectShortName">dsp0_i2s_data1</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group176" type="group">
+      <obj_property name="label">Filter Output</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/rst" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/state" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/state" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/INST_INTERPOLATOR/state" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/INST_FIR/state" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/INST_FIR/o_mac" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_mac</obj_property>
+         <obj_property name="ObjectShortName">o_mac</obj_property>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/INST_FIR/o_mac.en" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">.en</obj_property>
+            <obj_property name="ObjectShortName">o_mac.en</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/INST_FIR/o_mac.data0" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">.data0</obj_property>
+            <obj_property name="ObjectShortName">o_mac.data0</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/INST_FIR/o_mac.data1" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">.data1</obj_property>
+            <obj_property name="ObjectShortName">o_mac.data1</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">i_mac2</obj_property>
+         <obj_property name="ObjectShortName">i_mac2</obj_property>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2.en" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">.en</obj_property>
+            <obj_property name="ObjectShortName">i_mac2.en</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2.acc" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">.acc</obj_property>
+            <obj_property name="ObjectShortName">i_mac2.acc</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2.cmp" type="logic" db_ref_id="1">
+            <obj_property name="ElementShortName">.cmp</obj_property>
+            <obj_property name="ObjectShortName">i_mac2.cmp</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2.data00" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">.data00</obj_property>
+            <obj_property name="ObjectShortName">i_mac2.data00</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2.data01" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">.data01</obj_property>
+            <obj_property name="ObjectShortName">i_mac2.data01</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2.data10" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">.data10</obj_property>
+            <obj_property name="ObjectShortName">i_mac2.data10</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_MAC_MUX/i_mac2.data11" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">.data11</obj_property>
+            <obj_property name="ObjectShortName">i_mac2.data11</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/i_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i_en</obj_property>
+         <obj_property name="ObjectShortName">i_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/o_data0" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data0[34:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data0[34:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/o_data1" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data1[34:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data1[34:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_FILTER/o_data_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data_en</obj_property>
+         <obj_property name="ObjectShortName">o_data_en</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/dac_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_data0[23:0]</obj_property>
+      <obj_property name="ObjectShortName">dac_data0[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/dac_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_data1[23:0]</obj_property>
+      <obj_property name="ObjectShortName">dac_data1[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_DITHER/o_data_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data_en</obj_property>
+      <obj_property name="ObjectShortName">o_data_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/dac_data_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">dac_data_en</obj_property>
+      <obj_property name="ObjectShortName">dac_data_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="group91" type="group">
+      <obj_property name="label">I2S</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/INST_I2S_RX/clk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/INST_I2S_RX/i2s_lrck" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i2s_lrck</obj_property>
+         <obj_property name="ObjectShortName">i2s_lrck</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/INST_I2S_RX/i2s_bclk" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i2s_bclk</obj_property>
+         <obj_property name="ObjectShortName">i2s_bclk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/INST_I2S_RX/i2s_data" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i2s_data</obj_property>
+         <obj_property name="ObjectShortName">i2s_data</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/INST_I2S_RX/o_data0" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data0[23:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data0[23:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/INST_I2S_RX/o_data1" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data1[23:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data1[23:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_I2S/INST_I2S_RX/o_data_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data_en</obj_property>
+         <obj_property name="ObjectShortName">o_data_en</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group167" type="group">
+      <obj_property name="label">Noise</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_DITHER/INST_NOISE/state" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_DITHER/INST_NOISE/o_noise0" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_noise0[19:0]</obj_property>
+         <obj_property name="ObjectShortName">o_noise0[19:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_DITHER/INST_NOISE/o_noise1" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_noise1[19:0]</obj_property>
+         <obj_property name="ObjectShortName">o_noise1[19:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_DITHER/INST_NOISE/i_noise_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i_noise_en</obj_property>
+         <obj_property name="ObjectShortName">i_noise_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_DITHER/INST_NOISE/i_noise0" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">i_noise0[19:0]</obj_property>
+         <obj_property name="ObjectShortName">i_noise0[19:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_DITHER/INST_NOISE/i_noise1" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">i_noise1[19:0]</obj_property>
+         <obj_property name="ObjectShortName">i_noise1[19:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/err_mag" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">err_mag[10:0]</obj_property>
+      <obj_property name="ObjectShortName">err_mag[10:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/i_ratio" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_ratio[23:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ratio[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/o_ratio" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_ratio[23:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ratio[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>

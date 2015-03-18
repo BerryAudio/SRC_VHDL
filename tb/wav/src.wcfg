@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/charlie/projects/SRC_V0.7/src_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="src" />
+            <top_module name="src_tb" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_textio" />
+            <top_module name="textio" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="34" />
+   <wvobject fp_name="/src_tb/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_REGULATOR/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/state" type="other" db_ref_id="1">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+      <obj_property name="label">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/fir_en" type="logic" db_ref_id="1">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">fir_en</obj_property>
+      <obj_property name="ObjectShortName">fir_en</obj_property>
+      <obj_property name="label">fir_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/i_phase" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_phase[5:0]</obj_property>
+      <obj_property name="ObjectShortName">i_phase[5:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/i_delta" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_delta[21:0]</obj_property>
+      <obj_property name="ObjectShortName">i_delta[21:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_INTERPOLATOR/INST_COEFF/state_count" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">state_count[2:0]</obj_property>
+      <obj_property name="ObjectShortName">state_count[2:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_REGULATOR/ratio_ave" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ratio_ave[23:0]</obj_property>
+      <obj_property name="ObjectShortName">ratio_ave[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_REGULATOR/i_fifo_level" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_fifo_level[12:0]</obj_property>
+      <obj_property name="ObjectShortName">i_fifo_level[12:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_RING_BUFFER/wr_ptr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">wr_ptr[8:0]</obj_property>
+      <obj_property name="ObjectShortName">wr_ptr[8:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_RING_BUFFER/rd_ptr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rd_ptr[32:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_ptr[32:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_RING_BUFFER/fir_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fir_en</obj_property>
+      <obj_property name="ObjectShortName">fir_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_RING_BUFFER/ratio" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ratio[23:0]</obj_property>
+      <obj_property name="ObjectShortName">ratio[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fbuf_accum" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fbuf_accum[34:0]</obj_property>
+      <obj_property name="ObjectShortName">fbuf_accum[34:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_DIV_DUAL/o_busy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_busy</obj_property>
+      <obj_property name="ObjectShortName">o_busy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/i_sample_en_i" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_sample_en_i</obj_property>
+      <obj_property name="ObjectShortName">i_sample_en_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/i_sample_en_o" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_sample_en_o</obj_property>
+      <obj_property name="ObjectShortName">i_sample_en_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/i_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_data0[23:0]</obj_property>
+      <obj_property name="ObjectShortName">i_data0[23:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/i_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_data1[23:0]</obj_property>
+      <obj_property name="ObjectShortName">i_data1[23:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/ctrl_locked" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ctrl_locked</obj_property>
+      <obj_property name="ObjectShortName">ctrl_locked</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/ctrl_ratio" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ctrl_ratio[23:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_ratio[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_REGULATOR/INST_COUNTER/clock_count" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">clock_count[15:0]</obj_property>
+      <obj_property name="ObjectShortName">clock_count[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_REGULATOR/INST_COUNTER/o_reg" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_reg[15:0]</obj_property>
+      <obj_property name="ObjectShortName">o_reg[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/o_data_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data_en</obj_property>
+      <obj_property name="ObjectShortName">o_data_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/o_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data0[23:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data0[23:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/o_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data1[23:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data1[23:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_DIV_DUAL/sel" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sel</obj_property>
+      <obj_property name="ObjectShortName">sel</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_DIV_DUAL/div_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">div_en</obj_property>
+      <obj_property name="ObjectShortName">div_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_DIV_DUAL/div_dividend" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">div_dividend[26:0]</obj_property>
+      <obj_property name="ObjectShortName">div_dividend[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_DIV_DUAL/div_divisor" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">div_divisor[26:0]</obj_property>
+      <obj_property name="ObjectShortName">div_divisor[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_DIV_DUAL/o_remainder" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_remainder[24:0]</obj_property>
+      <obj_property name="ObjectShortName">o_remainder[24:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

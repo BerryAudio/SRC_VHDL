@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/charlie/projects/SRC_V0.7/src_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="src" />
+            <top_module name="src_tb" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_textio" />
+            <top_module name="textio" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="48" />
+   <wvobject fp_name="/src_tb/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/state" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">state</obj_property>
+      <obj_property name="ObjectShortName">state</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fir_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fir_en</obj_property>
+      <obj_property name="ObjectShortName">fir_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fir_fin" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fir_fin</obj_property>
+      <obj_property name="ObjectShortName">fir_fin</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_data_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data_en</obj_property>
+      <obj_property name="ObjectShortName">o_data_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data0[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data0[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data1[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data1[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ram[65:0]</obj_property>
+      <obj_property name="ObjectShortName">ram[65:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[65]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[65]</obj_property>
+         <obj_property name="ObjectShortName">ram[65]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[64]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[64]</obj_property>
+         <obj_property name="ObjectShortName">ram[64]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[63]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[63]</obj_property>
+         <obj_property name="ObjectShortName">ram[63]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[62]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[62]</obj_property>
+         <obj_property name="ObjectShortName">ram[62]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[61]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[61]</obj_property>
+         <obj_property name="ObjectShortName">ram[61]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[60]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[60]</obj_property>
+         <obj_property name="ObjectShortName">ram[60]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[59]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[59]</obj_property>
+         <obj_property name="ObjectShortName">ram[59]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[58]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[58]</obj_property>
+         <obj_property name="ObjectShortName">ram[58]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[57]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[57]</obj_property>
+         <obj_property name="ObjectShortName">ram[57]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[56]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[56]</obj_property>
+         <obj_property name="ObjectShortName">ram[56]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[55]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[55]</obj_property>
+         <obj_property name="ObjectShortName">ram[55]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[54]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[54]</obj_property>
+         <obj_property name="ObjectShortName">ram[54]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[53]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[53]</obj_property>
+         <obj_property name="ObjectShortName">ram[53]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[52]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[52]</obj_property>
+         <obj_property name="ObjectShortName">ram[52]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[51]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[51]</obj_property>
+         <obj_property name="ObjectShortName">ram[51]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[50]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[50]</obj_property>
+         <obj_property name="ObjectShortName">ram[50]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[49]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[49]</obj_property>
+         <obj_property name="ObjectShortName">ram[49]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[48]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[48]</obj_property>
+         <obj_property name="ObjectShortName">ram[48]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[47]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[47]</obj_property>
+         <obj_property name="ObjectShortName">ram[47]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[46]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[46]</obj_property>
+         <obj_property name="ObjectShortName">ram[46]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[45]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[45]</obj_property>
+         <obj_property name="ObjectShortName">ram[45]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[44]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[44]</obj_property>
+         <obj_property name="ObjectShortName">ram[44]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[43]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[43]</obj_property>
+         <obj_property name="ObjectShortName">ram[43]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[42]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[42]</obj_property>
+         <obj_property name="ObjectShortName">ram[42]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[41]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[41]</obj_property>
+         <obj_property name="ObjectShortName">ram[41]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[40]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[40]</obj_property>
+         <obj_property name="ObjectShortName">ram[40]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[39]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[39]</obj_property>
+         <obj_property name="ObjectShortName">ram[39]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[38]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[38]</obj_property>
+         <obj_property name="ObjectShortName">ram[38]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[37]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[37]</obj_property>
+         <obj_property name="ObjectShortName">ram[37]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[36]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[36]</obj_property>
+         <obj_property name="ObjectShortName">ram[36]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[35]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[35]</obj_property>
+         <obj_property name="ObjectShortName">ram[35]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[34]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[34]</obj_property>
+         <obj_property name="ObjectShortName">ram[34]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[33]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[33]</obj_property>
+         <obj_property name="ObjectShortName">ram[33]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[32]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[32]</obj_property>
+         <obj_property name="ObjectShortName">ram[32]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[31]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[31]</obj_property>
+         <obj_property name="ObjectShortName">ram[31]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[30]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[30]</obj_property>
+         <obj_property name="ObjectShortName">ram[30]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[29]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[29]</obj_property>
+         <obj_property name="ObjectShortName">ram[29]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[28]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[28]</obj_property>
+         <obj_property name="ObjectShortName">ram[28]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[27]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[27]</obj_property>
+         <obj_property name="ObjectShortName">ram[27]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[26]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[26]</obj_property>
+         <obj_property name="ObjectShortName">ram[26]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[25]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[25]</obj_property>
+         <obj_property name="ObjectShortName">ram[25]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[24]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[24]</obj_property>
+         <obj_property name="ObjectShortName">ram[24]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[23]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[23]</obj_property>
+         <obj_property name="ObjectShortName">ram[23]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[22]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[22]</obj_property>
+         <obj_property name="ObjectShortName">ram[22]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[21]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[21]</obj_property>
+         <obj_property name="ObjectShortName">ram[21]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[20]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[20]</obj_property>
+         <obj_property name="ObjectShortName">ram[20]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[19]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[19]</obj_property>
+         <obj_property name="ObjectShortName">ram[19]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[18]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[18]</obj_property>
+         <obj_property name="ObjectShortName">ram[18]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[17]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[17]</obj_property>
+         <obj_property name="ObjectShortName">ram[17]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[16]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[16]</obj_property>
+         <obj_property name="ObjectShortName">ram[16]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[15]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">ram[15]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[14]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[14]</obj_property>
+         <obj_property name="ObjectShortName">ram[14]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[13]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">ram[13]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[12]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">ram[12]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[11]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">ram[11]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[10]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[10]</obj_property>
+         <obj_property name="ObjectShortName">ram[10]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[9]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[9]</obj_property>
+         <obj_property name="ObjectShortName">ram[9]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[8]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[8]</obj_property>
+         <obj_property name="ObjectShortName">ram[8]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[7]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">ram[7]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[6]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">ram[6]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[5]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">ram[5]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[4]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">ram[4]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[3]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">ram[3]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[2]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">ram[2]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[1]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">ram[1]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR_BUF/ram[0]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">ram[0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fbuf_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fbuf_en</obj_property>
+      <obj_property name="ObjectShortName">fbuf_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fbuf_cnt" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fbuf_cnt[6:0]</obj_property>
+      <obj_property name="ObjectShortName">fbuf_cnt[6:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fbuf_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fbuf_data[34:0]</obj_property>
+      <obj_property name="ObjectShortName">fbuf_data[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fbuf_accum" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fbuf_accum[34:0]</obj_property>
+      <obj_property name="ObjectShortName">fbuf_accum[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/rbuf_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rbuf_en</obj_property>
+      <obj_property name="ObjectShortName">rbuf_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/rbuf_step" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rbuf_step</obj_property>
+      <obj_property name="ObjectShortName">rbuf_step</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/rbuf_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rbuf_data0[23:0]</obj_property>
+      <obj_property name="ObjectShortName">rbuf_data0[23:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/rbuf_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rbuf_data1[23:0]</obj_property>
+      <obj_property name="ObjectShortName">rbuf_data1[23:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_en</obj_property>
+      <obj_property name="ObjectShortName">o_mac_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_acc" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_acc</obj_property>
+      <obj_property name="ObjectShortName">o_mac_acc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_cmp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_cmp</obj_property>
+      <obj_property name="ObjectShortName">o_mac_cmp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data00" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data00[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data00[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data01" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data01[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data01[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data10" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data10[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data10[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data11" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data11[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data11[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/i_mac_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_mac_en</obj_property>
+      <obj_property name="ObjectShortName">i_mac_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/i_mac_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_mac_data0[69:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mac_data0[69:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/i_mac_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_mac_data1[69:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mac_data1[69:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/i_div_remainder" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_div_remainder[24:0]</obj_property>
+      <obj_property name="ObjectShortName">i_div_remainder[24:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_div_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_div_en</obj_property>
+      <obj_property name="ObjectShortName">o_div_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_div_dividend" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_div_dividend[26:0]</obj_property>
+      <obj_property name="ObjectShortName">o_div_dividend[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data0[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data0[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_data1[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_data1[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fbuf_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fbuf_data[34:0]</obj_property>
+      <obj_property name="ObjectShortName">fbuf_data[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fbuf_accum" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fbuf_accum[34:0]</obj_property>
+      <obj_property name="ObjectShortName">fbuf_accum[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/rbuf_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rbuf_data0[23:0]</obj_property>
+      <obj_property name="ObjectShortName">rbuf_data0[23:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/rbuf_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rbuf_data1[23:0]</obj_property>
+      <obj_property name="ObjectShortName">rbuf_data1[23:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data00" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data00[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data00[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data01" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data01[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data01[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data10" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data10[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data10[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_mac_data11" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_mac_data11[34:0]</obj_property>
+      <obj_property name="ObjectShortName">o_mac_data11[34:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/i_mac_data0" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_mac_data0[69:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mac_data0[69:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/i_mac_data1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_mac_data1[69:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mac_data1[69:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/i_div_remainder" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">i_div_remainder[24:0]</obj_property>
+      <obj_property name="ObjectShortName">i_div_remainder[24:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/o_div_divisor" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_div_divisor[26:0]</obj_property>
+      <obj_property name="ObjectShortName">o_div_divisor[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fir_pipe" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fir_pipe[3:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_pipe[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fir_cmp" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">fir_cmp[1:0]</obj_property>
+      <obj_property name="ObjectShortName">fir_cmp[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/fir_run" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">fir_run</obj_property>
+      <obj_property name="ObjectShortName">fir_run</obj_property>
+   </wvobject>
+   <wvobject fp_name="/src_tb/uut/INST_FILTER/INST_FIR/norm_cmp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">norm_cmp</obj_property>
+      <obj_property name="ObjectShortName">norm_cmp</obj_property>
+   </wvobject>
+</wave_config>
