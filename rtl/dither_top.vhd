@@ -67,10 +67,12 @@ architecture rtl of dither_top is
 		variable tmp	: signed( val'range );
 	begin
 		tmp := val;
-		if    tmp( 34 ) = '0' and tmp( 33 ) = '1' then
-			tmp := ( 34 downto 33 => '0', others => '1' );
-		elsif tmp( 34 ) = '1' and tmp( 33 ) = '0' then
-			tmp := ( 34 downto 33 => '1', others => '0' );
+		if ( tmp( 34 ) xor tmp( 33 ) ) = '1' then
+			if tmp( 34 ) = '0' then
+				tmp := ( 34 downto 33 => '0', others => '1' );
+			else
+				tmp := ( 34 downto 33 => '1', others => '0' );
+			end if;
 		end if;
 		return tmp( 33 downto 10 );
 	end function CLIP;
