@@ -59,13 +59,25 @@ package body sig_gen_pkg is
 		variable sample_real : real;
 		variable sample_sfixed : sfixed( 0 downto -( s_width - 1 ) );
 		variable sample_signed : signed( s_width - 1 downto 0 );
+		variable sample 		  : signed( s_width     downto 0 );
 	begin
 		x := W * real( to_integer( s_count ) ) / ( s_rate * real( 1000 ) );
-		sample_real := sin( x ) * 0.995;
+		sample_real := sin( x ) * 1.0;
 		sample_sfixed := to_sfixed( sample_real, sample_sfixed );
-		sample_signed := signed( std_logic_vector( sample_sfixed ) ) + random;
+		sample_signed := signed( std_logic_vector( sample_sfixed ) );
+		sample := ( sample_signed( s_width-1 ) & sample_signed ) + random;
+		
+		if ( sample( s_width ) xor sample( s_width-1 ) ) = '1' then
+			if sample( s_width ) = '1' then
+				sample := ( s_width downto s_width-1 => '1', others => '0' );
+			else
+				sample := ( s_width downto s_width-1 => '0', others => '1' );
+			end if;
+		end if;
+		
+		
 		s_count := s_count + 1;
-		return sample_signed;
+		return sample( s_width - 1 downto 0 );
 	end function fetch_sample;
 	
 	impure function fetch_sample return real is
