@@ -46,69 +46,59 @@ ARCHITECTURE behavior OF interp_tb IS
    signal int_en : std_logic := '0';
    signal i_phase : unsigned(5 downto 0) := (others => '0');
    signal i_delta : unsigned(21 downto 0) := (others => '0');
-   signal i_mac_en : std_logic := '0';
-   signal i_mac_data0 : signed(69 downto 0) := (others => '0');
-   signal i_mac_data1 : signed(69 downto 0) := (others => '0');
 
  	--Outputs
    signal int_fin : std_logic;
    signal fbuf_en : std_logic;
    signal fbuf_data : signed(34 downto 0);
-   signal o_mac_en : std_logic;
-   signal o_mac_acc : std_logic;
-   signal o_mac_cmp : std_logic;
-   signal o_mac_data00 : signed(34 downto 0);
-   signal o_mac_data01 : signed(34 downto 0);
-   signal o_mac_data10 : signed(34 downto 0);
-   signal o_mac_data11 : signed(34 downto 0);
+	
+	signal mac_sel : std_logic;
+	signal i_mac : mac_i := mac_i_init;
+	signal i_mac0 : mac_i := mac_i_init;
+	signal i_mac1 : mac_i := mac_i_init;
+	
+   signal o_mac : mac_o := mac_o_init;
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
  
 BEGIN
 	
+	i_mac <= i_mac0 when mac_sel = '0' else i_mac1;
+	
 	INST_MAC : mac
 		port map (
-			clk			=> clk,
-			rst			=> rst,
+			clk		=> clk,
+			rst		=> rst,
 			
-			i_en			=> o_mac_en,
-			i_acc			=> o_mac_acc,
-			i_cmp			=> o_mac_cmp,
-			i_data00		=> o_mac_data00,
-			i_data01		=> o_mac_data01,
-			i_data10		=> o_mac_data10,
-			i_data11		=> o_mac_data11,
-			
-			o_en			=> i_mac_en,
-			o_data0		=> i_mac_data0,
-			o_data1		=> i_mac_data1
+			i_mac		=> i_mac,
+			o_mac		=> o_mac
 		);
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: interpolator PORT MAP (
-          clk => clk,
-          rst => rst,
-          int_en => int_en,
-          int_fin => int_fin,
-          i_phase => i_phase,
-          i_delta => i_delta,
-          fbuf_en => fbuf_en,
-          fbuf_data => fbuf_data,
-          i_mac_en => i_mac_en,
-          i_mac_data0 => i_mac_data0( 69 downto 35 ),
-          i_mac_data1 => i_mac_data1( 69 downto 35 ),
-          o_mac_en => o_mac_en,
-          o_mac_acc => o_mac_acc,
-          o_mac_cmp => o_mac_cmp,
-          o_mac_data00 => o_mac_data00,
-          o_mac_data01 => o_mac_data01,
-          o_mac_data10 => o_mac_data10,
-          o_mac_data11 => o_mac_data11
-        );
+	
+	uut : interpolator
+		port map (
+			clk				=> clk,
+			rst				=> rst,
+			
+			int_en			=> int_en,
+			int_fin			=> int_fin,
+			
+			i_phase			=> i_phase,
+			i_delta			=> i_delta,
+			
+			fbuf_en			=> fbuf_en,
+			fbuf_data		=> fbuf_data,
+			
+			mac_sel			=> mac_sel,
+			o_mac				=> o_mac,
+			i_mac0			=> i_mac0,
+			i_mac1			=> i_mac1
+		);
 		  
 	pipe_process : process( clk )
-		file		outfile	: text is out "./tb/fir_test.txt";
+		file		outfile	: text is out "./tb/test/fir_test.txt";
 		variable outline	: line;
 	begin
 		if rising_edge( clk ) then
@@ -132,6 +122,9 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin
+		i_phase <= to_unsigned( 37, 6 );
+		i_delta <= to_unsigned( 2097153, 22 );
+	
 		wait until rising_edge( clk );
 		int_en <= '1';
 		wait until rising_edge( clk );
