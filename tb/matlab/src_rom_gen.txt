@@ -1,0 +1,13 @@
+f=fdesign.lowpass( 'N,Fp,Ap,Ast', 4096, 1/64*2*0.4535, 0.01, 160 );
+Hf=design(f,'equiripple');
+fvtool(Hf);
+
+He = Hf;
+e = He.Coefficients;
+He.Arithmetic = 'fixed';
+set(He, 'CoeffWordLength', 28);
+fvtool(He);
+info(He);
+
+fcfwrite(He, 'rom_src_28b.txt', hex);
+
