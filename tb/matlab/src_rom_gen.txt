@@ -1,11 +1,11 @@
-f=fdesign.lowpass( 'N,Fp,Ap,Ast', 4096, 1/64*2*0.4535, 0.01, 160 );
+f=fdesign.lowpass( 'N,Fp,Ap,Ast', 4096, 1/64*2*0.4535, 0.1, 170 );
 Hf=design(f,'equiripple');
 fvtool(Hf);
 
 He = Hf;
 e = He.Coefficients;
 He.Arithmetic = 'fixed';
-set(He, 'CoeffWordLength', 28);
+set(He, 'CoeffWordLength', 32);
 fvtool(He);
 info(He);
 
