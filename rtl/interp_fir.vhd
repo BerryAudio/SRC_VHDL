@@ -7,7 +7,9 @@ use work.src.all;
 
 entity interp_fir is
 	generic (
-		PTR_INC	: integer := INTERP_PTR_INCREMENT
+		PTR_INC	: integer := INTERP_PTR_INCREMENT;
+		ROM_FILE : string := ROM_FILE_SRC;
+		ROM_BIT	: natural range 24 to 32 := ROM_FILE_BIT
 	);
 	port (
 		clk			 : in  std_logic;
@@ -49,8 +51,8 @@ architecture rtl of interp_fir is
 	
 	signal rom_a0		: unsigned( 12 downto 0 ) := ( others => '0' );
 	signal rom_a1		: unsigned( 12 downto 0 ) := ( others => '0' );
-	signal rom_d0		: signed( 27 downto 0 ) := ( others => '0' );
-	signal rom_d1		: signed( 27 downto 0 ) := ( others => '0' );
+	signal rom_d0		: signed( 34 downto 0 ) := ( others => '0' );
+	signal rom_d1		: signed( 34 downto 0 ) := ( others => '0' );
 	
 	signal coe_sum		: signed( 69 downto 0 ) := ( others => '0' );
 	signal coe_final  : std_logic_vector( 10 downto 0 ) := ( others => '0' );
@@ -68,13 +70,17 @@ begin
 	
 	coe_sum <= o_mac.data0 + o_mac.data1;
 	
-	i_mac.data00 <= rom_d0 & b"000_0000";
+	i_mac.data00 <= rom_d0;
 	i_mac.data01 <= lagrange_h0 when ( state_i = S2_RUN ) else lagrange_h2;
 	
-	i_mac.data10 <= rom_d1 & b"000_0000";
+	i_mac.data10<= rom_d1;
 	i_mac.data11 <= lagrange_h1 when ( state_i = S2_RUN ) else lagrange_h3;
 	
 	INST_FILTER_ROM : fir_filter_rom
+		generic map (
+			ROM_FILE => ROM_FILE,
+			ROM_BIT	=> ROM_BIT
+		)
 		port map (	
 			clk	=> clk,
 			rst	=> rst,
@@ -82,8 +88,8 @@ begin
 			addr0	=> rom_a0,
 			addr1	=> rom_a1,
 			
-			data0	=> rom_d0,
-			data1	=> rom_d1
+			data0	=> rom_d0( 34 downto 35 - ROM_BIT ),
+			data1	=> rom_d1( 34 downto 35 - ROM_BIT )
 		);
 	
 	state_i_process : process( clk )

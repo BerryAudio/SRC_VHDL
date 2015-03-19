@@ -7,7 +7,8 @@ package src is
 	--******************************************************************
 	-- constants - GENERAL
 	--******************************************************************
-	constant ROM_FILE_SRC			: string  := "rom/cb_rom.txt";
+	constant ROM_FILE_SRC			: string  := "rom/rom_src_28b.txt";
+	constant ROM_FILE_BIT			: natural range 24 to 32 := 28;
 	constant ROM_FILE_HB				: string  := "rom/rom_hb.txt";
 	
 	constant INTERP_MAC_PIPELINE	: boolean := TRUE;
@@ -210,7 +211,9 @@ package src is
 	
 	component interp_fir is
 		generic (
-			PTR_INC	: integer := INTERP_PTR_INCREMENT
+			PTR_INC		: integer := INTERP_PTR_INCREMENT;
+			ROM_FILE		: string := ROM_FILE_SRC;
+			ROM_BIT		: natural range 24 to 32 := ROM_FILE_BIT
 		);
 		port (
 			clk			 : in  std_logic;
@@ -277,7 +280,8 @@ package src is
 	
 	component fir_filter_rom is
 		generic (
-			ROM_FILE 	: string := ROM_FILE_SRC
+			ROM_FILE 	: string := ROM_FILE_SRC;
+			ROM_BIT		: natural range 24 to 32 := ROM_FILE_BIT
 		);
 		port (
 			clk			: in  std_logic;
@@ -286,8 +290,8 @@ package src is
 			addr0			: in  unsigned( 12 downto 0 );
 			addr1			: in  unsigned( 12 downto 0 );
 			
-			data0			: out signed( 27 downto 0 );
-			data1			: out signed( 27 downto 0 )
+			data0			: out signed( ROM_FILE_BIT-1 downto 0 );
+			data1			: out signed( ROM_FILE_BIT-1 downto 0 )
 		);
 	end component fir_filter_rom;
 
