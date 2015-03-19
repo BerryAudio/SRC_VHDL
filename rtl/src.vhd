@@ -7,7 +7,7 @@ package src is
 	--******************************************************************
 	-- constants - GENERAL
 	--******************************************************************
-	constant ROM_FILE_SRC			: string  := "rom/cb_rom.txt";
+	constant ROM_FILE_SRC			: string  := "rom/rom_src_32b.txt";
 	constant ROM_FILE_HB				: string  := "rom/rom_hb.txt";
 	
 	constant INTERP_MAC_PIPELINE	: boolean := TRUE;
@@ -286,8 +286,8 @@ package src is
 			addr0			: in  unsigned( 12 downto 0 );
 			addr1			: in  unsigned( 12 downto 0 );
 			
-			data0			: out signed( 27 downto 0 );
-			data1			: out signed( 27 downto 0 )
+			data0			: out signed( 31 downto 0 );
+			data1			: out signed( 31 downto 0 )
 		);
 	end component fir_filter_rom;
 
