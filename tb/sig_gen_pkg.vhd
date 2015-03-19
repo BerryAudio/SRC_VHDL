@@ -62,7 +62,7 @@ package body sig_gen_pkg is
 		variable sample 		  : signed( s_width     downto 0 );
 	begin
 		x := W * real( to_integer( s_count ) ) / ( s_rate * real( 1000 ) );
-		sample_real := sin( x ) * 1.0;
+		sample_real := sin( x ) * 0.995;
 		sample_sfixed := to_sfixed( sample_real, sample_sfixed );
 		sample_signed := signed( std_logic_vector( sample_sfixed ) );
 		sample := ( sample_signed( s_width-1 ) & sample_signed ) + random;
@@ -74,7 +74,6 @@ package body sig_gen_pkg is
 				sample := ( s_width downto s_width-1 => '0', others => '1' );
 			end if;
 		end if;
-		
 		
 		s_count := s_count + 1;
 		return sample( s_width - 1 downto 0 );
