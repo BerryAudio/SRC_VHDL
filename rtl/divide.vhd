@@ -215,7 +215,7 @@ begin
 			if ( en or rst ) = '1' then
 				result <=  ( others => '0' );
 			else
-				result <= result( 25 downto 0 ) &  NOT( sum( 26 ) );
+				result <= result( 25 downto 0 ) & not( sum( 26 ) );
 			end if;
 		end if;
 	end process;

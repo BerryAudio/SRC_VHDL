@@ -33,10 +33,10 @@ architecture rtl of interpolator is
 	--******************************************************************
 	-- Lagrange Coefficient Calculator Ports
 	--******************************************************************
-	signal lagrange_h0	: signed( 23 downto 0 );
-	signal lagrange_h1	: signed( 23 downto 0 );
-	signal lagrange_h2	: signed( 23 downto 0 );
-	signal lagrange_h3	: signed( 23 downto 0 );
+	signal lagrange_h0	: signed( 34 downto 0 );
+	signal lagrange_h1	: signed( 34 downto 0 );
+	signal lagrange_h2	: signed( 34 downto 0 );
+	signal lagrange_h3	: signed( 34 downto 0 );
 	signal lagrange_en	: std_logic := '0';
 	
 	--******************************************************************

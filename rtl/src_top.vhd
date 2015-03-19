@@ -112,8 +112,8 @@ begin
 	reg_rst <= not buf_rdy;
 	div_sel <= '1'  when state_src = S3_FILTER else '0';
 	
-	i_sample_en_o0 <= '1' when i_sample_en_o = '1' and i_sample_sel = '0' else '0';
-	i_sample_en_o1 <= '1' when i_sample_en_o = '1' and i_sample_sel = '1' else '0';
+	i_sample_en_o0 <= i_sample_en_o and not( i_sample_sel );
+	i_sample_en_o1 <= i_sample_en_o and      i_sample_sel;
 	
 	sample_sel_process : process( clk )
 	begin

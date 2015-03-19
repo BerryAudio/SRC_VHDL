@@ -26,10 +26,10 @@ entity interp_fir is
 		o_mac			 : in  mac_o;
 		
 		-- lagrange coefficients
-		lagrange_h0	 : in  signed( 23 downto 0 ) := ( others => '0' );
-		lagrange_h1	 : in  signed( 23 downto 0 ) := ( others => '0' );
-		lagrange_h2	 : in  signed( 23 downto 0 ) := ( others => '0' );
-		lagrange_h3	 : in  signed( 23 downto 0 ) := ( others => '0' );
+		lagrange_h0	 : in  signed( 34 downto 0 ) := ( others => '0' );
+		lagrange_h1	 : in  signed( 34 downto 0 ) := ( others => '0' );
+		lagrange_h2	 : in  signed( 34 downto 0 ) := ( others => '0' );
+		lagrange_h3	 : in  signed( 34 downto 0 ) := ( others => '0' );
 		lagrange_en	 : in  std_logic
 	);
 end interp_fir;
@@ -49,8 +49,8 @@ architecture rtl of interp_fir is
 	
 	signal rom_a0		: unsigned( 12 downto 0 ) := ( others => '0' );
 	signal rom_a1		: unsigned( 12 downto 0 ) := ( others => '0' );
-	signal rom_d0		: signed( 23 downto 0 ) := ( others => '0' );
-	signal rom_d1		: signed( 23 downto 0 ) := ( others => '0' );
+	signal rom_d0		: signed( 27 downto 0 ) := ( others => '0' );
+	signal rom_d1		: signed( 27 downto 0 ) := ( others => '0' );
 	
 	signal coe_sum		: signed( 69 downto 0 ) := ( others => '0' );
 	signal coe_final  : std_logic_vector( 10 downto 0 ) := ( others => '0' );
@@ -68,16 +68,11 @@ begin
 	
 	coe_sum <= o_mac.data0 + o_mac.data1;
 	
-	i_mac.data00 <= rom_d0 & b"000_0000_0000";
-	i_mac.data01 <= l0 when ( state_i = S2_RUN ) else l2;
+	i_mac.data00 <= rom_d0 & b"000_0000";
+	i_mac.data01 <= lagrange_h0 when ( state_i = S2_RUN ) else lagrange_h2;
 	
-	i_mac.data10 <= rom_d1 & b"000_0000_0000";
-	i_mac.data11 <= l1 when ( state_i = S2_RUN ) else l3;
-	
-	l0 <= lagrange_h0 & b"000_0000_0000";
-	l1 <= lagrange_h1 & b"000_0000_0000";
-	l2 <= lagrange_h2 & b"000_0000_0000";
-	l3 <= lagrange_h3 & b"000_0000_0000";
+	i_mac.data10 <= rom_d1 & b"000_0000";
+	i_mac.data11 <= lagrange_h1 when ( state_i = S2_RUN ) else lagrange_h3;
 	
 	INST_FILTER_ROM : fir_filter_rom
 		port map (	

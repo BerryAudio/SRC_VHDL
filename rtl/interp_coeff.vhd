@@ -16,10 +16,10 @@ entity interp_lagrange is
 		i_mac			 : out mac_i := mac_i_init;
 		o_mac			 : in  mac_o;
 		
-		lagrange_h0	 : out signed( 23 downto 0 ) := ( others => '0' );
-		lagrange_h1	 : out signed( 23 downto 0 ) := ( others => '0' );
-		lagrange_h2	 : out signed( 23 downto 0 ) := ( others => '0' );
-		lagrange_h3	 : out signed( 23 downto 0 ) := ( others => '0' );
+		lagrange_h0	 : out signed( 34 downto 0 ) := ( others => '0' );
+		lagrange_h1	 : out signed( 34 downto 0 ) := ( others => '0' );
+		lagrange_h2	 : out signed( 34 downto 0 ) := ( others => '0' );
+		lagrange_h3	 : out signed( 34 downto 0 ) := ( others => '0' );
 		lagrange_en	 : out std_logic := '0'
 	);
 end interp_lagrange;
@@ -36,8 +36,8 @@ architecture rtl of interp_lagrange is
 	signal d2			:   signed( 34 downto 0 ) := ( others => '0' );
 	signal d3			:   signed( 34 downto 0 ) := ( others => '0' );
 	
-	signal buf0			: signed( 23 downto 0 ) := ( others => '0' );
-	signal buf1			: signed( 23 downto 0 ) := ( others => '0' );
+	signal buf0			: signed( 34 downto 0 ) := ( others => '0' );
+	signal buf1			: signed( 34 downto 0 ) := ( others => '0' );
 	
 	constant D_N0			: signed( 24 downto 0 ) := "0000000000000000000000000";
 	constant D_N1			: signed( 24 downto 0 ) := "1110000000000000000000000";
@@ -63,10 +63,10 @@ begin
 				
 				case to_integer( state_count ) is
 					when 0 =>
-						i_mac.data00 <= d0; -- D0 S2.33
-						i_mac.data01 <= d1; -- D1 S2.33
-						i_mac.data10 <= d2; -- D2 S2.33
-						i_mac.data11 <= d3; -- D3 S2.33
+						i_mac.data00 <= d0; -- D0 S2.22 - 25 bits
+						i_mac.data01 <= d1; -- D1 S2.22
+						i_mac.data10 <= d2; -- D2 S2.22
+						i_mac.data11 <= d3; -- D3 S2.22
 						i_mac.cmp <= delta_en;
 					
 						if delta_en = '1' then
@@ -75,10 +75,10 @@ begin
 						
 					when 1 =>
 						i_mac.data00 <= o_mac.data0( 69 downto 35 ); -- D0*D1 - h3 - 35 bits
-						i_mac.data01 <= d2;			  -- D2    -    - 35 bits
+						i_mac.data01 <= d2;			  						-- D2    -    - 35 bits
 						
-						i_mac.data10 <= o_mac.data1( 69 downto 35 ); -- D2*D3 - h0 - 
-						i_mac.data11 <= d1;			  -- D1    -    - S2.33
+						i_mac.data10 <= o_mac.data1( 69 downto 35 ); -- D2*D3 - h0 - 35
+						i_mac.data11 <= d1;									-- D1    -    - 35 bits
 						
 						i_mac.cmp <= o_mac.en;
 						
@@ -95,25 +95,25 @@ begin
 						
 					when 3 =>
 						if o_mac.en = '1' then
-							buf0	 <= o_mac.data0( 64 downto 41 ); -- D0*D1*D2/2 - h3
-							buf1	 <= o_mac.data1( 64 downto 41 ); -- D1*D2*D3/2 - h0
+							buf0	 <= o_mac.data0( 64 downto 30 ); -- D0*D1*D2/2 - h3
+							buf1	 <= o_mac.data1( 64 downto 30 ); -- D1*D2*D3/2 - h0
 							state_count <= o"4";
 						end if;
 						
 					when 4 =>
 						
 						-- Divide by 3 = multiply by 1/3
-						i_mac.data00 <= buf1 & b"000_0000_0000";
+						i_mac.data00 <= buf1;
 						i_mac.data01 <= ONE_THIRD_N;
 						
-						i_mac.data10 <= buf0 & b"000_0000_0000";
+						i_mac.data10 <= buf0;
 						i_mac.data11 <= ONE_THIRD;
 						
 						i_mac.cmp <= o_mac.en;
 						
 						if o_mac.en = '1' then
-							lagrange_h2 <= COMPLEMENT( o_mac.data0( 64 downto 41 ) ); -- D0*D1*D3/2 - h2
-							lagrange_h1 <=					o_mac.data1( 64 downto 41 )  ; -- D0*D2*D3/2 - h1
+							lagrange_h2 <= COMPLEMENT( o_mac.data0( 64 downto 30 ) ); -- D0*D1*D3/2 - h2
+							lagrange_h1 <=					o_mac.data1( 64 downto 30 )  ; -- D0*D2*D3/2 - h1
 							state_count <= o"5";
 						end if;
 						
@@ -121,8 +121,8 @@ begin
 						lagrange_en <= o_mac.en;
 						
 						if o_mac.en = '1' then
-							lagrange_h0 <= o_mac.data0( 65 downto 42 );
-							lagrange_h3 <= o_mac.data1( 65 downto 42 );
+							lagrange_h0 <= o_mac.data0( 65 downto 31 );
+							lagrange_h3 <= o_mac.data1( 65 downto 31 );
 							state_count <= o"0";
 						end if;
 						

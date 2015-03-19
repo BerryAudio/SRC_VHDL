@@ -7,14 +7,14 @@ package src is
 	--******************************************************************
 	-- constants - GENERAL
 	--******************************************************************
-	constant ROM_FILE_SRC			: string  := "rom/rom_src.txt";
+	constant ROM_FILE_SRC			: string  := "rom/cb_rom.txt";
 	constant ROM_FILE_HB				: string  := "rom/rom_hb.txt";
 	
 	constant INTERP_MAC_PIPELINE	: boolean := TRUE;
 	constant INTERP_PTR_INCREMENT	: integer := 64;
 	constant RING_BUF_PTR_OFFSET	: integer := 16;
 	
-	constant NOISE_LFSR_WIDTH		: integer := 16;
+	constant NOISE_LFSR_WIDTH		: integer := 14;
 	constant NOISE_FILT_WIDTH		: integer := 20;
 
 	--******************************************************************
@@ -200,10 +200,10 @@ package src is
 			i_mac			 : out mac_i;
 			o_mac			 : in  mac_o;
 			
-			lagrange_h0	 : out signed( 23 downto 0 );
-			lagrange_h1	 : out signed( 23 downto 0 );
-			lagrange_h2	 : out signed( 23 downto 0 );
-			lagrange_h3	 : out signed( 23 downto 0 );
+			lagrange_h0	 : out signed( 34 downto 0 );
+			lagrange_h1	 : out signed( 34 downto 0 );
+			lagrange_h2	 : out signed( 34 downto 0 );
+			lagrange_h3	 : out signed( 34 downto 0 );
 			lagrange_en	 : out std_logic
 		);
 	end component interp_lagrange;
@@ -229,10 +229,10 @@ package src is
 			o_mac			 : in  mac_o;
 			
 			-- lagrange coefficients
-			lagrange_h0	 : in  signed( 23 downto 0 );
-			lagrange_h1	 : in  signed( 23 downto 0 );
-			lagrange_h2	 : in  signed( 23 downto 0 );
-			lagrange_h3	 : in  signed( 23 downto 0 );
+			lagrange_h0	 : in  signed( 34 downto 0 );
+			lagrange_h1	 : in  signed( 34 downto 0 );
+			lagrange_h2	 : in  signed( 34 downto 0 );
+			lagrange_h3	 : in  signed( 34 downto 0 );
 			lagrange_en	 : in  std_logic
 		);
 	end component interp_fir;
@@ -286,8 +286,8 @@ package src is
 			addr0			: in  unsigned( 12 downto 0 );
 			addr1			: in  unsigned( 12 downto 0 );
 			
-			data0			: out signed( 23 downto 0 );
-			data1			: out signed( 23 downto 0 )
+			data0			: out signed( 27 downto 0 );
+			data1			: out signed( 27 downto 0 )
 		);
 	end component fir_filter_rom;
 

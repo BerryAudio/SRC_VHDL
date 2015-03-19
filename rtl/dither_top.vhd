@@ -68,9 +68,9 @@ architecture rtl of dither_top is
 	begin
 		tmp := val;
 		if    tmp( 24 ) = '0' and tmp( 23 ) = '1' then
-			tmp := ( 24 downto 3 => '0', others => '1' );
+			tmp := ( 24 downto 23 => '0', others => '1' );
 		elsif tmp( 24 ) = '1' and tmp( 23 ) = '0' then
-			tmp := ( 24 downto 3 => '1', others => '0' );
+			tmp := ( 24 downto 23 => '1', others => '0' );
 		end if;
 		return tmp( 23 downto 0 );
 	end function CLIP;
