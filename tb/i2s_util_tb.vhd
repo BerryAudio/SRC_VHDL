@@ -28,10 +28,16 @@ ARCHITECTURE behavior OF i2s_util_tb IS
 	signal ws_buf	: std_logic_vector( 1 downto 0 ) := "00";
 	signal wsp	 	: std_logic := '0';
 	
-	impure function gen_sig return signed is
+	impure function gen_sig0 return signed is
 	begin
 		fetch_sample( sig0 );
 		return sig0.sig( 34 downto 11 );
+	end function;
+	
+	impure function gen_sig1 return signed is
+	begin
+		fetch_sample( sig1 );
+		return sig1.sig( 34 downto 11 );
 	end function;
 	
 	impure function gen_sig_mix return signed is
@@ -62,7 +68,7 @@ BEGIN
 		if falling_edge( i2s_bclk ) then
 			if wsp = '1' then
 				if ws_buf( 0 ) = '0' then
-					sample := gen_sig;
+					sample := gen_sig0;
 					data <= sample;
 				else
 					data <= RESIZE( sample( 23 downto 20 ), 24 );
