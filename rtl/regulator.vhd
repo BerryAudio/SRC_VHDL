@@ -123,7 +123,6 @@ begin
 			rst				=> rst,
 			
 			i_sample_en		=> i_sample_en,
-			i_locked			=> locked,
 			i_reg_ack		=> count_ack,
 			o_reg				=> count,
 			o_reg_en			=> count_en
@@ -492,7 +491,6 @@ entity reg_count is
 		--------------------------------------------------
 		-- DATA Interfaces
 		--------------------------------------------------
-		i_locked		: in  std_logic;
 		i_sample_en	: in  std_logic;
 		
 		i_reg_ack	: in  std_logic;

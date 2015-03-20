@@ -367,7 +367,6 @@ package src is
 			rst				: in  std_logic;
 			
 			i_sample_en		: in  std_logic;
-			i_locked			: in  std_logic;
 			i_reg_ack		: in  std_logic;
 			o_reg				: out unsigned( 19 downto 0 );
 			o_reg_en			: out std_logic
