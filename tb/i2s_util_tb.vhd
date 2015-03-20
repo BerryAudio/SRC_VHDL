@@ -27,6 +27,23 @@ ARCHITECTURE behavior OF i2s_util_tb IS
 	signal data		: signed( 23 downto 0 ) := ( others => '0' );
 	signal ws_buf	: std_logic_vector( 1 downto 0 ) := "00";
 	signal wsp	 	: std_logic := '0';
+	
+	impure function gen_sig return signed is
+	begin
+		fetch_sample( sig0 );
+		return sig0.sig( 34 downto 11 );
+	end function;
+	
+	impure function gen_sig_mix return signed is
+		variable sample0	: signed( 22 downto 0 ) := ( others => '0' );
+		variable sample1	: signed( 22 downto 0 ) := ( others => '0' );
+		variable sample	: signed( 23 downto 0 ) := ( others => '0' );
+	begin
+		fetch_sample( sig0 ); sample0 := sig0.sig( 34 downto 12 );
+		fetch_sample( sig1 ); sample1 := sig1.sig( 34 downto 12 );
+		sample := RESIZE( sample0, 24 ) + RESIZE( sample1, 24 );
+		return sample;
+	end function;
 BEGIN
 
 	process
@@ -40,17 +57,12 @@ BEGIN
 	i2s_data <= data( 23 );
 
 	i2s_process : process( i2s_bclk )
-		variable sample0	: signed( 22 downto 0 ) := ( others => '0' );
-		variable sample1	: signed( 22 downto 0 ) := ( others => '0' );
 		variable sample	: signed( 23 downto 0 ) := ( others => '0' );
 	begin
 		if falling_edge( i2s_bclk ) then
 			if wsp = '1' then
-			
 				if ws_buf( 0 ) = '0' then
-					fetch_sample( sig0 ); sample0 := sig0.sig( 34 downto 12 );
-					fetch_sample( sig1 ); sample1 := sig1.sig( 34 downto 12 );
-					sample := RESIZE( sample0, 24 ) + RESIZE( sample1, 24 );
+					sample := gen_sig;
 					data <= sample;
 				else
 					data <= RESIZE( sample( 23 downto 20 ), 24 );
