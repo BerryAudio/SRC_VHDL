@@ -67,12 +67,14 @@ architecture rtl of dither_top is
 		variable tmp	: signed( val'range );
 	begin
 		tmp := val;
-		if    tmp( 24 ) = '0' and tmp( 23 ) = '1' then
-			tmp := ( 24 downto 23 => '0', others => '1' );
-		elsif tmp( 24 ) = '1' and tmp( 23 ) = '0' then
-			tmp := ( 24 downto 23 => '1', others => '0' );
+		if ( tmp( 34 ) xor tmp( 33 ) ) = '1' then
+			if tmp( 34 ) = '0' then
+				tmp := ( 34 downto 33 => '0', others => '1' );
+			else
+				tmp := ( 34 downto 33 => '1', others => '0' );
+			end if;
 		end if;
-		return tmp( 23 downto 0 );
+		return tmp( 33 downto 10 );
 	end function CLIP;
 	
 	-- en buffer
@@ -94,8 +96,8 @@ architecture rtl of dither_top is
 	signal d1		: signed( LFSR_WIDTH-1 downto 0 ) := ( others => '0' );
 	
 	-- quantiser i/o
-	signal q0		: signed( 24 downto 0 ) := ( others => '0' );
-	signal q1		: signed( 24 downto 0 ) := ( others => '0' );
+	signal q0		: signed( 34 downto 0 ) := ( others => '0' );
+	signal q1		: signed( 34 downto 0 ) := ( others => '0' );
 	
 begin
 	
@@ -112,16 +114,14 @@ begin
 				e1 <= i_data1 - no1;
 			end if;
 			
-			tmp_q0 := e0 + d0;
-			tmp_q1 := e1 + d1;
 			if buf_en( 0 ) = '1' then
-				q0 <= tmp_q0( 34 downto 10 );
-				q1 <= tmp_q1( 34 downto 10 );
+				q0 <= e0 + d0;
+				q1 <= e1 + d1;
 			end if;
 			
 			if buf_en( 1 ) = '1' then
-				ni0 <= q0 & b"00_0000_0000" - e0;
-				ni1 <= q1 & b"00_0000_0000" - e1;
+				ni0 <= q0( 34 downto 10 ) & b"00_0000_0000" - e0;
+				ni1 <= q1( 34 downto 10 ) & b"00_0000_0000" - e1;
 				
 				o_data0 <= CLIP( q0 );
 				o_data1 <= CLIP( q1 );

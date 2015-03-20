@@ -40,10 +40,8 @@ ENTITY audio_tb IS
 END audio_tb;
  
 ARCHITECTURE behavior OF audio_tb IS 
-	constant s_width	: natural := 35;
-	constant s_rate	: real 	 := 96.0;
-	constant s_freq	: real 	 := 1.0;
- 
+	constant s_rate	: real := 44.1;
+	constant s_scale	: real range 0.5 to 1.0 :=  0.9975;
  
    --Inputs
    signal clk_24 : std_logic := '0';
@@ -235,7 +233,8 @@ BEGIN
    stim_proc: process
    begin		
       -- hold reset state for 100 ns.
-		set_sig( s_freq, s_rate, s_width );
+		set_rate( s_rate );
+		set_scale( s_scale );
 		wait until ctrl_rdy = '1';
 		
 		if		s_rate =  44.1 then spi_write( "10000000", spi_data, spi_en );

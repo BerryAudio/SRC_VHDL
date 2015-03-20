@@ -11,7 +11,8 @@ use work.src.all;
 
 entity fir_filter_rom is
 	generic (
-		ROM_FILE : string := ROM_FILE_SRC
+		ROM_FILE : string := ROM_FILE_SRC;
+		ROM_BIT	: natural range 24 to 32 := ROM_FILE_BIT
 	);
 	port (
 		clk	: in  std_logic;
@@ -20,18 +21,18 @@ entity fir_filter_rom is
 		addr0	: in  unsigned( 12 downto 0 );
 		addr1	: in  unsigned( 12 downto 0 );
 		
-		data0	: out   signed( 27 downto 0 ) := ( others => '0' );
-		data1	: out   signed( 27 downto 0 ) := ( others => '0' )
+		data0	: out   signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' );
+		data1	: out   signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' )
 	);
 end fir_filter_rom;
 
 architecture rtl of fir_filter_rom is
-	type FIR_ROM_TYPE is array( 2047 downto 0 ) of signed( 27 downto 0 );
+	type FIR_ROM_TYPE is array( 2047 downto 0 ) of signed( ROM_FILE_BIT-1 downto 0 );
 	
 	impure function FIR_ROM_INIT( rom_file_name : in string ) return FIR_ROM_TYPE is
 		file rom_file		: text open read_mode is rom_file_name;
 		variable rom_line	: line;
-		variable temp_bv	: std_logic_vector( 27 downto 0 );
+		variable temp_bv	: std_logic_vector( ROM_FILE_BIT-1 downto 0 );
 		variable temp_mem	: FIR_ROM_TYPE;
 	begin
 		for i in 0 to 2047 loop
@@ -45,8 +46,8 @@ architecture rtl of fir_filter_rom is
 	function FIR_ROM_CENTRE( rom_file_name : in string ) return signed is
 		file rom_file		: text open read_mode is rom_file_name;
 		variable rom_line	: line;
-		variable temp_bv	: std_logic_vector( 27 downto 0 );
-		variable temp_coe	: signed( 27 downto 0 );
+		variable temp_bv	: std_logic_vector( ROM_FILE_BIT-1 downto 0 );
+		variable temp_coe	: signed( ROM_FILE_BIT-1 downto 0 );
 	begin
 		for i in 0 to 2047 loop
 			readline( rom_file, rom_line );
@@ -57,13 +58,13 @@ architecture rtl of fir_filter_rom is
 	end function FIR_ROM_CENTRE;
 	
 	signal rom : FIR_ROM_TYPE := FIR_ROM_INIT( ROM_FILE );
-	constant CENTRE_COEFF	: signed( 27 downto 0 ) := FIR_ROM_CENTRE( ROM_FILE );
+	constant CENTRE_COEFF	: signed( ROM_FILE_BIT-1 downto 0 ) := FIR_ROM_CENTRE( ROM_FILE );
 	
 	signal buf_addr0	 : unsigned( 12 downto 0 ) := ( others => '0' );
 	signal buf_addr1	 : unsigned( 12 downto 0 ) := ( others => '0' );
 	
-	signal trans_data0 : signed( 27 downto 0 ) := ( others => '0' );
-	signal trans_data1 : signed( 27 downto 0 ) := ( others => '0' );
+	signal trans_data0 : signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' );
+	signal trans_data1 : signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' );
 	
 	signal trans_addr0 : unsigned( 12 downto 0 );
 	signal trans_addr1 : unsigned( 12 downto 0 );
