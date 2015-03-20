@@ -20,8 +20,10 @@ package sig_gen_pkg is
 	constant sig_type_init : SIG_TYPE := ( 1.0, 0, 1, 1, ( others => '0' ), ( others => '0' ) );
 	
 	shared variable s_rate	: real := 44.1;
+	shared variable s_scale	: real range 0.5 to 1.0 := 1.0;
 	
 	procedure set_rate( i_rate : in real );
+	procedure set_scale( i_scale : in real );
 	
 	procedure fetch_sample( io_sig : inout SIG_TYPE );
 	procedure random( io_sig : inout SIG_TYPE );
@@ -34,6 +36,11 @@ package body sig_gen_pkg is
 		s_rate := i_rate;
 	end procedure;
 	
+	procedure set_scale( i_scale : in real ) is
+	begin
+		s_scale := i_scale;
+	end procedure;
+	
 	procedure fetch_sample( io_sig : inout SIG_TYPE ) is
 		variable w					: real; -- radians
 		variable x					: real;
@@ -44,7 +51,7 @@ package body sig_gen_pkg is
 	begin
 		 w := MATH_2_PI * io_sig.freq * 1000.0;
 		 x := w * real( io_sig.count ) / ( s_rate * 1000.0 );
-		sample_real := sin( x ) * 0.995;
+		sample_real := sin( x ) * s_scale;
 		sample_sfixed := to_sfixed( sample_real, sample_sfixed );
 		sample_signed := signed( std_logic_vector( sample_sfixed ) );
 		
