@@ -41,13 +41,13 @@ ARCHITECTURE behavior OF i2s_util_tb IS
 	end function;
 	
 	impure function gen_sig_mix return signed is
-		variable sample0	: signed( 22 downto 0 ) := ( others => '0' );
-		variable sample1	: signed( 22 downto 0 ) := ( others => '0' );
+		variable sample0	: signed( 23 downto 0 ) := ( others => '0' );
+		variable sample1	: signed( 23 downto 0 ) := ( others => '0' );
 		variable sample	: signed( 23 downto 0 ) := ( others => '0' );
 	begin
-		fetch_sample( sig0 ); sample0 := sig0.sig( 34 downto 12 );
-		fetch_sample( sig1 ); sample1 := sig1.sig( 34 downto 12 );
-		sample := RESIZE( sample0, 24 ) + RESIZE( sample1, 24 );
+		sample0 := gen_sig0;
+		sample1 := gen_sig1;
+		sample := RESIZE( sample0( 23 downto 1 ), 24 ) + RESIZE( sample1( 23 downto 1 ), 24 );
 		return sample;
 	end function;
 BEGIN
@@ -68,7 +68,7 @@ BEGIN
 		if falling_edge( i2s_bclk ) then
 			if wsp = '1' then
 				if ws_buf( 0 ) = '0' then
-					sample := gen_sig0;
+					sample := gen_sig1;
 					data <= sample;
 				else
 					data <= RESIZE( sample( 23 downto 20 ), 24 );

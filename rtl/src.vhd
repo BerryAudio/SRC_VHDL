@@ -7,8 +7,8 @@ package src is
 	--******************************************************************
 	-- constants - GENERAL
 	--******************************************************************
-	constant ROM_FILE_SRC			: string  := "rom/rom_src_28b.txt";
-	constant ROM_FILE_BIT			: natural range 24 to 32 := 28;
+	constant ROM_FILE_SRC			: string  := "rom/rom_src_32b_test.txt";
+	constant ROM_FILE_BIT			: natural range 24 to 32 := 32;
 	constant ROM_FILE_HB				: string  := "rom/rom_hb.txt";
 	
 	constant INTERP_MAC_PIPELINE	: boolean := TRUE;
@@ -287,8 +287,8 @@ package src is
 			clk			: in  std_logic;
 			rst			: in  std_logic;
 			
-			addr0			: in  unsigned( 12 downto 0 );
-			addr1			: in  unsigned( 12 downto 0 );
+			addr0			: in  unsigned( 13 downto 0 );
+			addr1			: in  unsigned( 13 downto 0 );
 			
 			data0			: out signed( ROM_FILE_BIT-1 downto 0 );
 			data1			: out signed( ROM_FILE_BIT-1 downto 0 )
