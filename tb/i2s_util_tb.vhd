@@ -18,11 +18,13 @@ ENTITY i2s_util_tb IS
 END i2s_util_tb;
  
 ARCHITECTURE behavior OF i2s_util_tb IS 
-	constant freq0			: real :=  1.0; 
+	constant freq0			: real :=  1.0;
 	constant freq1			: real := 20.0;
+	constant freq2			: real := 10.0;
 
 	shared variable sig0	: SIG_TYPE := sig_type_init;
 	shared variable sig1	: SIG_TYPE := sig_type_init;
+	shared variable sig2	: SIG_TYPE := sig_type_init;
 
 	signal data		: signed( 23 downto 0 ) := ( others => '0' );
 	signal ws_buf	: std_logic_vector( 1 downto 0 ) := "00";
@@ -38,6 +40,12 @@ ARCHITECTURE behavior OF i2s_util_tb IS
 	begin
 		fetch_sample( sig1 );
 		return sig1.sig( 34 downto 11 );
+	end function;
+	
+	impure function gen_sig2 return signed is
+	begin
+		fetch_sample( sig2 );
+		return sig2.sig( 34 downto 11 );
 	end function;
 	
 	impure function gen_sig_mix return signed is
@@ -56,6 +64,7 @@ BEGIN
 	begin
 		sig0.freq := freq0;
 		sig1.freq := freq1;
+		sig2.freq := freq2;
 		wait;
 	end process;
 
@@ -68,7 +77,7 @@ BEGIN
 		if falling_edge( i2s_bclk ) then
 			if wsp = '1' then
 				if ws_buf( 0 ) = '0' then
-					sample := gen_sig1;
+					sample := gen_sig2;
 					data <= sample;
 				else
 					data <= RESIZE( sample( 23 downto 20 ), 24 );
