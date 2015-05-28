@@ -7,7 +7,8 @@ use work.src.all;
 
 entity regulator_top is
 	generic (
-		CLOCK_COUNT			: integer := 512
+		CLOCK_COUNT			: integer := 512;
+		REG_FIFO_WIDTH		: integer range 4 to 11 := 11
 	);
 	port (
 		clk					: in  std_logic;
@@ -129,6 +130,9 @@ begin
 		);
 	
 	INST_AVERAGE : reg_average
+		generic map (
+			REG_FIFO_WIDTH	=> REG_FIFO_WIDTH
+		)
 		port map (
 			clk				=> clk,
 			rst				=> rst,
@@ -383,7 +387,55 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+entity reg_average_fifo is
+	generic (
+		REG_FIFO_WIDTH	: integer range 4 to 11 := 11
+	);
+	port (
+		clk			: in  std_logic;
+		
+		i_reg_ratio	: in  unsigned( 24 downto 0 );
+		i_reg_en		: in  std_logic;
+		
+		o_reg_ratio	: out unsigned( 24 downto 0 ) := ( others => '0' )
+	);
+end reg_average_fifo;
+
+architecture rtl of reg_average_fifo is
+	type FIFO_TYPE is array( 2**REG_FIFO_WIDTH - 1 downto 0 ) of unsigned( 24 downto 0 );
+	signal fifo	: FIFO_TYPE := ( others => ( others => '0' ) );
+	
+	signal addr_rd	: unsigned( REG_FIFO_WIDTH-1 downto 0 ) := ( others => '0' );
+	signal addr_wr	: unsigned( REG_FIFO_WIDTH-1 downto 0 ) := ( others => '0' );
+begin
+
+
+	input_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if i_reg_en = '1' then
+				addr_wr <= addr_rd; -- since write address is always 1 behind, just update with read address
+				addr_rd <= addr_rd + 1; -- read address is always 1 ahead of write address
+				fifo( to_integer( addr_wr ) ) <= i_reg_ratio;
+			end if;
+			
+			o_reg_ratio <= fifo( to_integer( addr_rd ) );
+		end if;
+	end process input_process;
+
+end rtl;
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+library work;
+use work.src.all;
+
 entity reg_average is
+	generic (
+		REG_FIFO_WIDTH	: integer range 4 to 11 := 11
+	);
 	port (
 		clk			: in  std_logic;
 		rst			: in  std_logic;
@@ -401,28 +453,28 @@ end reg_average;
 architecture rtl of reg_average is
 	signal ptr_reset	: std_logic_vector( 1 downto 0 ) := ( others => '0' );
 	
-	type SR_TYPE is array( 15 downto 0 ) of unsigned( 24 downto 0 );
-	signal sr				: SR_TYPE := ( others => ( others => '0' ) );
-	
 	signal sr_in			: unsigned( 24 downto 0 ) := ( others => '0' );
 	alias  sr_in_en		: std_logic is sr_in( 24 );
 	alias  sr_in_ratio	: unsigned( 23 downto 0 ) is sr_in( 23 downto 0 );
+	signal sr_en			: std_logic := '0';
 	
-	alias  preload_out	: std_logic is sr( 15 )( 24 );
-	alias  ratio_del		: unsigned( 23 downto 0 ) is sr( 15 )( 23 downto 0 );
+	signal sr_out			: unsigned( 24 downto 0 ) := ( others => '0' );
+	alias  preload_out	: std_logic is sr_out( 24 );
+	alias  ratio_del		: unsigned( 23 downto 0 ) is sr_out( 23 downto 0 );
 	
 	signal preload			: std_logic := '0';
 	
 	signal buf_ratio		: unsigned( 23 downto 0 ) := ( others => '0' );
 	signal buf_ratio_en	: std_logic := '0';
 	
-	signal moving_sum		: unsigned( 27 downto 0 ) := ( others => '0' );
+	signal moving_sum		: unsigned( 23+REG_FIFO_WIDTH downto 0 ) := ( others => '0' );
 begin
 
-	ave_out <= moving_sum( 27 downto 4 );
+	ave_out <= moving_sum( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH );
 	
 	sr_in_en <= preload;
 	sr_in_ratio <= buf_ratio;
+	sr_en <= preload or buf_ratio_en;
 
 	ptr_reset_process : process( clk )
 	begin
@@ -447,7 +499,7 @@ begin
 		if rising_edge( clk ) then
 			buf_ratio_en <= ratio_en;
 			ave_valid <= buf_ratio_en;
-			if ( preload or buf_ratio_en ) = '1' then
+			if sr_en = '1' then
 				buf_ratio <= ratio;
 			end if;
 		end if;
@@ -457,22 +509,26 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if buf_ratio_en = '1' then
-				moving_sum <= moving_sum + RESIZE( buf_ratio, 27 ) 
-												 - RESIZE( ratio_del, 27 );
+				moving_sum <= moving_sum + buf_ratio - ratio_del;
 			elsif preload = '1' then
-				moving_sum <= buf_ratio & x"0";
+				moving_sum( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH ) <= buf_ratio;
+				moving_sum( REG_FIFO_WIDTH-1 downto 0 ) <= ( others => '0' );
 			end if;
 		end if;
 	end process moving_sum_process;
 	
-	sr_process : process( clk )
-	begin
-		if rising_edge( clk ) then
-			if ( preload or buf_ratio_en ) = '1' then
-				sr <= sr( 14 downto 0 ) & sr_in;
-			end if;
-		end if;
-	end process sr_process;
+	INST_FIFO : reg_average_fifo
+		generic map (
+			REG_FIFO_WIDTH	=> REG_FIFO_WIDTH
+		)
+		port map (
+			clk			=> clk,
+			
+			i_reg_ratio	=> sr_in,
+			i_reg_en		=> sr_en,
+			
+			o_reg_ratio	=> sr_out
+		);
 
 end rtl;
 

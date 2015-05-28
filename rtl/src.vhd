@@ -17,6 +17,8 @@ package src is
 	
 	constant NOISE_LFSR_WIDTH		: integer := 14;
 	constant NOISE_FILT_WIDTH		: integer := 20;
+	
+	constant REG_FIFO_WIDTH			: integer range 4 to 11 := 11;
 
 	--******************************************************************
 	-- types
@@ -63,7 +65,8 @@ package src is
 	--******************************************************************
 	component regulator_top is
 		generic (
-			CLOCK_COUNT		: integer
+			CLOCK_COUNT		: integer;
+			REG_FIFO_WIDTH	: integer range 4 to 11 := REG_FIFO_WIDTH
 		);
 		port (
 			clk				: in  std_logic;
@@ -346,7 +349,24 @@ package src is
 		);
 	end component reg_ratio;
 	
+	component reg_average_fifo is
+		generic (
+			REG_FIFO_WIDTH	: integer range 4 to 11
+		);
+		port (
+			clk			: in  std_logic;
+			
+			i_reg_ratio	: in  unsigned( 24 downto 0 );
+			i_reg_en		: in  std_logic;
+			
+			o_reg_ratio	: out unsigned( 24 downto 0 ) := ( others => '0' )
+		);
+	end component reg_average_fifo;
+	
 	component reg_average is
+		generic (
+			REG_FIFO_WIDTH	: integer range 4 to 11
+		);
 		port (
 			clk				: in  std_logic;
 			rst				: in  std_logic;
