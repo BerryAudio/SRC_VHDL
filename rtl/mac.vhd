@@ -40,18 +40,21 @@ architecture rtl of mac_mux_3 is
 	signal i_mac	: mac_i := mac_i_init;
 	signal o_mac	: mac_o := mac_o_init;
 begin
-
-	i0		 <= i_mac0;
-	i1		 <= i_mac1;
-	i2		 <= i_mac2;
-
-	o <= i0 when sel = "00" else
-		  i1 when sel = "01" else
-		  i2;
 	
 	input_process : process( clk )
 	begin
 		if rising_edge( clk ) then
+			i0	<= i_mac0;
+			i1	<= i_mac1;
+			i2	<= i_mac2;
+			
+			o <= i2;
+			if sel = "00" then
+				o <= i0;
+			elsif sel = "01" then
+				o <= i1;
+			end if;
+			
 			i_mac	<= o;
 		end if;
 	end process input_process;
