@@ -394,15 +394,15 @@ entity reg_average_fifo is
 	port (
 		clk			: in  std_logic;
 		
-		i_reg_ratio	: in  unsigned( 23 downto 0 );
+		i_reg_ratio	: in  unsigned( 24 downto 0 );
 		i_reg_en		: in  std_logic;
 		
-		o_reg_ratio	: out unsigned( 23 downto 0 ) := ( others => '0' )
+		o_reg_ratio	: out unsigned( 24 downto 0 ) := ( others => '0' )
 	);
 end reg_average_fifo;
 
 architecture rtl of reg_average_fifo is
-	type FIFO_TYPE is array( 2**REG_FIFO_WIDTH - 1 downto 0 ) of unsigned( 23 downto 0 );
+	type FIFO_TYPE is array( 2**REG_FIFO_WIDTH - 1 downto 0 ) of unsigned( 24 downto 0 );
 	signal fifo	: FIFO_TYPE := ( others => ( others => '0' ) );
 	
 	signal addr_rd	: unsigned( REG_FIFO_WIDTH-1 downto 0 ) := ( others => '0' );
@@ -453,15 +453,16 @@ end reg_average;
 architecture rtl of reg_average is
 	signal ptr_reset	: std_logic_vector( 1 downto 0 ) := ( others => '0' );
 	
-	signal sr_in			: unsigned( 23 downto 0 ) := ( others => '0' );
+	signal sr_in			: unsigned( 24 downto 0 ) := ( others => '0' );
+	alias  sr_in_en		: std_logic is sr_in( 24 );
+	alias  sr_in_ratio	: unsigned( 23 downto 0 ) is sr_in( 23 downto 0 );
 	signal sr_en			: std_logic := '0';
 	
-	signal sr_out			: unsigned( 23 downto 0 ) := ( others => '0' );
+	signal sr_out			: unsigned( 24 downto 0 ) := ( others => '0' );
+	alias  preload_out	: std_logic is sr_out( 24 );
 	alias  ratio_del		: unsigned( 23 downto 0 ) is sr_out( 23 downto 0 );
 	
 	signal preload			: std_logic := '0';
-	signal preload_cnt	: unsigned( REG_FIFO_WIDTH-1 downto 0 ) := ( others => '0' );
-	signal preload_out	: std_logic := '0';
 	
 	signal buf_ratio		: unsigned( 23 downto 0 ) := ( others => '0' );
 	signal buf_ratio_en	: std_logic := '0';
@@ -471,10 +472,9 @@ begin
 
 	ave_out <= moving_sum( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH );
 	
-	sr_in <= buf_ratio;
+	sr_in_en <= preload;
+	sr_in_ratio <= buf_ratio;
 	sr_en <= preload or buf_ratio_en;
-	
-	preload_out <= '1' when preload_cnt = ( ( 2**REG_FIFO_WIDTH ) - 1 ) else '0';
 
 	ptr_reset_process : process( clk )
 	begin
@@ -482,15 +482,6 @@ begin
 			ptr_reset <= ptr_reset( 0 ) & ptr_rst;
 		end if;
 	end process ptr_reset_process;
-	
-	prelaod_cnt_process : process( clk )
-	begin
-		if rising_edge( clk ) then
-			if preload = '1' then
-				preload_cnt <= preload_cnt + 1;
-			end if;
-		end if;
-	end process prelaod_cnt_process;
 	
 	prelaod_process : process( clk )
 	begin

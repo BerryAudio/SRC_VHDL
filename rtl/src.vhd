@@ -356,10 +356,10 @@ package src is
 		port (
 			clk			: in  std_logic;
 			
-			i_reg_ratio	: in  unsigned( 23 downto 0 );
+			i_reg_ratio	: in  unsigned( 24 downto 0 );
 			i_reg_en		: in  std_logic;
 			
-			o_reg_ratio	: out unsigned( 23 downto 0 ) := ( others => '0' )
+			o_reg_ratio	: out unsigned( 24 downto 0 ) := ( others => '0' )
 		);
 	end component reg_average_fifo;
 	
