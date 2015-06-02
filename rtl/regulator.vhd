@@ -470,8 +470,6 @@ architecture rtl of reg_average is
 	signal moving_sum		: unsigned( 23+REG_FIFO_WIDTH downto 0 ) := ( others => '0' );
 	signal moving_sum0	: unsigned( 23+REG_FIFO_WIDTH downto 0 ) := ( others => '0' );
 begin
-
-	ave_out <= moving_sum( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH );
 	
 	sr_in <= buf_ratio;
 	sr_en <= preload or buf_ratio_en;
@@ -520,10 +518,11 @@ begin
 	moving_sum_process : process( clk )
 	begin
 		if rising_edge( clk ) then
+			ave_out <= moving_sum( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH );
 			moving_sum <= moving_sum0;
 			
-			if buf_ratio_en = '1' then
-				moving_sum0 <= moving_sum + buf_ratio - ratio_del;
+			if buf_ratio_en0 = '1' then
+				moving_sum0 <= moving_sum0 + buf_ratio - ratio_del;
 			elsif preload = '1' then
 				moving_sum0( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH ) <= buf_ratio;
 				moving_sum0( REG_FIFO_WIDTH-1 downto 0 ) <= ( others => '0' );

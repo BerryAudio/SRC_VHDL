@@ -18,7 +18,7 @@ package src is
 	constant NOISE_LFSR_WIDTH		: integer := 14;
 	constant NOISE_FILT_WIDTH		: integer := 20;
 	
-	constant REG_FIFO_WIDTH			: integer range 4 to 11 := 11;
+	constant REG_FIFO_WIDTH			: integer range 4 to 11 := 8;
 
 	--******************************************************************
 	-- types
