@@ -465,10 +465,8 @@ architecture rtl of reg_average is
 	
 	signal buf_ratio		: unsigned( 23 downto 0 ) := ( others => '0' );
 	signal buf_ratio_en	: std_logic := '0';
-	signal buf_ratio_en0	: std_logic := '0';
 	
 	signal moving_sum		: unsigned( 23+REG_FIFO_WIDTH downto 0 ) := ( others => '0' );
-	signal moving_sum0	: unsigned( 23+REG_FIFO_WIDTH downto 0 ) := ( others => '0' );
 begin
 
 	ave_out <= moving_sum( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH );
@@ -509,8 +507,7 @@ begin
 	begin
 		if rising_edge( clk ) then
 			buf_ratio_en <= ratio_en;
-			buf_ratio_en0 <= buf_ratio_en;
-			ave_valid <= buf_ratio_en0;
+			ave_valid <= buf_ratio_en;
 			if sr_en = '1' then
 				buf_ratio <= ratio;
 			end if;
@@ -520,13 +517,11 @@ begin
 	moving_sum_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			moving_sum <= moving_sum0;
-			
 			if buf_ratio_en = '1' then
-				moving_sum0 <= moving_sum + buf_ratio - ratio_del;
+				moving_sum <= moving_sum + buf_ratio - ratio_del;
 			elsif preload = '1' then
-				moving_sum0( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH ) <= buf_ratio;
-				moving_sum0( REG_FIFO_WIDTH-1 downto 0 ) <= ( others => '0' );
+				moving_sum( 23+REG_FIFO_WIDTH downto REG_FIFO_WIDTH ) <= buf_ratio;
+				moving_sum( REG_FIFO_WIDTH-1 downto 0 ) <= ( others => '0' );
 			end if;
 		end if;
 	end process moving_sum_process;

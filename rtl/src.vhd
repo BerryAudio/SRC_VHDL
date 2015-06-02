@@ -7,7 +7,7 @@ package src is
 	--******************************************************************
 	-- constants - GENERAL
 	--******************************************************************
-	constant ROM_FILE_SRC			: string  := "rom/rom_src_6144x32b_cand.txt";
+	constant ROM_FILE_SRC			: string  := "rom/rom_src_32b_test.txt";
 	constant ROM_FILE_BIT			: natural range 24 to 32 := 32;
 	constant ROM_FILE_HB				: string  := "rom/rom_hb.txt";
 	
