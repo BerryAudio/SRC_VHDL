@@ -7,14 +7,14 @@ use work.src.all;
 
 entity interp_lagrange is
 	port (
-		clk		 : in  std_logic;
-		rst		 : in  std_logic;
+		clk			 : in  std_logic;
+		rst			 : in  std_logic;
 		
-		delta		 : in  unsigned( 21 downto 0 );
-		delta_en	 : in  std_logic;
+		delta			 : in  unsigned( 21 downto 0 );
+		delta_en		 : in  std_logic;
 		
-		i_mac		 : out mac_i := mac_i_init;
-		o_mac		 : in  mac_o;
+		i_mac			 : out mac_i := mac_i_init;
+		o_mac			 : in  mac_o;
 		
 		lagrange_h0	 : out signed( 34 downto 0 ) := ( others => '0' );
 		lagrange_h1	 : out signed( 34 downto 0 ) := ( others => '0' );
@@ -30,14 +30,14 @@ architecture rtl of interp_lagrange is
 
 	signal state_count : unsigned( 2 downto 0 ) := ( others => '0' );
 	
-	signal d		: unsigned( 21 downto 0 ) := ( others => '0' );
-	signal d0		:   signed( 34 downto 0 ) := ( others => '0' );
-	signal d1		:   signed( 34 downto 0 ) := ( others => '0' );
-	signal d2		:   signed( 34 downto 0 ) := ( others => '0' );
-	signal d3		:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d			: unsigned( 21 downto 0 ) := ( others => '0' );
+	signal d0			:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d1			:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d2			:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d3			:   signed( 34 downto 0 ) := ( others => '0' );
 	
-	signal buf0		: signed( 34 downto 0 ) := ( others => '0' );
-	signal buf1		: signed( 34 downto 0 ) := ( others => '0' );
+	signal buf0			: signed( 34 downto 0 ) := ( others => '0' );
+	signal buf1			: signed( 34 downto 0 ) := ( others => '0' );
 begin
 
 	d0 <= "000" & delta & b"00_0000_0000";
