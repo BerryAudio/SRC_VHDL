@@ -30,7 +30,7 @@ architecture rtl of interp_lagrange is
 
 	signal state_count : unsigned( 2 downto 0 ) := ( others => '0' );
 	
-	signal d			: unsigned( 21 downto 0 ) := ( others => '0' );
+	signal d				: unsigned( 21 downto 0 ) := ( others => '0' );
 	signal d0			:   signed( 34 downto 0 ) := ( others => '0' );
 	signal d1			:   signed( 34 downto 0 ) := ( others => '0' );
 	signal d2			:   signed( 34 downto 0 ) := ( others => '0' );
@@ -38,23 +38,28 @@ architecture rtl of interp_lagrange is
 	
 	signal buf0			: signed( 34 downto 0 ) := ( others => '0' );
 	signal buf1			: signed( 34 downto 0 ) := ( others => '0' );
+	
+	constant D_N0			: signed( 24 downto 0 ) := "0000000000000000000000000";
+	constant D_N1			: signed( 24 downto 0 ) := "1110000000000000000000000";
+	constant D_N2			: signed( 24 downto 0 ) := "1100000000000000000000000";
+	constant D_N3			: signed( 24 downto 0 ) := "1010000000000000000000000";
 begin
 
-	d0 <= "000" & delta & b"00_0000_0000";
-	d1 <= "111" & delta & b"00_0000_0000";
-	d2 <= "110" & delta & b"00_0000_0000";
-	d3 <= "101" & delta & b"00_0000_0000";
+	d0 <= ( D_N0 + to_integer( delta ) ) & b"00_0000_0000";
+	d1 <= ( D_N1 + to_integer( delta ) ) & b"00_0000_0000";
+	d2 <= ( D_N2 + to_integer( delta ) ) & b"00_0000_0000";
+	d3 <= ( D_N3 + to_integer( delta ) ) & b"00_0000_0000";
 
 	state_process : process( clk )
 	begin
 		if rising_edge( clk ) then
 			if rst = '1' then
-				state_count <= ( others => '0' );
-				lagrange_en <= '0';
-				i_mac.cmp   <= '0';
+				state_count	<= ( others => '0' );
+				lagrange_en	<= '0';
+				i_mac.cmp	<= '0';
 			else
 				lagrange_en <= '0';
-				i_mac.cmp   <= '0';
+				i_mac.cmp	<= '0';
 				
 				case to_integer( state_count ) is
 					when 0 =>
@@ -90,8 +95,8 @@ begin
 						
 					when 3 =>
 						if o_mac.en = '1' then
-							buf0 <= o_mac.data0( 64 downto 30 ); -- D0*D1*D2/2 - h3
-							buf1 <= o_mac.data1( 64 downto 30 ); -- D1*D2*D3/2 - h0
+							buf0	 <= o_mac.data0( 64 downto 30 ); -- D0*D1*D2/2 - h3
+							buf1	 <= o_mac.data1( 64 downto 30 ); -- D1*D2*D3/2 - h0
 							state_count <= o"4";
 						end if;
 						
@@ -108,7 +113,7 @@ begin
 						
 						if o_mac.en = '1' then
 							lagrange_h2 <= COMPLEMENT( o_mac.data0( 64 downto 30 ) ); -- D0*D1*D3/2 - h2
-							lagrange_h1 <= o_mac.data1( 64 downto 30 )  ; -- D0*D2*D3/2 - h1
+							lagrange_h1 <=					o_mac.data1( 64 downto 30 )  ; -- D0*D2*D3/2 - h1
 							state_count <= o"5";
 						end if;
 						
