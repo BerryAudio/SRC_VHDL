@@ -2,7 +2,7 @@ N=6144;
 Fp=1/64*2*0.4535;
 Fst=1/64*2*0.5465;
 Ap=0.01;
-Ast=190;
+Ast=180;
 
 f=fdesign.lowpass( 'N,Fp,Ap,Ast', N, Fp, Ap, Ast );
 Hf=design(f,'equiripple');
@@ -14,7 +14,7 @@ set(He, 'CoeffWordLength', 28);
 fvtool(He);
 info(He);
 
-fcfwrite(He, '../../rtl/rom/rom_src_6144x28b_cand.txt', 'hex');
+fcfwrite(He, '../../rtl/rom/rom_src_28b_test.txt', 'hex');
 
 Hd = Hf;
 Hd.Arithmetic = 'fixed';
@@ -22,5 +22,5 @@ set(Hd, 'CoeffWordLength', 32);
 fvtool(Hd);
 info(Hd);
 
-fcfwrite(Hd, '../../rtl/rom/rom_src_6144x32b_cand.txt', 'hex');
+fcfwrite(Hd, '../../rtl/rom/rom_src_32b_test.txt', 'hex');
 
