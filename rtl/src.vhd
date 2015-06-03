@@ -7,13 +7,14 @@ package src is
 	--******************************************************************
 	-- constants - GENERAL
 	--******************************************************************
-	constant ROM_FILE_SRC			: string  := "rom/rom_src_32b_test.txt";
+	constant ROM_FILE_SRC			: string  := "rom/rom_src_6144x32b_cand.txt";
 	constant ROM_FILE_BIT			: natural range 24 to 32 := 32;
 	constant ROM_FILE_HB				: string  := "rom/rom_hb.txt";
 	
 	constant INTERP_MAC_PIPELINE	: boolean := TRUE;
 	constant INTERP_PTR_INCREMENT	: integer := 64;
 	constant RING_BUF_PTR_OFFSET	: integer := 16;
+	constant REG_AVE_WIDTH			: integer range 4 to 6 := 6;
 	
 	constant NOISE_LFSR_WIDTH		: integer := 14;
 	constant NOISE_FILT_WIDTH		: integer := 20;
@@ -63,7 +64,7 @@ package src is
 	--******************************************************************
 	component regulator_top is
 		generic (
-			CLOCK_COUNT		: integer
+			CLOCK_COUNT		: integer := 512
 		);
 		port (
 			clk				: in  std_logic;
@@ -101,8 +102,8 @@ package src is
 			rd_data1		: in  signed( 23 downto 0 );
 			
 			o_data_en	: out std_logic := '0';
-			o_data0		: out signed( 34 downto 0 ) := ( others => '0' );
-			o_data1		: out signed( 34 downto 0 ) := ( others => '0' );
+			o_data0		: out signed( 34 downto 0 );
+			o_data1		: out signed( 34 downto 0 );
 		
 			-- mac signals
 			mac_sel			: out std_logic_vector( 1 downto 0 );
@@ -117,8 +118,8 @@ package src is
 			-- mac signals
 			i_div_remainder: in  unsigned( 24 downto 0 );
 			o_div_en			: out std_logic := '0';
-			o_div_dividend	: out unsigned( 26 downto 0 ) := ( others => '0' );
-			o_div_divisor	: out unsigned( 26 downto 0 ) := ( others => '0' )
+			o_div_dividend	: out unsigned( 26 downto 0 );
+			o_div_divisor	: out unsigned( 26 downto 0 )
 		);
 	end component filter_top;
 	
@@ -347,6 +348,9 @@ package src is
 	end component reg_ratio;
 	
 	component reg_average is
+		generic (
+			REG_AVE_WIDTH	: integer range 0 to 6 := REG_AVE_WIDTH
+		);
 		port (
 			clk				: in  std_logic;
 			rst				: in  std_logic;

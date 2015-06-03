@@ -7,32 +7,32 @@ use work.src.all;
 
 entity regulator_top is
 	generic (
-		CLOCK_COUNT			: integer := 512
+		CLOCK_COUNT		: integer := 512
 	);
 	port (
-		clk					: in  std_logic;
-		rst					: in  std_logic;
+		clk				: in  std_logic;
+		rst				: in  std_logic;
 		
 		-- input/output sample has arrived
 		-- input from ring buffer
 		-- let's us know how full the buffer is
-		i_sample_en			: in  std_logic;
-		o_sample_en			: in  std_logic;
-		i_fifo_level		: in  unsigned( 10 downto 0 );
+		i_sample_en		: in  std_logic;
+		o_sample_en		: in  std_logic;
+		i_fifo_level	: in  unsigned( 10 downto 0 );
 		
 		-- ratio data - indicate that a ratio has been calculated
 		-- locked status indicator
-		o_ratio				: out unsigned( 23 downto 0 ) := ( others => '0' );
-		o_locked				: out std_logic := '0';
-		o_ratio_en			: out std_logic := '0';
+		o_ratio			: out unsigned( 23 downto 0 ) := ( others => '0' );
+		o_locked			: out std_logic := '0';
+		o_ratio_en		: out std_logic := '0';
 		
 		-- shared divider i/o
-		div_busy				: in  std_logic;
-		div_remainder		: in  unsigned( 24 downto 0 );
+		div_busy			: in  std_logic;
+		div_remainder	: in  unsigned( 24 downto 0 );
 		
-		div_en				: out std_logic := '0';
-		div_divisor			: out unsigned( 26 downto 0 ) := ( others => '0' );
-		div_dividend		: out unsigned( 26 downto 0 ) := to_unsigned( CLOCK_COUNT * 4, 27 )
+		div_en			: out std_logic := '0';
+		div_divisor		: out unsigned( 26 downto 0 ) := ( others => '0' );
+		div_dividend	: out unsigned( 26 downto 0 ) := to_unsigned( CLOCK_COUNT * 4, 27 )
 		
 	);
 end regulator_top;
@@ -384,6 +384,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity reg_average is
+	generic (
+		REG_AVE_WIDTH	: integer range 0 to 6 := 6
+	);
 	port (
 		clk			: in  std_logic;
 		rst			: in  std_logic;
@@ -401,25 +404,25 @@ end reg_average;
 architecture rtl of reg_average is
 	signal ptr_reset	: std_logic_vector( 1 downto 0 ) := ( others => '0' );
 	
-	type SR_TYPE is array( 15 downto 0 ) of unsigned( 24 downto 0 );
+	type SR_TYPE is array( 2**REG_AVE_WIDTH - 1 downto 0 ) of unsigned( 24 downto 0 );
 	signal sr				: SR_TYPE := ( others => ( others => '0' ) );
 	
 	signal sr_in			: unsigned( 24 downto 0 ) := ( others => '0' );
 	alias  sr_in_en		: std_logic is sr_in( 24 );
 	alias  sr_in_ratio	: unsigned( 23 downto 0 ) is sr_in( 23 downto 0 );
 	
-	alias  preload_out	: std_logic is sr( 15 )( 24 );
-	alias  ratio_del		: unsigned( 23 downto 0 ) is sr( 15 )( 23 downto 0 );
+	alias  preload_out	: std_logic is sr( 2**REG_AVE_WIDTH - 1 )( 24 );
+	alias  ratio_del		: unsigned( 23 downto 0 ) is sr( 2**REG_AVE_WIDTH - 1 )( 23 downto 0 );
 	
 	signal preload			: std_logic := '0';
 	
 	signal buf_ratio		: unsigned( 23 downto 0 ) := ( others => '0' );
 	signal buf_ratio_en	: std_logic := '0';
 	
-	signal moving_sum		: unsigned( 27 downto 0 ) := ( others => '0' );
+	signal moving_sum		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 begin
 
-	ave_out <= moving_sum( 27 downto 4 );
+	ave_out <= moving_sum( 23 + REG_AVE_WIDTH downto REG_AVE_WIDTH );
 	
 	sr_in_en <= preload;
 	sr_in_ratio <= buf_ratio;
@@ -457,10 +460,11 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if buf_ratio_en = '1' then
-				moving_sum <= moving_sum + RESIZE( buf_ratio, 27 ) 
-												 - RESIZE( ratio_del, 27 );
+				moving_sum <= moving_sum + buf_ratio 
+												 - ratio_del;
 			elsif preload = '1' then
-				moving_sum <= buf_ratio & x"0";
+				moving_sum( 23 + REG_AVE_WIDTH downto REG_AVE_WIDTH ) <= buf_ratio;
+				moving_sum( REG_AVE_WIDTH-1 downto 0 ) <= ( others => '0' );
 			end if;
 		end if;
 	end process moving_sum_process;
@@ -469,7 +473,7 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if ( preload or buf_ratio_en ) = '1' then
-				sr <= sr( 14 downto 0 ) & sr_in;
+				sr <= sr( 2**REG_AVE_WIDTH - 2 downto 0 ) & sr_in;
 			end if;
 		end if;
 	end process sr_process;
@@ -507,7 +511,7 @@ architecture rtl of reg_count is
 	signal state			: std_logic := '0';
 begin
 
-	o_reg <= frame_buf( 19 downto 0 );
+	o_reg <= frame_buf;
 	o_reg_en <= frame_en;
 
 	count_process : process( clk )
