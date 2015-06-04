@@ -196,9 +196,9 @@ BEGIN
 		);
 
 	capture_process : process( dsp0_i2s_bclk )
-		file		outfile0	: text is out "./tb/test/master_test_0.txt";
+		file		outfile0	: text is out "test/master_test_0.txt";
 		variable outline0	: line;
-		file		outfile1	: text is out "./tb/test/master_test_1.txt";
+		file		outfile1	: text is out "test/master_test_1.txt";
 		variable outline1	: line;
 	begin
 		if rising_edge( dsp0_i2s_bclk ) then

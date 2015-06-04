@@ -169,7 +169,7 @@ architecture rtl of mac is
 	signal mul_out0: MUL_TYPE := ( others => ( others => '0' ) );
 	signal mul_out1: MUL_TYPE := ( others => ( others => '0' ) );
 	signal mul_acc : std_logic_vector( 6 downto 0 ) := ( others => '0' );
-	signal mul_en  : std_logic_vector( 4 downto 0 ) := ( others => '0' );
+	signal mul_en  : std_logic_vector( 5 downto 0 ) := ( others => '0' );
 	signal mac_cmp : std_logic_vector( 7 downto 0 ) := ( others => '0' );
 	
 	alias buf_out0	: signed( 69 downto 0 ) is mul_out0( 6 );
@@ -179,11 +179,10 @@ architecture rtl of mac is
 	
 	signal acc_out0: signed( 69 downto 0 ) := ( others => '0' );
 	signal acc_out1: signed( 69 downto 0 ) := ( others => '0' );
-	signal acc_en0	: std_logic := '0';
-	signal acc_en1	: std_logic := '0';
+	signal acc_en	: std_logic := '0';
 begin
 
-	o_mac.en	 <= mac_cmp( 7 );
+	o_mac.en <= mac_cmp( 7 );
 	o_mac.data0 <= acc_out0;
 	o_mac.data1 <= acc_out1;
 	
@@ -197,7 +196,7 @@ begin
 				mul_out0<= mul_out0( 5 downto 0 ) & ( i_mac.data00 * i_mac.data01 );
 				mul_out1<= mul_out1( 5 downto 0 ) & ( i_mac.data10 * i_mac.data11 );
 				mul_acc <= mul_acc ( 5 downto 0 ) & i_mac.acc;
-				mul_en  <= mul_en  ( 3 downto 0 ) & i_mac.en;
+				mul_en  <= mul_en  ( 4 downto 0 ) & i_mac.en;
 				mac_cmp <= mac_cmp ( 6 downto 0 ) & i_mac.cmp;
 			end if;
 		end if;
@@ -206,14 +205,12 @@ begin
 	acc_process: process( clk )
 	begin
 		if rising_edge( clk ) then
-			acc_en0 <= mac_cmp( 4 ) or mul_en( 4 );
-			acc_en1 <= acc_en0;
+			acc_en <= mac_cmp( 5 ) or mul_en( 5 );
 			if rst = '1' then
 				acc_out0<= ( others => '0' );
 				acc_out1<= ( others => '0' );
-				acc_en0 <= '0';
-				acc_en1 <= '0';
-			elsif acc_en1 = '1' then
+				acc_en <= '0';
+			elsif acc_en = '1' then
 				acc_out0 <= buf_out0;
 				acc_out1 <= buf_out1;
 				if buf_acc = '1' then
