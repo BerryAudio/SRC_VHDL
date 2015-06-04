@@ -460,8 +460,7 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if buf_ratio_en = '1' then
-				moving_sum <= moving_sum + buf_ratio 
-												 - ratio_del;
+				moving_sum <= moving_sum + buf_ratio - ratio_del;
 			elsif preload = '1' then
 				moving_sum( 23 + REG_AVE_WIDTH downto REG_AVE_WIDTH ) <= buf_ratio;
 				moving_sum( REG_AVE_WIDTH-1 downto 0 ) <= ( others => '0' );
