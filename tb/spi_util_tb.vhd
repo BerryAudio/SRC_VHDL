@@ -32,7 +32,7 @@ ENTITY spi_util_tb IS
 	port (
 		clk		: in std_logic := '0';
 		spi_en	: in std_logic := '0';
-		spi_data	: in std_logic_vector( 7 downto 0 ) := ( others => '0' );
+		spi_data	: in std_logic_vector( 15 downto 0 ) := ( others => '0' );
 		
       spi_clk	: out std_logic := '0';
       spi_cs_n	: out std_logic := '1';
@@ -45,7 +45,7 @@ ARCHITECTURE behavior OF spi_util_tb IS
    signal spi_gen_clk: std_logic := '0';
    signal en			: std_logic := '0';
    signal mask			: std_logic := '1';
-	signal data_buf	: std_logic_vector( 7 downto 0 ) := ( others => '0' );
+	signal data_buf	: std_logic_vector( 15 downto 0 ) := ( others => '0' );
 	
    signal cs_n			: std_logic := '1';
    signal mosi			: std_logic := '0';
@@ -63,7 +63,7 @@ BEGIN
 			spi_mosi <= '0';
 			if en = '1' then
 				cs_n <= '0';
-				clock := 7;
+				clock := 15;
 			elsif clock < 0 then
 				mask <= '1';
 				cs_n <= '1';

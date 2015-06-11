@@ -13,6 +13,7 @@ entity dither_top is
 	port (
 		clk			: in  std_logic;
 		rst			: in  std_logic;
+		ctrl_width	: in  std_logic_vector( 1 downto 0 );
 		
 		i_data_en	: in  std_logic;
 		i_data0		: in  signed( 34 downto 0 );
@@ -80,6 +81,10 @@ architecture rtl of dither_top is
 	-- en buffer
 	signal buf_en	: std_logic_vector( 1 downto 0 ) := ( others => '0' );
 	
+	-- shift input data some number of bits
+	signal sll_q0	: signed( 34 downto 0 ) := ( others => '0' );
+	signal sll_q1	: signed( 34 downto 0 ) := ( others => '0' );
+	
 	-- noise filter i/o
 	signal ni0		: signed( 34 downto 0 ) := ( others => '0' );
 	signal ni1		: signed( 34 downto 0 ) := ( others => '0' );
@@ -98,10 +103,27 @@ architecture rtl of dither_top is
 	-- quantiser i/o
 	signal q0		: signed( 34 downto 0 ) := ( others => '0' );
 	signal q1		: signed( 34 downto 0 ) := ( others => '0' );
-	
 begin
 	
 	o_data_en <= no_en;
+	
+	sll_process : process( ctrl_width, i_data0, i_data1 )
+	begin
+		case ctrl_width is
+			when "11" => -- 16 bits - sll 8
+				sll_q0 <= q0 sll 8;
+				sll_q1 <= q1 sll 8;
+			when "10" => -- 18 bits - sll 6
+				sll_q0 <= q0 sll 6;
+				sll_q1 <= q1 sll 6;
+			when "01" => -- 20 bits - sll 4
+				sll_q0 <= q0 sll 4;
+				sll_q1 <= q1 sll 4;
+			when others => -- 24 bits
+				sll_q0 <= q0;
+				sll_q1 <= q1;
+		end case;
+	end process sll_process;
 	
 	clock_process : process( clk )
 		variable tmp_q0, tmp_q1 : signed( 34 downto 0 );
@@ -123,8 +145,9 @@ begin
 				ni0 <= q0( 34 downto 10 ) & b"00_0000_0000" - e0;
 				ni1 <= q1( 34 downto 10 ) & b"00_0000_0000" - e1;
 				
-				o_data0 <= CLIP( q0 );
-				o_data1 <= CLIP( q1 );
+				-- bit width manipulation for full scale output
+				o_data0 <= CLIP( sll_q0 );
+				o_data1 <= CLIP( sll_q1 );
 			end if;
 		end if;
 	end process clock_process;

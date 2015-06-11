@@ -42,6 +42,7 @@ END audio_tb;
 ARCHITECTURE behavior OF audio_tb IS 
 	constant s_rate	: real := 44.1;
 	constant s_scale	: real range 0.5 to 1.0 :=  0.99;
+	signal ctrl_width : std_logic_vector( 1 downto 0 ) := "11"; -- 16 bits 
  
    --Inputs
    signal clk_24 : std_logic := '0';
@@ -89,15 +90,15 @@ ARCHITECTURE behavior OF audio_tb IS
    constant clk_22_period : time := 44.29 ns;
 	
 	signal spi_en		: std_logic := '0';
-	signal spi_data	: std_logic_vector( 7 downto 0 ) := ( others => '0' );
+	signal spi_data	: std_logic_vector( 15 downto 0 ) := ( others => '0' );
  
 	signal dac_data0	: signed( 23 downto 0 ) := ( others => '0' );
 	signal dac_data1	: signed( 23 downto 0 ) := ( others => '0' );
 	signal dac_data_en: std_logic := '0';
 	
 	procedure spi_write( 
-		constant i_spi		: in  std_logic_vector( 7 downto 0 );
-		signal o_spi		: out std_logic_vector( 7 downto 0 );
+		constant i_spi		: in  std_logic_vector( 15 downto 0 );
+		signal o_spi		: out std_logic_vector( 15 downto 0 );
 		signal o_spi_en	: out std_logic
 	) is begin
 		wait until rising_edge( clk_24 );
@@ -167,6 +168,7 @@ BEGIN
 	-- i2s
 	i2s_tb : i2s_util_tb
 		port map (
+			ctrl_width => ctrl_width,
 			i2s_bclk => i2s_bclk,
 			i2s_lrck => i2s_lrck,
 			i2s_data => i2s_data
@@ -237,12 +239,12 @@ BEGIN
 		set_scale( s_scale );
 		wait until ctrl_rdy = '1';
 		
-		if		s_rate =  44.1 then spi_write( "10000000", spi_data, spi_en );
-		elsif s_rate =  48.0 then spi_write( "10010000", spi_data, spi_en );
-		elsif s_rate =  88.2 then spi_write( "10001000", spi_data, spi_en );
-		elsif s_rate =  96.0 then spi_write( "10011000", spi_data, spi_en );
-		elsif s_rate = 176.4 then spi_write( "10001100", spi_data, spi_en );
-		elsif s_rate = 192.0 then spi_write( "10011110", spi_data, spi_en );
+		if		s_rate =  44.1 then spi_write( o"40" & ctrl_width & "10000000", spi_data, spi_en );
+		elsif s_rate =  48.0 then spi_write( o"40" & ctrl_width & "10010000", spi_data, spi_en );
+		elsif s_rate =  88.2 then spi_write( o"40" & ctrl_width & "10001000", spi_data, spi_en );
+		elsif s_rate =  96.0 then spi_write( o"40" & ctrl_width & "10011000", spi_data, spi_en );
+		elsif s_rate = 176.4 then spi_write( o"40" & ctrl_width & "10001100", spi_data, spi_en );
+		elsif s_rate = 192.0 then spi_write( o"40" & ctrl_width & "10011110", spi_data, spi_en );
 		end if;
 		
 		wait for 0.5 ms;

@@ -112,7 +112,7 @@ package audio is
 			spi_cs_n		: in  std_logic;
 			spi_mosi		: in  std_logic;
 			
-			o_data		: out std_logic_vector( 7 downto 0 )
+			o_data		: out std_logic_vector( 15 downto 0 )
 		);
 	end component spi_top;
 	
@@ -124,6 +124,7 @@ package audio is
 			clk						: in  std_logic;
 			rst						: in  std_logic;
 			
+			ctrl_width				: in  std_logic_vector( 1 downto 0 );
 			ctrl_locked				: out std_logic;
 			ctrl_ratio				: out unsigned( 23 downto 0 );
 			

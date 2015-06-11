@@ -11,6 +11,7 @@ use work.sig_gen_pkg.all;
 
 ENTITY i2s_util_tb IS
 	port (
+		ctrl_width : in std_logic_vector( 1 downto 0 );
 		i2s_bclk : in  std_logic;
 		i2s_lrck : in  std_logic;
 		i2s_data : out std_logic := '0'
@@ -33,7 +34,7 @@ ARCHITECTURE behavior OF i2s_util_tb IS
 	impure function gen_sig0 return signed is
 	begin
 		fetch_sample( sig0 );
-		return sig0.sig( 34 downto 11 );
+		return sig0.sig( 34 downto 19 );
 	end function;
 	
 	impure function gen_sig1 return signed is
@@ -58,8 +59,15 @@ ARCHITECTURE behavior OF i2s_util_tb IS
 		sample := RESIZE( sample0( 23 downto 1 ), 24 ) + RESIZE( sample1( 23 downto 1 ), 24 );
 		return sample;
 	end function;
+	
+	signal shift : integer;
 BEGIN
-
+	
+	shift <= 8 when ctrl_width = "11" else
+				6 when ctrl_width = "10" else
+				4 when ctrl_width = "01" else
+				0;
+				
 	process
 	begin
 		sig0.freq := freq0;
@@ -77,10 +85,10 @@ BEGIN
 		if falling_edge( i2s_bclk ) then
 			if wsp = '1' then
 				if ws_buf( 0 ) = '0' then
-					sample := gen_sig2;
-					data <= sample;
+					sample := gen_sig0;
+					data <= ( sample srl shift ) sll shift;
 				else
-					data <= RESIZE( sample( 23 downto 20 ), 24 );
+					data <= RESIZE( sample( 23 downto 20 ), 24 ) sll shift;
 				end if;
 			else
 				data <= data( 22 downto 0 ) & '0';

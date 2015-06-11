@@ -13,6 +13,7 @@ entity src_top is
 		clk						: in  std_logic;
 		rst						: in  std_logic;
 		
+		ctrl_width				: in  std_logic_vector( 1 downto 0 );
 		ctrl_locked				: out std_logic := '0';
 		ctrl_ratio				: out unsigned( 23 downto 0 ) := ( others => '0' );
 		
@@ -38,6 +39,9 @@ architecture rtl of src_top is
 	signal i_sample_sel		: std_logic := '0';
 	signal i_sample_en_o0	: std_logic := '0';
 	signal i_sample_en_o1	: std_logic := '0';
+	
+	signal i_sample0			: signed( 23 downto 0 ) := ( others => '0' );
+	signal i_sample1			: signed( 23 downto 0 ) := ( others => '0' );
 
 	-- general control signals
 	signal fifo_level			: unsigned( 10 downto 0 ) := ( others => '0' );
@@ -123,6 +127,24 @@ begin
 			end if;
 		end if;
 	end process sample_sel_process;
+	
+	srl_process : process( ctrl_width, i_data0, i_data1 )
+	begin
+		case ctrl_width is
+			when "11"   => -- 16 bits - shift 8
+				i_sample0 <= RESIZE( i_data0( 23 downto 8 ), 24 );
+				i_sample1 <= RESIZE( i_data1( 23 downto 8 ), 24 );
+			when "10"   => -- 18 bits - shift 6
+				i_sample0 <= RESIZE( i_data0( 23 downto 6 ), 24 );
+				i_sample1 <= RESIZE( i_data1( 23 downto 6 ), 24 );
+			when "01"   => -- 20 bits - shift 4
+				i_sample0 <= RESIZE( i_data0( 23 downto 4 ), 24 );
+				i_sample1 <= RESIZE( i_data1( 23 downto 4 ), 24 );
+			when others => -- 24 bits - shift 0
+				i_sample0 <= i_data0;
+				i_sample1 <= i_data1;
+		end case;
+	end process srl_process;
 	
 	state_src_process : process( clk )
 	begin
@@ -267,6 +289,7 @@ begin
 		port map (
 			clk				=> clk,
 			rst				=> filter_rst,
+			ctrl_width		=> ctrl_width,
 			
 			i_data_en		=> hb_data_en,
 			i_data0			=> hb_data0,
@@ -297,8 +320,8 @@ begin
 			ratio				=> ratio,
 			
 			wr_en				=> i_sample_en_i,
-			wr_data0			=> i_data0,
-			wr_data1			=> i_data1,
+			wr_data0			=> i_sample0,
+			wr_data1			=> i_sample1,
 			
 			rd_data0			=> rbuf_data0,
 			rd_data1			=> rbuf_data1

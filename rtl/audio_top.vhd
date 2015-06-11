@@ -6,6 +6,11 @@
 --			- LUT Combining: Auto
 -- ************************************************************************
 -- SPI Register Format
+-- 9-8	: Data bit length
+--			: 00 = 24 bit ( default )
+--			: 01 = 20 bit
+--			: 10 = 18 bit
+--			: 11 = 16 bit
 -- 7		: Input Select
 --			: 0 = SPDIF
 --			: 1 = I2S
@@ -92,9 +97,17 @@ entity audio_top is
 end audio_top;
 
 architecture rtl of audio_top is
-	signal spi_register	: std_logic_vector( 7 downto 0 ) := ( others => '0' );
-	signal spi_reg_buf	: std_logic_vector( 7 downto 0 ) := ( others => '0' );
+	signal spi_register	: std_logic_vector( 15 downto 0 ) := ( others => '0' );
+	signal spi_reg_buf	: std_logic_vector(  9 downto 0 ) := ( others => '0' );
 	signal spi_change		: std_logic := '0';
+
+	alias spi_reg_bits	: std_logic_vector( 1 downto 0 ) is spi_register( 9 downto 8 );
+	alias spi_reg_input	: std_logic is spi_register( 7 );
+	alias spi_reg_spdif	: std_logic_vector( 1 downto 0 ) is spi_register( 6 downto 5 );
+	alias spi_reg_clock	: std_logic is spi_register( 4 );
+	alias spi_reg_rate	: std_logic_vector( 1 downto 0 ) is spi_register( 3 downto 2 );
+	alias spi_reg_mute	: std_logic is spi_register( 1 );
+	alias spi_reg_rst		: std_logic is spi_register( 0 );
 	
 	signal dac_rst			: std_logic := '0';
 	signal pll_lock		: std_logic := '0';
@@ -142,17 +155,17 @@ begin
 	begin
 		if rising_edge( clk ) then
 			dac_rst <= rst or not( src_lock );
-			rst_buf <= rst_buf( 0 ) & ( ctrl_rst or spi_register( 0 ) or spi_change or not( pll_lock ) );
+			rst_buf <= rst_buf( 0 ) & ( ctrl_rst or spi_reg_rst or spi_change or not( pll_lock ) );
 		end if;
 	end process rst_process;
 	
 	spi_change_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			spi_reg_buf <= spi_register;
+			spi_reg_buf <= spi_register( spi_reg_buf'range );
 			if spi_change <= '1' then
 				spi_change <= '0';
-			elsif spi_reg_buf /= spi_register then
+			elsif spi_reg_buf /= spi_register( spi_reg_buf'range ) then
 				spi_change <= '1';
 			end if;
 		end if;
@@ -166,7 +179,7 @@ begin
 	
 	INST_PLL : pll_top
 		port map (
-			clk_sel		=> spi_register( 4 ),
+			clk_sel		=> spi_reg_clock,
 			sys_lock		=> pll_lock,
 			
 			i_clk_22		=> clk_22,
@@ -179,14 +192,14 @@ begin
 	-- *******************************************************************
 	-- ** S Configuration
 	-- *******************************************************************
-	dsp0_rst			<= spi_register( 0 );
-	dsp0_mute		<= spi_register( 1 ) or spi_register( 0 );
+	dsp0_rst			<= spi_reg_rst;
+	dsp0_mute		<= spi_reg_mute or spi_reg_rst;
 	dsp0_spi_clk	<= spi_clk;
 	dsp0_spi_cs_n	<= spi_cs_n( 1 );
 	dsp0_spi_mosi	<= spi_mosi;
 	
-	dsp1_rst			<= spi_register( 0 );
-	dsp1_mute		<= spi_register( 1 ) or spi_register( 0 );
+	dsp1_rst			<= spi_reg_rst;
+	dsp1_mute		<= spi_reg_mute or spi_reg_rst;
 	dsp1_spi_clk	<= spi_clk;
 	dsp1_spi_cs_n	<= spi_cs_n( 2 );
 	dsp1_spi_mosi	<= spi_mosi;
@@ -218,7 +231,7 @@ begin
 			i2s_data		=> i2s_data,
 			i2s_bclk		=> i2s_bclk,
 			i2s_lrck		=> i2s_lrck,
-			i2s_rate		=> spi_register( 3 downto 2 ),
+			i2s_rate		=> spi_reg_rate,
 			
 			o_data0		=> i2s_data0,
 			o_data1		=> i2s_data1,
@@ -228,7 +241,7 @@ begin
 	INST_SPDIF : spdif_top
 		port map (
 			clk			=> clk,
-			sel			=> spi_register( 6 downto 5 ),
+			sel			=> spi_reg_spdif,
 		
 			i_data0		=> spdif_chan0,
 			i_data1		=> spdif_chan1,
@@ -246,7 +259,7 @@ begin
 		port map (
 			clk			=> clk,
 			rst			=> rst,
-			sel			=> spi_register( 7 ),
+			sel			=> spi_reg_input,
 			
 			i_data0_0	=> spdif_data0,
 			i_data0_1	=> spdif_data1,
@@ -273,6 +286,7 @@ begin
 			clk				=> clk,
 			rst				=> rst,
 			
+			ctrl_width		=> spi_reg_bits,
 			ctrl_locked		=> src_lock,
 			ctrl_ratio		=> open,
 			

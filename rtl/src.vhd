@@ -153,6 +153,7 @@ package src is
 		port (
 			clk			: in  std_logic;
 			rst			: in  std_logic;
+			ctrl_width	: in  std_logic_vector( 1 downto 0 );
 			
 			i_data_en	: in  std_logic;
 			i_data0		: in  signed( 34 downto 0 );

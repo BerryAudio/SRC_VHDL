@@ -50,7 +50,7 @@ package utils is
 		port (
 			clk		: in std_logic;
 			spi_en	: in std_logic;
-			spi_data	: in std_logic_vector( 7 downto 0 );
+			spi_data	: in std_logic_vector( 15 downto 0 );
 			
 			spi_clk	: out std_logic;
 			spi_cs_n	: out std_logic;
@@ -60,6 +60,7 @@ package utils is
 	
 	component i2s_util_tb is
 		port (
+			ctrl_width : in std_logic_vector( 1 downto 0 );
 			i2s_bclk : in  std_logic;
 			i2s_lrck : in  std_logic;
 			i2s_data : out std_logic
