@@ -40,6 +40,7 @@ architecture rtl of src_top is
 	signal i_sample_en_o0	: std_logic := '0';
 	signal i_sample_en_o1	: std_logic := '0';
 	
+	signal i_sample_shift	: unsigned( 3 downto 0 ) := ( others => '0' );
 	signal i_sample0			: signed( 23 downto 0 ) := ( others => '0' );
 	signal i_sample1			: signed( 23 downto 0 ) := ( others => '0' );
 
@@ -119,6 +120,9 @@ begin
 	i_sample_en_o0 <= i_sample_en_o and not( i_sample_sel );
 	i_sample_en_o1 <= i_sample_en_o and      i_sample_sel;
 	
+	i_sample0 <= shift_right( i_data0, to_integer( i_sample_shift ) );
+	i_sample1 <= shift_right( i_data1, to_integer( i_sample_shift ) );
+	
 	sample_sel_process : process( clk )
 	begin
 		if rising_edge( clk ) then
@@ -128,22 +132,16 @@ begin
 		end if;
 	end process sample_sel_process;
 	
-	srl_process : process( ctrl_width, i_data0, i_data1 )
+	srl_process : process( clk )
 	begin
-		case ctrl_width is
-			when "11"   => -- 16 bits - shift 8
-				i_sample0 <= RESIZE( i_data0( 23 downto 8 ), 24 );
-				i_sample1 <= RESIZE( i_data1( 23 downto 8 ), 24 );
-			when "10"   => -- 18 bits - shift 6
-				i_sample0 <= RESIZE( i_data0( 23 downto 6 ), 24 );
-				i_sample1 <= RESIZE( i_data1( 23 downto 6 ), 24 );
-			when "01"   => -- 20 bits - shift 4
-				i_sample0 <= RESIZE( i_data0( 23 downto 4 ), 24 );
-				i_sample1 <= RESIZE( i_data1( 23 downto 4 ), 24 );
-			when others => -- 24 bits - shift 0
-				i_sample0 <= i_data0;
-				i_sample1 <= i_data1;
-		end case;
+		if rising_edge( clk ) then
+			case ctrl_width is
+				when "11"   => i_sample_shift <= x"8";
+				when "10"   => i_sample_shift <= x"6";
+				when "01"   => i_sample_shift <= x"4";
+				when others => i_sample_shift <= x"0";
+			end case;
+		end if;
 	end process srl_process;
 	
 	state_src_process : process( clk )
