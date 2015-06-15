@@ -41,7 +41,6 @@ use work.audio.all;
 entity audio_top is
 	port (
 		clk_24			: in  std_logic;
-		clk_22			: in  std_logic;
 		ctrl_rst			: in  std_logic;
 		ctrl_lock		: out std_logic := '0';
 		ctrl_rdy			: out std_logic := '0';
@@ -179,14 +178,12 @@ begin
 	
 	INST_PLL : pll_top
 		port map (
+			clk			=> clk_24,
 			clk_sel		=> spi_reg_clock,
-			sys_lock		=> pll_lock,
+			clk_lock		=> pll_lock,
 			
-			i_clk_22		=> clk_22,
-			i_clk_24		=> clk_24,
-			
-			o_clk_src	=> clk,
-			o_clk_i2s	=> clk_i2s
+			clk_src		=> clk,
+			clk_i2s		=> clk_i2s
 		);
 	
 	-- *******************************************************************

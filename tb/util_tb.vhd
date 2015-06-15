@@ -7,7 +7,6 @@ package utils is
 	component audio_top
 		port(
 			clk_24			: in  std_logic;
-			clk_22			: in  std_logic;
 			ctrl_rst			: in  std_logic;
 			ctrl_lock		: out std_logic;
 			ctrl_rdy			: out std_logic;

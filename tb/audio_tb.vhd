@@ -46,7 +46,6 @@ ARCHITECTURE behavior OF audio_tb IS
  
    --Inputs
    signal clk_24 : std_logic := '0';
-   signal clk_22 : std_logic := '0';
    signal ctrl_rst : std_logic := '0';
    signal spi_clk : std_logic := '0';
    signal spi_cs_n : std_logic_vector(2 downto 0) := (others => '1');
@@ -87,7 +86,6 @@ ARCHITECTURE behavior OF audio_tb IS
 
    -- Clock period definitions
    constant clk_24_period : time := 40.69 ns;
-   constant clk_22_period : time := 44.29 ns;
 	
 	signal spi_en		: std_logic := '0';
 	signal spi_data	: std_logic_vector( 15 downto 0 ) := ( others => '0' );
@@ -115,7 +113,6 @@ BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: audio_top PORT MAP (
           clk_24 => clk_24,
-          clk_22 => clk_22,
           ctrl_rst => ctrl_rst,
           ctrl_lock => ctrl_lock,
 			 ctrl_rdy  => ctrl_rdy,
@@ -220,14 +217,6 @@ BEGIN
 		wait for clk_24_period/2;
 		clk_24 <= '1';
 		wait for clk_24_period/2;
-   end process;
- 
-   clk_22_process :process
-   begin
-		clk_22 <= '0';
-		wait for clk_22_period/2;
-		clk_22 <= '1';
-		wait for clk_22_period/2;
    end process;
  
 

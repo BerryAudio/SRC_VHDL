@@ -75,14 +75,12 @@ package audio is
 	
 	component pll_top is
 		port (
+			clk			: in  std_logic;
 			clk_sel		: in  std_logic;
-			sys_lock		: out std_logic;
+			clk_lock		: out std_logic := '0';
 			
-			i_clk_22		: in  std_logic;
-			i_clk_24		: in  std_logic;
-			
-			o_clk_src	: out std_logic;
-			o_clk_i2s	: out std_logic
+			clk_src		: out std_logic := '0';
+			clk_i2s		: out std_logic := '0'
 		);
 	end component pll_top;
 	
