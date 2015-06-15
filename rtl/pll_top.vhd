@@ -16,21 +16,21 @@ entity pll_top is
 end pll_top;
 
 architecture rtl of pll_top is
-	constant PLL_PERIOD	: real := 40.6901;
+	constant PLL_PERIOD		: real := 40.6901;
 	
-	signal pll_clk_in		: std_logic := '0';
+	signal pll_clk_in			: std_logic := '0';
 	
-	signal pll0_clk_fb	: std_logic := '0';
-	signal pll0_locked	: std_logic := '0';
-	signal pll0_clk_o_src: std_logic := '0';
-	signal pll0_clk_o_i2s: std_logic := '0';
+	signal pll0_clk_fb		: std_logic := '0';
+	signal pll0_locked		: std_logic := '0';
+	signal pll0_clk_o_src	: std_logic := '0';
+	signal pll0_clk_o_i2s	: std_logic := '0';
 	
-	signal pll1_clk_fb	: std_logic := '0';
-	signal pll1_locked	: std_logic := '0';
-	signal pll1_clk_o_i2s: std_logic := '0';
+	signal pll1_clk_fb		: std_logic := '0';
+	signal pll1_locked		: std_logic := '0';
+	signal pll1_clk_o_i2s	: std_logic := '0';
 	
-	signal buf_clk_i2s_22: std_logic := '0';
-	signal buf_clk_i2s_24: std_logic := '0';
+	signal buf_clk_i2s_22	: std_logic := '0';
+	signal buf_clk_i2s_24	: std_logic := '0';
 begin
 
 	clk_lock <= pll0_locked and pll1_locked;
