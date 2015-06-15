@@ -337,9 +337,6 @@ architecture rtl of lfsr_top is
 	signal gen_lfsr1	: signed( LFSR_WIDTH-1 downto 0 ) := ( others => '0' );
 	
 	signal feedback	: std_logic := '0';
-	
-	attribute register_balancing: string;
-	attribute register_balancing of lfsr: signal is "no";
 begin
 
 	lfsr0 <= gen_lfsr0;
