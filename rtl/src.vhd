@@ -16,8 +16,8 @@ package src is
 	constant RING_BUF_PTR_OFFSET	: integer := 16;
 	constant REG_AVE_WIDTH			: integer range 4 to 6 := 6;
 	
-	constant NOISE_LFSR_WIDTH		: integer := 14;
-	constant NOISE_FILT_WIDTH		: integer := 20;
+	constant NOISE_LFSR_WIDTH		: integer := 12;
+	constant NOISE_FILT_WIDTH		: integer := 18;
 
 	--******************************************************************
 	-- types
