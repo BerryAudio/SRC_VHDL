@@ -56,7 +56,7 @@ package body sig_gen_pkg is
 		sample_signed := signed( std_logic_vector( sample_sfixed ) );
 		
 		random( io_sig );
-		sample := ( sample_signed( 34 ) & sample_signed ) + io_sig.rnd;
+		sample := ( sample_signed( 34 ) & sample_signed );
 		
 		if ( sample( 35 ) xor sample( 34 ) ) = '1' then
 			if sample( 35 ) = '1' then
