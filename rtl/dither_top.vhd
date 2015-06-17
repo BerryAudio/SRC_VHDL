@@ -7,8 +7,8 @@ use work.src.all;
 
 entity dither_top is
 	generic (
-		LFSR_WIDTH	: integer := 12;
-		FILT_WIDTH	: integer := 34
+		LFSR_WIDTH	: integer range 11 to 34 := 12;
+		FILT_WIDTH	: integer range 11 to 34 := 34
 	);
 	port (
 		clk			: in  std_logic;
@@ -87,8 +87,8 @@ architecture rtl of dither_top is
 	signal sll_q1	: signed( 34 downto 0 ) := ( others => '0' );
 	
 	-- noise filter i/o
-	signal ni0		: signed( 34 downto 0 ) := ( others => '0' );
-	signal ni1		: signed( 34 downto 0 ) := ( others => '0' );
+	signal ni0		: signed( FILT_WIDTH-1 downto 0 ) := ( others => '0' );
+	signal ni1		: signed( FILT_WIDTH-1 downto 0 ) := ( others => '0' );
 	signal no0		: signed( FILT_WIDTH-1 downto 0 ) := ( others => '0' );
 	signal no1		: signed( FILT_WIDTH-1 downto 0 ) := ( others => '0' );
 	signal no_en	: std_logic := '0';
@@ -138,8 +138,8 @@ begin
 			end if;
 			
 			if buf_en( 1 ) = '1' then
-				ni0 <= q0( 34 downto 10 ) & b"00_0000_0000" - e0;
-				ni1 <= q1( 34 downto 10 ) & b"00_0000_0000" - e1;
+				ni0 <= q0( FILT_WIDTH-1 downto 10 ) & b"00_0000_0000" - e0( FILT_WIDTH-1 downto 0 );
+				ni1 <= q1( FILT_WIDTH-1 downto 10 ) & b"00_0000_0000" - e1( FILT_WIDTH-1 downto 0 );
 				
 				-- bit width manipulation for full scale output
 				o_data0 <= CLIP( sll_q0 );
@@ -337,6 +337,9 @@ architecture rtl of lfsr_top is
 	signal gen_lfsr1	: signed( LFSR_WIDTH-1 downto 0 ) := ( others => '0' );
 	
 	signal feedback	: std_logic := '0';
+	
+	attribute register_balancing: string;
+	attribute register_balancing of lfsr: signal is "no";
 begin
 
 	lfsr0 <= gen_lfsr0;

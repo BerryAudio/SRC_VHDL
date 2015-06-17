@@ -10,7 +10,7 @@ package audio is
 	
 	constant CLOCK_COUNT				: integer := 512;
 	
-	-- currently valid are AD1955 and PCM1794
+	-- currently valid are AD_1955 and PCM1794
 	constant DAC_IF					: string := "PCM1794";
 	
 	--******************************************************************

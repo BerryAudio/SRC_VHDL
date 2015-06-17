@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity dac_top is
 	generic (
-		DAC_IF		: string := "AD1955"
+		DAC_IF		: string := "AD_1955"
 	);
 	port (
 		clk			: in  std_logic;
@@ -89,7 +89,7 @@ begin
 		end if;
 	end process buffer1_process;
 
-	GEN_AD1955 : if DAC_IF = "AD1955" generate
+	GEN_AD1955 : if DAC_IF = "AD_1955" generate
 	begin
 		CLOCK_START <= 8;
 	
