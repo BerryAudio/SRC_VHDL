@@ -29,24 +29,19 @@ architecture rtl of pll_top is
 	signal pll1_locked		: std_logic := '0';
 	signal pll1_clk_o_i2s	: std_logic := '0';
 	
-	signal buf_clk_lock		: std_logic := '0';
-	signal buf_clk_sel		: std_logic_vector( 1 downto 0 ) := ( others => '0' );
+	signal buf_clk_sel		: std_logic_vector( 2 downto 0 ) := ( others => '0' );
 	signal buf_clk_i2s_22	: std_logic := '0';
 	signal buf_clk_i2s_24	: std_logic := '0';
 	signal buf_clk_i2s		: std_logic := '0';
 begin
 	
-	clk_lock <= buf_clk_lock;
 	clk_i2s <= buf_clk_i2s;
-	
-	buf_clk_lock <= pll0_locked and pll1_locked;
+	clk_lock <= pll0_locked and pll1_locked;
 	
 	clk_sel_process : process( buf_clk_i2s )
 	begin
-		if buf_clk_lock = '0' then
-			buf_clk_sel <= ( others => clk_sel );
-		elsif rising_edge( buf_clk_i2s ) then
-			buf_clk_sel <= buf_clk_sel( 0 ) & clk_sel;
+		if rising_edge( buf_clk_i2s ) then
+			buf_clk_sel <= buf_clk_sel( 1 downto 0 ) & clk_sel;
 		end if;
 	end process clk_sel_process;
 	
@@ -79,7 +74,7 @@ begin
 			CLK_SEL_TYPE => "SYNC"
 		)
 		port map (
-			S	=> buf_clk_sel( 1 ),
+			S	=> buf_clk_sel( 2 ),
 			I0	=> buf_clk_i2s_22,
 			I1	=> buf_clk_i2s_24,
 			O	=> buf_clk_i2s
