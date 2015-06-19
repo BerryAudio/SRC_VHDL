@@ -324,7 +324,6 @@ end spdif_tx_top;
 
 architecture rtl of spdif_tx_top is
 	signal load			: std_logic := '0';
-	signal load_0		: std_logic := '0';
 	signal o_buf		: std_logic := '0';
 
 	signal buf_sample_0	: signed( 23 downto 0 ) := ( others => '0' );
@@ -334,13 +333,12 @@ architecture rtl of spdif_tx_top is
 
 	signal bit_en		: std_logic := '0';
 	signal bit_cnt		: unsigned( 2 downto 0 ) := ( others => '0' );
-	signal smp_cnt		: unsigned( 2 downto 0 ) := ( others => '0' );
+	signal smp_cnt		: unsigned( 1 downto 0 ) := ( others => '0' );
 	
 	signal frm_cnt		: unsigned( 14 downto 0 ) := ( others => '0' );
 	alias  frm_num		: unsigned(  7 downto 0 ) is frm_cnt( 14 downto 7 );
 	alias  frm_sub 	: std_logic is frm_cnt( 6 );
 	alias  frm_bit 	: unsigned(  5 downto 0 ) is frm_cnt(  5 downto 0 );
-	alias  frm_odd 	: std_logic is frm_cnt( 0 );
 	
 	signal preamble	: signed( 7 downto 0 ) := ( others => '0' );
 	constant PRE_B		: signed( 7 downto 0 ) := "00111001";
@@ -365,8 +363,6 @@ begin
 					PRE_W;
 	
 	load <= '1' when frm_bit = "000000" and bit_en = '1' else '0';
-	
-	buf_sample <= buf_sample_0 when frm_sub = '0' else buf_sample_1;
 	
 	--**************************************************************
 	--* output process
@@ -396,6 +392,7 @@ begin
 					buf_sample_1 <= i_sample_1;
 				end if;
 			end if;
+			
 		end if;
 	end process buffer_process;
 	
@@ -403,6 +400,12 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if load = '1' then
+				
+				buf_sample <= buf_sample_1;
+				if frm_sub = '1' then
+					buf_sample <=  buf_sample_0;
+				end if;
+				
 				shift_sample <= PARITY( buf_sample & "000" ) & "1010101" &
 						buf_sample( 23 ) & '1' & buf_sample( 22 ) & '1' & buf_sample( 21 ) & '1' & buf_sample( 20 ) & '1' & 
 						buf_sample( 19 ) & '1' & buf_sample( 18 ) & '1' & buf_sample( 17 ) & '1' & buf_sample( 16 ) & '1' & 

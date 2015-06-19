@@ -53,7 +53,7 @@ ARCHITECTURE behavior OF spdif_tx_tb IS
    signal o_spdif : std_logic;
 
    -- Clock period definitions
-   constant clk_period : time := 10 ns;
+   constant clk_period : time := 5.086 ns;
 	signal cnt : unsigned( 6 downto 0 ) := ( others => '0' );
  
 BEGIN
