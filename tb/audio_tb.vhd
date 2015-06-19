@@ -33,6 +33,7 @@ library std;
 use std.textio.all;
 
 library work;
+use work.audio.all;
 use work.utils.all;
 use work.sig_gen_pkg.all;
  
@@ -43,6 +44,8 @@ ARCHITECTURE behavior OF audio_tb IS
 	constant s_rate	: real := 44.1;
 	constant s_scale	: real range 0.5 to 1.0 :=  0.99;
 	signal ctrl_width : std_logic_vector( 1 downto 0 ) := "11"; -- 16 bits 
+	
+   signal clk_196 : std_logic := '0';
  
    --Inputs
    signal clk_24 : std_logic := '0';
@@ -86,6 +89,7 @@ ARCHITECTURE behavior OF audio_tb IS
 
    -- Clock period definitions
    constant clk_24_period : time := 40.69 ns;
+	constant clk_196_period : time := clk_24_period / 8;
 	
 	signal spi_en		: std_logic := '0';
 	signal spi_data	: std_logic_vector( 15 downto 0 ) := ( others => '0' );
@@ -93,6 +97,10 @@ ARCHITECTURE behavior OF audio_tb IS
 	signal dac_data0	: signed( 23 downto 0 ) := ( others => '0' );
 	signal dac_data1	: signed( 23 downto 0 ) := ( others => '0' );
 	signal dac_data_en: std_logic := '0';
+	
+   signal spdif_data0 : signed(23 downto 0) := (others => '0');
+   signal spdif_data1 : signed(23 downto 0) := (others => '0');
+   signal spdif_data_en : std_logic := '0';
 	
 	procedure spi_write( 
 		constant i_spi		: in  std_logic_vector( 15 downto 0 );
@@ -193,11 +201,27 @@ BEGIN
 			o_data1 		=> dac_data1,
 			o_data_en	=> dac_data_en
 		);
+	
+	-- spdif
+	rxer : spdif_rx_top
+		port map (
+			clk			=> clk_196,
+			sel			=> "00",
+		
+			i_data0		=> spdif_o,
+			i_data1		=> '0',
+			i_data2		=> '0',
+			i_data3		=> '0',
+			
+			o_data0		=> spdif_data0,
+			o_data1		=> spdif_data1,
+			o_data_en	=> spdif_data_en
+		) ;
 
-	capture_process : process( dsp0_i2s_bclk )
-		file		outfile0	: text is out "test/master_test_0.txt";
+	dac_capture_process : process( dsp0_i2s_bclk )
+		file		outfile0	: text is out "test/dac_channel_0.txt";
 		variable outline0	: line;
-		file		outfile1	: text is out "test/master_test_1.txt";
+		file		outfile1	: text is out "test/dac_channel_1.txt";
 		variable outline1	: line;
 	begin
 		if rising_edge( dsp0_i2s_bclk ) then
@@ -210,6 +234,22 @@ BEGIN
 		end if;
 	end process;
 
+	spdif_capture_process : process( clk_196 )
+		file		outfile0	: text is out "test/spdif_channel_0.txt";
+		variable outline0	: line;
+		file		outfile1	: text is out "test/spdif_channel_1.txt";
+		variable outline1	: line;
+	begin
+		if rising_edge( clk_196 ) then
+			if spdif_data_en = '1' then
+				write( outline0, to_integer( spdif_data0 ) );
+				writeline( outfile0, outline0 );
+				write( outline1, to_integer( spdif_data1 ) );
+				writeline( outfile1, outline1 );
+			end if;
+		end if;
+	end process;
+
    -- Clock process definitions
    clk_24_process :process
    begin
@@ -217,6 +257,14 @@ BEGIN
 		wait for clk_24_period/2;
 		clk_24 <= '1';
 		wait for clk_24_period/2;
+   end process;
+   
+	clk_196_process :process
+   begin
+		clk_196 <= '0';
+		wait for clk_196_period/2;
+		clk_196 <= '1';
+		wait for clk_196_period/2;
    end process;
  
 

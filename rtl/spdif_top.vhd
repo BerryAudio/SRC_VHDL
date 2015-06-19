@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity spdif_top is
+entity spdif_rx_top is
 	port (
 		clk			: in  std_logic;
 		sel			: in  std_logic_vector( 1 downto 0 );
@@ -14,13 +14,11 @@ entity spdif_top is
 		
 		o_data0		: out signed( 23 downto 0 ) := ( others => '0' );
 		o_data1		: out signed( 23 downto 0 ) := ( others => '0' );
-		o_data_en	: out std_logic := '0';
-		
-		spdif_o		: out std_logic := '0'
+		o_data_en	: out std_logic := '0'
 	);
-end spdif_top;
+end spdif_rx_top;
 
-architecture rtl of spdif_top is
+architecture rtl of spdif_rx_top is
 	component spdif_rx is
 		port (
 			clk			: in  std_logic;
@@ -58,10 +56,10 @@ begin
 			buf_data3 <= buf_data3( 0 ) & i_data3;
 			
 			case sel is
-				when "11"	=> buf_data <= buf_data3( 1 ); spdif_o <= i_data3;
-				when "10"	=> buf_data <= buf_data2( 1 ); spdif_o <= i_data2;
-				when "01"	=> buf_data <= buf_data1( 1 ); spdif_o <= i_data1;
-				when others	=> buf_data <= buf_data0( 1 ); spdif_o <= i_data0;
+				when "11"	=> buf_data <= buf_data3( 1 );
+				when "10"	=> buf_data <= buf_data2( 1 );
+				when "01"	=> buf_data <= buf_data1( 1 );
+				when others	=> buf_data <= buf_data0( 1 );
 			end case;
 		end if;
 	end process buf_process;
@@ -263,6 +261,8 @@ begin
 		if rising_edge( clk ) then
 			x_match <= '0';
 			y_match <= '0';
+			
+			
 				
 			if pre = X or pre = not( X ) or pre = Z or pre = not( Z ) then
 				x_match <= '1';
@@ -305,3 +305,148 @@ begin
 	
 end rtl;
 
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity spdif_tx_top is
+	port ( 
+		clk			: in  std_logic;
+		rst			: in  std_logic;
+		
+		i_sample_0	: in  signed( 23 downto 0 );
+		i_sample_1	: in  signed( 23 downto 0 );
+		i_sample_en	: in  std_logic;
+		
+		o_spdif		: out std_logic := '0'
+	);
+end spdif_tx_top;
+
+architecture rtl of spdif_tx_top is
+	signal load			: std_logic := '0';
+	signal load_0		: std_logic := '0';
+	signal o_buf		: std_logic := '0';
+
+	signal buf_sample_0	: signed( 23 downto 0 ) := ( others => '0' );
+	signal buf_sample_1	: signed( 23 downto 0 ) := ( others => '0' );
+	signal buf_sample		: signed( 23 downto 0 ) := ( others => '0' );
+	signal shift_sample	: signed( 63 downto 0 ) := ( others => '0' );
+
+	signal bit_en		: std_logic := '0';
+	signal bit_cnt		: unsigned( 2 downto 0 ) := ( others => '0' );
+	signal smp_cnt		: unsigned( 2 downto 0 ) := ( others => '0' );
+	
+	signal frm_cnt		: unsigned( 14 downto 0 ) := ( others => '0' );
+	alias  frm_num		: unsigned(  7 downto 0 ) is frm_cnt( 14 downto 7 );
+	alias  frm_sub 	: std_logic is frm_cnt( 6 );
+	alias  frm_bit 	: unsigned(  5 downto 0 ) is frm_cnt(  5 downto 0 );
+	alias  frm_odd 	: std_logic is frm_cnt( 0 );
+	
+	signal preamble	: signed( 7 downto 0 ) := ( others => '0' );
+	constant PRE_B		: signed( 7 downto 0 ) := "00111001";
+	constant PRE_M		: signed( 7 downto 0 ) := "11001001";
+	constant PRE_W		: signed( 7 downto 0 ) := "01101001";
+	
+	function PARITY( i : signed ) return std_logic is
+		variable parity_bit : std_logic;
+	begin
+		parity_bit := '0';
+		for j in i'range loop
+			parity_bit := parity_bit xor i( j );
+		end loop;
+		return parity_bit;
+	end function PARITY;
+begin
+	
+	o_spdif <= o_buf;
+	
+	preamble <= PRE_B when frm_cnt =  0  else
+					PRE_M when frm_sub = '0' else
+					PRE_W;
+	
+	load <= '1' when frm_bit = "000000" and bit_en = '1' else '0';
+	
+	buf_sample <= buf_sample_0 when frm_sub = '0' else buf_sample_1;
+	
+	--**************************************************************
+	--* output process
+	--**************************************************************
+	output_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if bit_en = '1' then
+				o_buf <= o_buf xor shift_sample( 0 ) xor '0';
+			end if;
+		end if;
+	end process output_process;
+	
+	--**************************************************************
+	--* input buffer process
+	--**************************************************************
+	buffer_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if rst = '1' then
+				buf_sample_0 <= ( others => '0' );
+				buf_sample_1 <= ( others => '0' );
+			elsif i_sample_en = '1' then
+				smp_cnt <= smp_cnt + 1;
+				if smp_cnt = 0 then
+					buf_sample_0 <= i_sample_0;
+					buf_sample_1 <= i_sample_1;
+				end if;
+			end if;
+		end if;
+	end process buffer_process;
+	
+	sample_shift_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if load = '1' then
+				shift_sample <= PARITY( buf_sample & "000" ) & "1010101" &
+						buf_sample( 23 ) & '1' & buf_sample( 22 ) & '1' & buf_sample( 21 ) & '1' & buf_sample( 20 ) & '1' & 
+						buf_sample( 19 ) & '1' & buf_sample( 18 ) & '1' & buf_sample( 17 ) & '1' & buf_sample( 16 ) & '1' & 
+						buf_sample( 15 ) & '1' & buf_sample( 14 ) & '1' & buf_sample( 13 ) & '1' & buf_sample( 12 ) & '1' & 
+						buf_sample( 11 ) & '1' & buf_sample( 10 ) & '1' & buf_sample(  9 ) & '1' & buf_sample(  8 ) & '1' & 
+						buf_sample(  7 ) & '1' & buf_sample(  6 ) & '1' & buf_sample(  5 ) & '1' & buf_sample(  4 ) & '1' & 
+						buf_sample(  3 ) & '1' & buf_sample(  2 ) & '1' & buf_sample(  1 ) & '1' & buf_sample(  0 ) & '1' & 
+						preamble;
+			elsif bit_en = '1' then
+				shift_sample <= '0' & shift_sample( 63 downto 1 );
+			end if;
+		end if;
+	end process sample_shift_process;
+	
+	--**************************************************************
+	--* Frame Counter
+	--*	- counts bit_ens
+	--**************************************************************
+	frm_cnt_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if bit_en = '1' then
+				frm_cnt <= frm_cnt + 1;
+				if frm_num = x"C0" & "1111111" then
+					frm_cnt <= ( others => '0' );
+				end if;
+			end if;
+		end if;
+	end process frm_cnt_process;
+	
+	--**************************************************************
+	--* Bit Enable
+	--*	- strobe on a bit clock edge
+	--*	- this handles preamble and data
+	--**************************************************************
+	bit_en_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			bit_cnt <= bit_cnt + 1;
+			bit_en <= '0';
+			if bit_cnt = 0 then 
+				bit_en <= '1';
+			end if;
+		end if;
+	end process bit_en_process;
+	
+end rtl;

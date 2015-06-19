@@ -84,7 +84,7 @@ package audio is
 		);
 	end component pll_top;
 	
-	component spdif_top is
+	component spdif_rx_top is
 		port (
 			clk			: in  std_logic;
 			sel			: in  std_logic_vector( 1 downto 0 );
@@ -96,11 +96,22 @@ package audio is
 			
 			o_data0		: out signed( 23 downto 0 );
 			o_data1		: out signed( 23 downto 0 );
-			o_data_en	: out std_logic;
-		
-			spdif_o		: out std_logic
+			o_data_en	: out std_logic
 		);
-	end component spdif_top;
+	end component spdif_rx_top;
+	
+	component spdif_tx_top is
+		port ( 
+			clk			: in  std_logic;
+			rst			: in  std_logic;
+			
+			i_sample_0	: in  signed( 23 downto 0 );
+			i_sample_1	: in  signed( 23 downto 0 );
+			i_sample_en	: in  std_logic;
+			
+			o_spdif		: out std_logic
+		);
+	end component spdif_tx_top;
 	
 	component spi_top is
 		port (
@@ -116,26 +127,44 @@ package audio is
 	
 	component src_top is
 		generic (
-			CLOCK_COUNT				: integer := CLOCK_COUNT
+			CLOCK_COUNT		: integer := CLOCK_COUNT
 		);
 		port (
-			clk						: in  std_logic;
-			rst						: in  std_logic;
+			clk				: in  std_logic;
+			rst				: in  std_logic;
 			
-			ctrl_width				: in  std_logic_vector( 1 downto 0 );
-			ctrl_locked				: out std_logic;
-			ctrl_ratio				: out unsigned( 23 downto 0 );
+			ctrl_width		: in  std_logic_vector( 1 downto 0 );
+			ctrl_locked		: out std_logic;
+			ctrl_ratio		: out unsigned( 23 downto 0 );
 			
-			i_sample_en_i			: in  std_logic;
-			i_sample_en_o			: in  std_logic;
-			i_data0					: in  signed( 23 downto 0 );
-			i_data1					: in  signed( 23 downto 0 );
+			i_sample_en_i	: in  std_logic;
+			i_sample_en_o	: in  std_logic;
+			i_data0			: in  signed( 23 downto 0 );
+			i_data1			: in  signed( 23 downto 0 );
 			
-			o_data_en				: out std_logic := '0';
-			o_data0					: out signed( 23 downto 0 );
-			o_data1					: out signed( 23 downto 0 )
+			o_data_en		: out std_logic := '0';
+			o_data0			: out signed( 23 downto 0 );
+			o_data1			: out signed( 23 downto 0 )
 		);
 	end component src_top;
+	
+	component serialise_top is
+		port (
+			clk				: in  std_logic;
+			
+			i_sample_0		: in  signed( 23 downto 0 );
+			i_sample_1		: in  signed( 23 downto 0 );
+			i_sample_en		: in  std_logic;
+			
+			o_sample_0_0	: out signed( 23 downto 0 );
+			o_sample_0_1	: out signed( 23 downto 0 );
+			o_sample_0_en	: out std_logic;
+			
+			o_sample_1_0	: out signed( 23 downto 0 );
+			o_sample_1_1	: out signed( 23 downto 0 );
+			o_sample_1_en	: out std_logic
+		);
+	end component serialise_top;
 	
 end audio;
 
