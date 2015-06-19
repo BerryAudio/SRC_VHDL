@@ -364,6 +364,8 @@ begin
 	
 	load <= '1' when frm_bit = "000000" and bit_en = '1' else '0';
 	
+	buf_sample <= buf_sample_0 when frm_sub = '0' else buf_sample_1;
+	
 	--**************************************************************
 	--* output process
 	--**************************************************************
@@ -392,7 +394,6 @@ begin
 					buf_sample_1 <= i_sample_1;
 				end if;
 			end if;
-			
 		end if;
 	end process buffer_process;
 	
@@ -400,12 +401,6 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if load = '1' then
-				
-				buf_sample <= buf_sample_1;
-				if frm_sub = '1' then
-					buf_sample <=  buf_sample_0;
-				end if;
-				
 				shift_sample <= PARITY( buf_sample & "000" ) & "1010101" &
 						buf_sample( 23 ) & '1' & buf_sample( 22 ) & '1' & buf_sample( 21 ) & '1' & buf_sample( 20 ) & '1' & 
 						buf_sample( 19 ) & '1' & buf_sample( 18 ) & '1' & buf_sample( 17 ) & '1' & buf_sample( 16 ) & '1' & 
