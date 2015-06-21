@@ -96,8 +96,8 @@ entity audio_top is
 end audio_top;
 
 architecture rtl of audio_top is
-	signal spi_register	: std_logic_vector( 15 downto 0 ) := ( others => '0' );
-	signal spi_reg_buf	: std_logic_vector(  9 downto 0 ) := ( others => '0' );
+	signal spi_register	: std_logic_vector( 9 downto 0 ) := ( others => '0' );
+	signal spi_reg_buf	: std_logic_vector( 9 downto 0 ) := ( others => '0' );
 	signal spi_change		: std_logic := '0';
 
 	alias spi_reg_bits	: std_logic_vector( 1 downto 0 ) is spi_register( 9 downto 8 );
@@ -113,33 +113,18 @@ architecture rtl of audio_top is
 	signal rst				: std_logic := '0';
 	signal rst_buf			: std_logic_vector( 1 downto 0 ) := "00";
 	signal clk				: std_logic := '0';
+	signal clk_out			: std_logic := '0';
 	signal clk_i2s			: std_logic := '0';
 	
-	signal i2s_input0		: signed( 23 downto 0 ) := ( others => '0' );
-	signal i2s_input1		: signed( 23 downto 0 ) := ( others => '0' );
-	signal i2s_input_en	: std_logic := '0';
-	
-	signal spdif_input0	: signed( 23 downto 0 ) := ( others => '0' );
-	signal spdif_input1	: signed( 23 downto 0 ) := ( others => '0' );
-	signal spdif_input_en: std_logic := '0';
-	
-	signal mux_input0		: signed( 23 downto 0 ) := ( others => '0' );
-	signal mux_input1		: signed( 23 downto 0 ) := ( others => '0' );
-	signal mux_input_en	: std_logic := '0';
+	signal i_output0	: signed( 23 downto 0 ) := ( others => '0' );
+	signal i_output1	: signed( 23 downto 0 ) := ( others => '0' );
+	signal i_output_en	: std_logic := '0';
 	
 	signal src_lock		: std_logic := '0';
 	signal src_data0		: signed( 23 downto 0 ) := ( others => '0' );
 	signal src_data1		: signed( 23 downto 0 ) := ( others => '0' );
 	signal src_data_en	: std_logic := '0';
 	signal o_sample_en	: std_logic := '0';
-	
-	signal dac_data0		: signed( 23 downto 0 ) := ( others => '0' );
-	signal dac_data1		: signed( 23 downto 0 ) := ( others => '0' );
-	signal dac_data_en	: std_logic := '0';
-	
-	signal spdif_data0	: signed( 23 downto 0 ) := ( others => '0' );
-	signal spdif_data1	: signed( 23 downto 0 ) := ( others => '0' );
-	signal spdif_data_en	: std_logic := '0';
 	
 	signal dsp_i2s_sclk	: std_logic := '0';
 	signal dsp_i2s_lrck	: std_logic := '0';
@@ -169,10 +154,10 @@ begin
 	spi_change_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			spi_reg_buf <= spi_register( spi_reg_buf'range );
+			spi_reg_buf <= spi_register;
 			if spi_change <= '1' then
 				spi_change <= '0';
-			elsif spi_reg_buf /= spi_register( spi_reg_buf'range ) then
+			elsif spi_reg_buf /= spi_register then
 				spi_change <= '1';
 			end if;
 		end if;
@@ -191,6 +176,7 @@ begin
 			clk_lock		=> pll_lock,
 			
 			clk_src		=> clk,
+			clk_out		=> clk_out,
 			clk_i2s		=> clk_i2s
 		);
 	
@@ -228,53 +214,28 @@ begin
 	-- ** AUDIO INPUTS
 	-- *******************************************************************
 	
-	INST_I2S : i2s_top
+	INST_INPUTS : inputs_top
 		port map (
 			clk			=> clk,
+			clk_i2s		=> clk_i2s,
+			rst			=> rst,
 			
-			i2s_clk		=> clk_i2s,
+			mux_sel		=> spi_reg_input,
+			
+			i2s_rate		=> spi_reg_rate,
 			i2s_data		=> i2s_data,
 			i2s_bclk		=> i2s_bclk,
 			i2s_lrck		=> i2s_lrck,
-			i2s_rate		=> spi_reg_rate,
 			
-			o_data0		=> i2s_input0,
-			o_data1		=> i2s_input1,
-			o_data_en	=> i2s_input_en
-		);
-	
-	INST_SPDIF_RX : spdif_rx_top
-		port map (
-			clk			=> clk,
-			sel			=> spi_reg_spdif,
-		
-			i_data0		=> spdif_chan0,
-			i_data1		=> spdif_chan1,
-			i_data2		=> spdif_chan2,
-			i_data3		=> spdif_chan3,
+			spdif_sel	=> spi_reg_spdif,
+			spdif_chan0	=> spdif_chan0,
+			spdif_chan1	=> spdif_chan1,
+			spdif_chan2	=> spdif_chan2,
+			spdif_chan3	=> spdif_chan3,
 			
-			o_data0		=> spdif_input0,
-			o_data1		=> spdif_input1,
-			o_data_en	=> spdif_input_en
-		);
-	
-	INST_MUX : mux_top
-		port map (
-			clk			=> clk,
-			rst			=> rst,
-			sel			=> spi_reg_input,
-			
-			i_data0_0	=> spdif_input0,
-			i_data0_1	=> spdif_input1,
-			i_data0_en	=> spdif_input_en,
-			
-			i_data1_0	=> i2s_input0,
-			i_data1_1	=> i2s_input1,
-			i_data1_en	=> i2s_input_en,
-			
-			o_data0		=> mux_input0,
-			o_data1		=> mux_input1,
-			o_data_en	=> mux_input_en
+			o_data0		=> i_output0,
+			o_data1		=> i_output1,
+			o_data_en	=> i_output_en
 		);
 		
 	-- *******************************************************************
@@ -293,34 +254,14 @@ begin
 			ctrl_locked		=> src_lock,
 			ctrl_ratio		=> open,
 			
-			i_sample_en_i	=> mux_input_en,
+			i_sample_en_i	=> i_output_en,
 			i_sample_en_o	=> o_sample_en,
-			i_data0			=> mux_input0,
-			i_data1			=> mux_input1,
+			i_data0			=> i_output0,
+			i_data1			=> i_output1,
 			
 			o_data0			=> src_data0,
 			o_data1			=> src_data1,
 			o_data_en		=> src_data_en
-		);
-	
-	-- *******************************************************************
-	-- ** Bus Serialiser
-	-- *******************************************************************
-	INST_SERIAL : serialise_top
-		port map (
-			clk				=> clk,
-			
-			i_sample_0		=> src_data0,
-			i_sample_1		=> src_data1,
-			i_sample_en		=> src_data_en,
-			
-			o_sample_0_0	=> dac_data0,
-			o_sample_0_1	=> dac_data1,
-			o_sample_0_en	=> dac_data_en,
-			
-			o_sample_1_0	=> spdif_data0,
-			o_sample_1_1	=> spdif_data1,
-			o_sample_1_en	=> spdif_data_en
 		);
 	
 	-- *******************************************************************
@@ -337,33 +278,25 @@ begin
 	dsp1_i2s_data0	<= dsp_i2s_data0;
 	dsp1_i2s_data1	<= dsp_i2s_data1;
 	
-	INST_DAC : dac_top
+	INST_OUTPUTS : outputs_top
 		generic map (
 			DAC_IF		=> DAC_IF
 		)
 		port map (
-			clk			=> clk,
+			clk_src		=> clk,
+			clk_out		=> clk_out,
 			rst			=> dac_rst,
 			
-			i_data0		=> dac_data0,
-			i_data1		=> dac_data1,
-			i_data_en	=> dac_data_en,
+			i_data0		=> src_data0,
+			i_data1		=> src_data1,
+			i_data_en	=> src_data_en,
 			
 			o_sample_en	=> o_sample_en,
-			o_lrck		=> dsp_i2s_lrck,
-			o_bclk		=> dsp_i2s_bclk,
-			o_data0		=> dsp_i2s_data0,
-			o_data1		=> dsp_i2s_data1
-		);
-	
-	INST_SPDIF_TX : spdif_tx_top
-		port map ( 
-			clk			=> clk,
-			rst			=> dac_rst,
 			
-			i_sample_0	=> spdif_data0,
-			i_sample_1	=> spdif_data1,
-			i_sample_en	=> spdif_data_en,
+			o_i2s_lrck	=> dsp_i2s_lrck,
+			o_i2s_bclk	=> dsp_i2s_bclk,
+			o_i2s_data0	=> dsp_i2s_data0,
+			o_i2s_data1	=> dsp_i2s_data1,
 			
 			o_spdif		=> spdif_o
 		);

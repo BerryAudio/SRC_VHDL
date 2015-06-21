@@ -262,8 +262,6 @@ begin
 			x_match <= '0';
 			y_match <= '0';
 			
-			
-				
 			if pre = X or pre = not( X ) or pre = Z or pre = not( Z ) then
 				x_match <= '1';
 			end if;
@@ -313,10 +311,11 @@ entity spdif_tx_top is
 	port ( 
 		clk			: in  std_logic;
 		rst			: in  std_logic;
+		clk_cnt		: unsigned( 1 downto 0 );
 		
-		i_sample_0	: in  signed( 23 downto 0 );
-		i_sample_1	: in  signed( 23 downto 0 );
-		i_sample_en	: in  std_logic;
+		i_data0	: in  signed( 23 downto 0 );
+		i_data1	: in  signed( 23 downto 0 );
+		i_data_en	: in  std_logic;
 		
 		o_spdif		: out std_logic := '0'
 	);
@@ -332,7 +331,6 @@ architecture rtl of spdif_tx_top is
 	signal shift_sample	: signed( 63 downto 0 ) := ( others => '0' );
 
 	signal bit_en		: std_logic := '0';
-	signal bit_cnt		: unsigned( 2 downto 0 ) := ( others => '0' );
 	signal smp_cnt		: unsigned( 1 downto 0 ) := ( others => '0' );
 	
 	signal frm_cnt		: unsigned( 14 downto 0 ) := ( others => '0' );
@@ -387,11 +385,11 @@ begin
 			if rst = '1' then
 				buf_sample_0 <= ( others => '0' );
 				buf_sample_1 <= ( others => '0' );
-			elsif i_sample_en = '1' then
+			elsif i_data_en = '1' then
 				smp_cnt <= smp_cnt + 1;
 				if smp_cnt = 0 then
-					buf_sample_0 <= i_sample_0;
-					buf_sample_1 <= i_sample_1;
+					buf_sample_0 <= i_data0;
+					buf_sample_1 <= i_data1;
 				end if;
 			end if;
 		end if;
@@ -439,9 +437,8 @@ begin
 	bit_en_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			bit_cnt <= bit_cnt + 1;
 			bit_en <= '0';
-			if bit_cnt = 0 then 
+			if clk_cnt = 0 then 
 				bit_en <= '1';
 			end if;
 		end if;

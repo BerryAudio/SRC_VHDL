@@ -10,7 +10,7 @@ entity spi_top is
 		spi_cs_n		: in  std_logic;
 		spi_mosi		: in  std_logic;
 		
-		o_data		: out std_logic_vector( 15 downto 0 ) := ( others => '0' )
+		o_data		: out std_logic_vector( 9 downto 0 ) := ( others => '0' )
 	);
 end spi_top;
 
@@ -96,7 +96,7 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if data_en = '1' then
-				o_data <= data;
+				o_data <= data( o_data'range );
 			end if;
 		end if;
 	end process data_process;

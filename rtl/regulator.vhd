@@ -404,17 +404,15 @@ end reg_average;
 architecture rtl of reg_average is
 	signal ptr_reset	: std_logic_vector( 1 downto 0 ) := ( others => '0' );
 	
-	type SR_TYPE is array( 2**REG_AVE_WIDTH - 1 downto 0 ) of unsigned( 24 downto 0 );
+	type SR_TYPE is array( 2**REG_AVE_WIDTH - 1 downto 0 ) of unsigned( 23 downto 0 );
 	signal sr				: SR_TYPE := ( others => ( others => '0' ) );
 	
-	signal sr_in			: unsigned( 24 downto 0 ) := ( others => '0' );
-	alias  sr_in_en		: std_logic is sr_in( 24 );
-	alias  sr_in_ratio	: unsigned( 23 downto 0 ) is sr_in( 23 downto 0 );
-	
-	alias  preload_out	: std_logic is sr( 2**REG_AVE_WIDTH - 1 )( 24 );
-	alias  ratio_del		: unsigned( 23 downto 0 ) is sr( 2**REG_AVE_WIDTH - 1 )( 23 downto 0 );
+	signal sr_in			: unsigned( 23 downto 0 ) := ( others => '0' );
+	alias  sr_out			: unsigned( 23 downto 0 ) is sr( 2**REG_AVE_WIDTH - 1 );
 	
 	signal preload			: std_logic := '0';
+	signal preload_out	: std_logic := '0';
+	signal preload_cnt	: unsigned( REG_AVE_WIDTH - 1 downto 0 ) := ( others => '0' );
 	
 	signal buf_ratio		: unsigned( 23 downto 0 ) := ( others => '0' );
 	signal buf_ratio_en	: std_logic := '0';
@@ -423,14 +421,14 @@ architecture rtl of reg_average is
 begin
 
 	ave_out <= moving_sum( 23 + REG_AVE_WIDTH downto REG_AVE_WIDTH );
+	sr_in <= buf_ratio;
 	
-	sr_in_en <= preload;
-	sr_in_ratio <= buf_ratio;
+	preload_out <= '1' when preload_cnt = 2**REG_AVE_WIDTH - 1 else '0';
 
 	ptr_reset_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			ptr_reset <= ptr_reset( 0 ) & ptr_rst;
+			ptr_reset <= ptr_reset( 0 ) & ( ptr_rst and ratio_en );
 		end if;
 	end process ptr_reset_process;
 	
@@ -439,8 +437,12 @@ begin
 		if rising_edge( clk ) then
 			if ptr_reset( 1 ) = '1' then
 				preload <= '1';
-			elsif ( rst or preload_out ) = '1' then
+			elsif preload_out = '1' then
 				preload <= '0';
+			end if;
+			
+			if preload = '1' then
+				preload_cnt <= preload_cnt + 1;
 			end if;
 		end if;
 	end process prelaod_process;
@@ -460,7 +462,7 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if buf_ratio_en = '1' then
-				moving_sum <= moving_sum + buf_ratio - ratio_del;
+				moving_sum <= moving_sum + buf_ratio - sr_out;
 			elsif preload = '1' then
 				moving_sum( 23 + REG_AVE_WIDTH downto REG_AVE_WIDTH ) <= buf_ratio;
 				moving_sum( REG_AVE_WIDTH-1 downto 0 ) <= ( others => '0' );

@@ -6,8 +6,9 @@ TIMESPEC TS_clk_24 = PERIOD "clk_24" 40.6901 ns HIGH 50 %;
 NET "clk_24" LOC = P84; NET "clk_24" IOSTANDARD = LVCMOS33;
 # only allowed on P: 14-17, 21-23, 84-85, 87-88, 92-95
 
-TIMESPEC TS_CLK_2I2S_0 = FROM "INST_PLL_pll0_clk_o_src" TO "INST_PLL_pll0_clk_o_i2s" TIG;
-TIMESPEC TS_CLK_2I2S_1 = FROM "INST_PLL_pll0_clk_o_src" TO "INST_PLL_pll1_clk_o_i2s" TIG;
+TIMESPEC TS_CLK_0 = FROM "INST_PLL_pll0_clk_o_src" TO "INST_PLL_pll0_clk_o_i2s" TIG;
+TIMESPEC TS_CLK_1 = FROM "INST_PLL_pll0_clk_o_src" TO "INST_PLL_pll1_clk_o_i2s" TIG;
+TIMESPEC TS_CLK_2 = FROM "INST_PLL_pll0_clk_o_src" TO "INST_PLL_pll0_clk_o_out" TIG;
 
 NET "ctrl_rdy"			LOC = P65	| IOSTANDARD = LVCMOS33 | SLEW = SLOW | DRIVE = 2;
 NET "ctrl_lock"		LOC = P66	| IOSTANDARD = LVCMOS33 | SLEW = SLOW | DRIVE = 2;

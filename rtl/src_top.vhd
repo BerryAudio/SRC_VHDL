@@ -214,6 +214,9 @@ begin
 	end process state_hb_process;
 
 	INST_REGULATOR : regulator_top
+		generic map (
+			CLOCK_COUNT		=> CLOCK_COUNT
+		)
 		port map (
 			clk				=> clk,
 			rst				=> reg_rst,

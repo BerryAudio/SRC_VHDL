@@ -11,6 +11,7 @@ entity pll_top is
 		clk_lock		: out std_logic := '0';
 		
 		clk_src		: out std_logic := '0';
+		clk_out		: out std_logic := '0';
 		clk_i2s		: out std_logic := '0'
 	);
 end pll_top;
@@ -23,6 +24,7 @@ architecture rtl of pll_top is
 	signal pll0_clk_fb		: std_logic := '0';
 	signal pll0_locked		: std_logic := '0';
 	signal pll0_clk_o_src	: std_logic := '0';
+	signal pll0_clk_o_out	: std_logic := '0';
 	signal pll0_clk_o_i2s	: std_logic := '0';
 	
 	signal pll1_clk_fb		: std_logic := '0';
@@ -57,6 +59,12 @@ begin
 			O	=> clk_src
 		);
 	
+	INST_BUFG_PLL0_OUT : BUFG
+		port map (
+			I	=> pll0_clk_o_out,
+			O	=> clk_out
+		);
+	
 	INST_BUFG_PLL0_I2S : BUFG
 		port map (
 			I	=> pll0_clk_o_i2s,
@@ -83,12 +91,13 @@ begin
 	INST_PLL0 : PLL_BASE
 		generic map (
 			BANDWIDTH				 => "OPTIMIZED",
-			CLKFBOUT_MULT			 => 40,
+			CLKFBOUT_MULT			 => 24,
 			CLKFBOUT_PHASE			 => 0.0,
 			CLKIN_PERIOD			 => PLL_PERIOD,
 			
-			CLKOUT0_DIVIDE			 => 5,
-			CLKOUT1_DIVIDE			 => 40,
+			CLKOUT0_DIVIDE			 => 4,
+			CLKOUT1_DIVIDE			 => 6,
+			CLKOUT2_DIVIDE			 => 24,
 			
 			CLK_FEEDBACK			 => "CLKFBOUT",
 			COMPENSATION			 => "SYSTEM_SYNCHRONOUS",
@@ -99,8 +108,8 @@ begin
 		port map (
 			CLKFBOUT => pll0_clk_fb,
 			CLKOUT0	=> pll0_clk_o_src,
-			CLKOUT1	=> pll0_clk_o_i2s,
-			CLKOUT2	=> open,
+			CLKOUT1	=> pll0_clk_o_out,
+			CLKOUT2	=> pll0_clk_o_i2s,
 			CLKOUT3	=> open,
 			CLKOUT4	=> open,
 			CLKOUT5	=> open,
