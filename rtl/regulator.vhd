@@ -32,7 +32,7 @@ entity regulator_top is
 		
 		div_en			: out std_logic := '0';
 		div_divisor		: out unsigned( 26 downto 0 ) := ( others => '0' );
-		div_dividend	: out unsigned( 26 downto 0 ) := to_unsigned( CLOCK_COUNT * 4, 27 )
+		div_dividend	: out unsigned( 26 downto 0 ) := to_unsigned( CLOCK_COUNT * 16, 27 )
 		
 	);
 end regulator_top;
@@ -182,9 +182,9 @@ entity reg_ratio is
 end reg_ratio;
 
 architecture rtl of reg_ratio is
-	constant FIFO_SET_PT		: integer := 16;
-	constant THRESHOLD_LOCK	: integer := 32;
-	constant THRESHOLD_VARI	: integer := 96;
+	constant FIFO_SET_PT		: integer :=  16;
+	constant THRESHOLD_LOCK	: integer :=  32;
+	constant THRESHOLD_VARI	: integer := 128;
 	
 	signal ratio_buf		: unsigned( 23 downto 0 ) := ( others => '0' );
 	signal err_term		: unsigned( 10 downto 0 ) := ( others => '0' );
@@ -327,7 +327,7 @@ begin
 		constant LOCK_SLEW		: integer range 0 to 15 := 1;
 		constant LOCK_DEADZONE	: integer range 0 to  4 := 2;
 		
-		signal err_slew	: unsigned( 3 downto 0 ) := ( others => '0' );
+		signal err_slew	: unsigned(  3 downto 0 ) := ( others => '0' );
 		signal err_buf		: unsigned( 10 downto 0 ) := ( others => '0' );
 		alias  err_en		: std_logic is ratio_en_buf( 4 );
 	begin
@@ -404,15 +404,12 @@ end reg_average;
 architecture rtl of reg_average is
 	signal ptr_reset	: std_logic_vector( 1 downto 0 ) := ( others => '0' );
 	
-	type SR_TYPE is array( 2**REG_AVE_WIDTH - 1 downto 0 ) of unsigned( 23 downto 0 );
+	type SR_TYPE is array( 2**REG_AVE_WIDTH - 1 downto 0 ) of unsigned( 24 downto 0 );
 	signal sr				: SR_TYPE := ( others => ( others => '0' ) );
-	
-	signal sr_in			: unsigned( 23 downto 0 ) := ( others => '0' );
-	alias  sr_out			: unsigned( 23 downto 0 ) is sr( 2**REG_AVE_WIDTH - 1 );
+	alias  sr_out			: unsigned( 23 downto 0 ) is sr( 2**REG_AVE_WIDTH - 1 )( 23 downto 0 );
 	
 	signal preload			: std_logic := '0';
-	signal preload_out	: std_logic := '0';
-	signal preload_cnt	: unsigned( REG_AVE_WIDTH - 1 downto 0 ) := ( others => '0' );
+	alias  preload_out	: std_logic is sr( 2**REG_AVE_WIDTH - 1 )( 24 );
 	
 	signal buf_ratio		: unsigned( 23 downto 0 ) := ( others => '0' );
 	signal buf_ratio_en	: std_logic := '0';
@@ -421,9 +418,6 @@ architecture rtl of reg_average is
 begin
 
 	ave_out <= moving_sum( 23 + REG_AVE_WIDTH downto REG_AVE_WIDTH );
-	sr_in <= buf_ratio;
-	
-	preload_out <= '1' when preload_cnt = 2**REG_AVE_WIDTH - 1 else '0';
 
 	ptr_reset_process : process( clk )
 	begin
@@ -435,14 +429,12 @@ begin
 	prelaod_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			if ptr_reset( 1 ) = '1' then
-				preload <= '1';
-			elsif preload_out = '1' then
+			if preload_out = '1' then
 				preload <= '0';
-			end if;
+				
+			elsif ptr_reset( 1 ) = '1' then
+				preload <= '1';
 			
-			if preload = '1' then
-				preload_cnt <= preload_cnt + 1;
 			end if;
 		end if;
 	end process prelaod_process;
@@ -474,7 +466,7 @@ begin
 	begin
 		if rising_edge( clk ) then
 			if ( preload or buf_ratio_en ) = '1' then
-				sr <= sr( 2**REG_AVE_WIDTH - 2 downto 0 ) & sr_in;
+				sr <= sr( 2**REG_AVE_WIDTH - 2 downto 0 ) & ( preload & buf_ratio );
 			end if;
 		end if;
 	end process sr_process;
@@ -507,7 +499,7 @@ end reg_count;
 architecture rtl of reg_count is
 	signal clock_count	: unsigned( 19 downto 0 ) := ( 0 => '1', others => '0' );
 	signal frame_buf		: unsigned( 19 downto 0 ) := ( others => '0' );
-	signal frame_count	: unsigned(  1 downto 0 ) := ( others => '0' );
+	signal frame_count	: unsigned(  3 downto 0 ) := ( others => '0' );
 	signal frame_en		: std_logic := '0';
 	signal state			: std_logic := '0';
 begin
@@ -518,20 +510,21 @@ begin
 	count_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			
 			if i_reg_ack = '1' then
 				frame_en  <= '0';
 			end if;
 			
-			clock_count <= clock_count + 1;
-			
-			if i_sample_en = '1' and state = '1' then
-				frame_count <= frame_count + 1;
+			if state = '1' then
+				clock_count <= clock_count + 1;
 				
-				if frame_count = 3 then
-					clock_count <= ( 0 => '1', others => '0' );
-					frame_buf	<= clock_count;
-					frame_en		<= '1';
+				if i_sample_en = '1' then
+					frame_count <= frame_count + 1;
+					
+					if frame_count = 15 then
+						clock_count <= ( 0 => '1', others => '0' );
+						frame_buf	<= clock_count;
+						frame_en		<= '1';
+					end if;
 				end if;
 			end if;
 		end if;

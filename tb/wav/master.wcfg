@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="E:/Development/HDL/SRC/SRC_PRJ/audio_tb_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/charlie/projects/SRC_PRJ/audio_tb_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="audio" />
             <top_module name="audio_tb" />
@@ -27,7 +27,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="28" />
+   <WVObjectSize size="31" />
    <wvobject fp_name="/audio_tb/clk_24" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk_24</obj_property>
       <obj_property name="ObjectShortName">clk_24</obj_property>
@@ -251,6 +251,20 @@
    <wvobject fp_name="group91" type="group">
       <obj_property name="label">I2S</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/audio_tb/uut/INST_INPUTS/INST_I2S/o_data0" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data0[23:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data0[23:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_INPUTS/INST_I2S/o_data1" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data1[23:0]</obj_property>
+         <obj_property name="ObjectShortName">o_data1[23:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_INPUTS/INST_I2S/o_data_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">o_data_en</obj_property>
+         <obj_property name="ObjectShortName">o_data_en</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject fp_name="group167" type="group">
       <obj_property name="label">Noise</obj_property>
@@ -280,6 +294,10 @@
          <obj_property name="ObjectShortName">i_noise1[15:0]</obj_property>
       </wvobject>
    </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/err_sign" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">err_sign</obj_property>
+      <obj_property name="ObjectShortName">err_sign</obj_property>
+   </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/err_mag" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">err_mag[10:0]</obj_property>
       <obj_property name="ObjectShortName">err_mag[10:0]</obj_property>
@@ -298,11 +316,16 @@
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_COUNTER/o_reg" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">o_reg[19:0]</obj_property>
       <obj_property name="ObjectShortName">o_reg[19:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_COUNTER/o_reg_en" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">o_reg_en</obj_property>
       <obj_property name="ObjectShortName">o_reg_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/moving_sum" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">moving_sum[27:0]</obj_property>
+      <obj_property name="ObjectShortName">moving_sum[27:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/ave_out" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">ave_out[23:0]</obj_property>
@@ -312,5 +335,90 @@
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/ave_valid" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">ave_valid</obj_property>
       <obj_property name="ObjectShortName">ave_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">sr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">sr[15:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[15]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[15]</obj_property>
+         <obj_property name="ObjectShortName">sr[15]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[14]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[14]</obj_property>
+         <obj_property name="ObjectShortName">sr[14]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[13]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[13]</obj_property>
+         <obj_property name="ObjectShortName">sr[13]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[12]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[12]</obj_property>
+         <obj_property name="ObjectShortName">sr[12]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[11]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[11]</obj_property>
+         <obj_property name="ObjectShortName">sr[11]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[10]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[10]</obj_property>
+         <obj_property name="ObjectShortName">sr[10]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[9]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[9]</obj_property>
+         <obj_property name="ObjectShortName">sr[9]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[8]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[8]</obj_property>
+         <obj_property name="ObjectShortName">sr[8]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[7]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[7]</obj_property>
+         <obj_property name="ObjectShortName">sr[7]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[6]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[6]</obj_property>
+         <obj_property name="ObjectShortName">sr[6]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[5]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[5]</obj_property>
+         <obj_property name="ObjectShortName">sr[5]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[4]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[4]</obj_property>
+         <obj_property name="ObjectShortName">sr[4]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[3]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[3]</obj_property>
+         <obj_property name="ObjectShortName">sr[3]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[2]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">sr[2]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[1]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">sr[1]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/sr[0]" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">sr[0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
    </wvobject>
 </wave_config>
