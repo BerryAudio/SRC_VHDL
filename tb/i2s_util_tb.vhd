@@ -85,7 +85,7 @@ BEGIN
 		if falling_edge( i2s_bclk ) then
 			if wsp = '1' then
 				if ws_buf( 0 ) = '0' then
-					sample := gen_sig0;
+					sample := gen_sig1;
 					data <= ( sample srl shift ) sll shift;
 				else
 					data <= RESIZE( sample( 23 downto 20 ), 24 ) sll shift;
