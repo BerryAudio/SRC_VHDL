@@ -43,7 +43,7 @@ END audio_tb;
 ARCHITECTURE behavior OF audio_tb IS 
 	constant s_rate	: real := 44.1;
 	constant s_scale	: real range 0.5 to 1.0 :=  0.99;
-	signal ctrl_width : std_logic_vector( 1 downto 0 ) := "11"; -- 16 bits 
+	signal ctrl_width : std_logic_vector( 1 downto 0 ) := "00"; -- 16 bits 
 	
    signal clk_196 : std_logic := '0';
  

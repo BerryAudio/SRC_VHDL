@@ -34,7 +34,7 @@ ARCHITECTURE behavior OF i2s_util_tb IS
 	impure function gen_sig0 return signed is
 	begin
 		fetch_sample( sig0 );
-		return sig0.sig( 34 downto 19 );
+		return sig0.sig( 34 downto 11 );
 	end function;
 	
 	impure function gen_sig1 return signed is
