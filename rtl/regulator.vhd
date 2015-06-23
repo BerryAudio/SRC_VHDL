@@ -336,7 +336,7 @@ begin
 	-- Locked rate error calculations
 	-------------------------------------------------------------------------
 	LOCK_ERROR_BLOCK : block
-		constant LOCK_SLEW		: integer range 0 to 31 := 16;
+		constant LOCK_SLEW		: integer range 0 to 31 :=  1;
 		constant LOCK_DEADZONE	: integer range 0 to  4 :=  2;
 		
 		signal err_slew	: unsigned(  4 downto 0 ) := ( others => '0' );
