@@ -15,7 +15,6 @@ entity src_top is
 		
 		ctrl_width				: in  std_logic_vector( 1 downto 0 );
 		ctrl_locked				: out std_logic := '0';
-		ctrl_ratio				: out unsigned( 23 downto 0 ) := ( others => '0' );
 		
 		i_sample_en_i			: in  std_logic;
 		i_sample_en_o			: in  std_logic;
@@ -46,9 +45,10 @@ architecture rtl of src_top is
 
 	-- general control signals
 	signal fifo_level			: unsigned( 10 downto 0 ) := ( others => '0' );
-	signal fifo_ptr			: unsigned( 23 downto 0 ) := ( others => '0' );
+	signal fifo_ptr			: unsigned( 27 downto 0 ) := ( others => '0' );
 	signal locked				: std_logic := '0';
-	signal ratio				: unsigned( 23 downto 0 ) := ( others => '0' );
+	signal ratio				: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
+	signal ratio_in			: unsigned( 29 downto 0 ) := ( others => '0' );
 	signal ratio_en			: std_logic := '0';
 	signal buf_rdy				: std_logic := '0';
 	signal reg_rst				: std_logic := '0';
@@ -109,10 +109,9 @@ begin
 	o_data1	<= dither_data1;
 	
 	ctrl_locked <= locked;
-	ctrl_ratio <= ratio;
 	
-	phase <= fifo_ptr( 23 downto 18 );
-	delta <= fifo_ptr( 17 downto  0 ) & x"0";
+	phase <= fifo_ptr( 27 downto 22 );
+	delta <= fifo_ptr( 21 downto  0 );
 	
 	reg_rst <= not buf_rdy;
 	div_sel <= '1'  when state_src = S3_FILTER else '0';
@@ -122,6 +121,8 @@ begin
 	
 	i_sample0 <= shift_right( i_data0, to_integer( i_sample_shift ) );
 	i_sample1 <= shift_right( i_data1, to_integer( i_sample_shift ) );
+	
+	ratio_in <= RESIZE( ratio, 30 ) sll ( 6 - REG_AVE_WIDTH );
 	
 	sample_sel_process : process( clk )
 	begin
@@ -318,7 +319,7 @@ begin
 			fir_fin			=> filter_data_en,
 			
 			locked			=> locked,
-			ratio				=> ratio,
+			ratio				=> ratio_in,
 			
 			wr_en				=> i_sample_en_i,
 			wr_data0			=> i_sample0,

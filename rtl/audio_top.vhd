@@ -252,7 +252,6 @@ begin
 			
 			ctrl_width		=> spi_reg_bits,
 			ctrl_locked		=> src_lock,
-			ctrl_ratio		=> open,
 			
 			i_sample_en_i	=> i_output_en,
 			i_sample_en_o	=> o_sample_en,

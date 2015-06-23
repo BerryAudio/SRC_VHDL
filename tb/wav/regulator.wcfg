@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/charlie/projects/SRC_PRJ/regulator_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="numeric_std" />
+            <top_module name="regulator_tb" />
+            <top_module name="src" />
+            <top_module name="std_logic_1164" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="11" />
+   <wvobject fp_name="/regulator_tb/uut/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/regulator_tb/uut/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/regulator_tb/uut/i_sample_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">i_sample_en</obj_property>
+      <obj_property name="ObjectShortName">i_sample_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/regulator_tb/uut/o_sample_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_sample_en</obj_property>
+      <obj_property name="ObjectShortName">o_sample_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/regulator_tb/rd_en" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rd_en</obj_property>
+      <obj_property name="ObjectShortName">rd_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/regulator_tb/uut/o_locked" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">o_locked</obj_property>
+      <obj_property name="ObjectShortName">o_locked</obj_property>
+   </wvobject>
+   <wvobject fp_name="/regulator_tb/uut/ptr_rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ptr_rst</obj_property>
+      <obj_property name="ObjectShortName">ptr_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="group28" type="group">
+      <obj_property name="label">COUNTER</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/o_reg" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_reg[18:0]</obj_property>
+         <obj_property name="ObjectShortName">o_reg[18:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/o_reg_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">o_reg_en</obj_property>
+         <obj_property name="ObjectShortName">o_reg_en</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group29" type="group">
+      <obj_property name="label">AVERAGER</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/preload" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">preload</obj_property>
+         <obj_property name="ObjectShortName">preload</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/preload_in" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">preload_in</obj_property>
+         <obj_property name="ObjectShortName">preload_in</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/ratio" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">ratio[23:0]</obj_property>
+         <obj_property name="ObjectShortName">ratio[23:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/moving_sum" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">moving_sum[29:0]</obj_property>
+         <obj_property name="ObjectShortName">moving_sum[29:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/ave" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">ave[29:0]</obj_property>
+         <obj_property name="ObjectShortName">ave[29:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/ave_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">ave_en</obj_property>
+         <obj_property name="ObjectShortName">ave_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">sr[63:0]</obj_property>
+         <obj_property name="ObjectShortName">sr[63:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[63]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[63]</obj_property>
+            <obj_property name="ObjectShortName">sr[63]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[62]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[62]</obj_property>
+            <obj_property name="ObjectShortName">sr[62]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[61]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[61]</obj_property>
+            <obj_property name="ObjectShortName">sr[61]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[60]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[60]</obj_property>
+            <obj_property name="ObjectShortName">sr[60]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[59]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[59]</obj_property>
+            <obj_property name="ObjectShortName">sr[59]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[58]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[58]</obj_property>
+            <obj_property name="ObjectShortName">sr[58]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[57]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[57]</obj_property>
+            <obj_property name="ObjectShortName">sr[57]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[56]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[56]</obj_property>
+            <obj_property name="ObjectShortName">sr[56]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[55]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[55]</obj_property>
+            <obj_property name="ObjectShortName">sr[55]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[54]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[54]</obj_property>
+            <obj_property name="ObjectShortName">sr[54]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[53]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[53]</obj_property>
+            <obj_property name="ObjectShortName">sr[53]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[52]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[52]</obj_property>
+            <obj_property name="ObjectShortName">sr[52]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[51]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[51]</obj_property>
+            <obj_property name="ObjectShortName">sr[51]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[50]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[50]</obj_property>
+            <obj_property name="ObjectShortName">sr[50]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[49]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[49]</obj_property>
+            <obj_property name="ObjectShortName">sr[49]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[48]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[48]</obj_property>
+            <obj_property name="ObjectShortName">sr[48]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[47]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[47]</obj_property>
+            <obj_property name="ObjectShortName">sr[47]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[46]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[46]</obj_property>
+            <obj_property name="ObjectShortName">sr[46]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[45]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[45]</obj_property>
+            <obj_property name="ObjectShortName">sr[45]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[44]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[44]</obj_property>
+            <obj_property name="ObjectShortName">sr[44]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[43]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[43]</obj_property>
+            <obj_property name="ObjectShortName">sr[43]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[42]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[42]</obj_property>
+            <obj_property name="ObjectShortName">sr[42]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[41]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[41]</obj_property>
+            <obj_property name="ObjectShortName">sr[41]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[40]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[40]</obj_property>
+            <obj_property name="ObjectShortName">sr[40]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[39]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[39]</obj_property>
+            <obj_property name="ObjectShortName">sr[39]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[38]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[38]</obj_property>
+            <obj_property name="ObjectShortName">sr[38]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[37]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[37]</obj_property>
+            <obj_property name="ObjectShortName">sr[37]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[36]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[36]</obj_property>
+            <obj_property name="ObjectShortName">sr[36]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[35]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[35]</obj_property>
+            <obj_property name="ObjectShortName">sr[35]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[34]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[34]</obj_property>
+            <obj_property name="ObjectShortName">sr[34]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[33]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[33]</obj_property>
+            <obj_property name="ObjectShortName">sr[33]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[32]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[32]</obj_property>
+            <obj_property name="ObjectShortName">sr[32]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[31]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[31]</obj_property>
+            <obj_property name="ObjectShortName">sr[31]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[30]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[30]</obj_property>
+            <obj_property name="ObjectShortName">sr[30]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[29]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[29]</obj_property>
+            <obj_property name="ObjectShortName">sr[29]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[28]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[28]</obj_property>
+            <obj_property name="ObjectShortName">sr[28]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[27]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[27]</obj_property>
+            <obj_property name="ObjectShortName">sr[27]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[26]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[26]</obj_property>
+            <obj_property name="ObjectShortName">sr[26]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[25]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[25]</obj_property>
+            <obj_property name="ObjectShortName">sr[25]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[24]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[24]</obj_property>
+            <obj_property name="ObjectShortName">sr[24]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[23]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[23]</obj_property>
+            <obj_property name="ObjectShortName">sr[23]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[22]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[22]</obj_property>
+            <obj_property name="ObjectShortName">sr[22]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[21]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[21]</obj_property>
+            <obj_property name="ObjectShortName">sr[21]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[20]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[20]</obj_property>
+            <obj_property name="ObjectShortName">sr[20]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[19]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[19]</obj_property>
+            <obj_property name="ObjectShortName">sr[19]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[18]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[18]</obj_property>
+            <obj_property name="ObjectShortName">sr[18]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[17]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[17]</obj_property>
+            <obj_property name="ObjectShortName">sr[17]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[16]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[16]</obj_property>
+            <obj_property name="ObjectShortName">sr[16]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[15]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[15]</obj_property>
+            <obj_property name="ObjectShortName">sr[15]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[14]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[14]</obj_property>
+            <obj_property name="ObjectShortName">sr[14]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[13]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[13]</obj_property>
+            <obj_property name="ObjectShortName">sr[13]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[12]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[12]</obj_property>
+            <obj_property name="ObjectShortName">sr[12]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[11]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[11]</obj_property>
+            <obj_property name="ObjectShortName">sr[11]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[10]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[10]</obj_property>
+            <obj_property name="ObjectShortName">sr[10]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[9]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[9]</obj_property>
+            <obj_property name="ObjectShortName">sr[9]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[8]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[8]</obj_property>
+            <obj_property name="ObjectShortName">sr[8]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[7]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[7]</obj_property>
+            <obj_property name="ObjectShortName">sr[7]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[6]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[6]</obj_property>
+            <obj_property name="ObjectShortName">sr[6]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[5]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[5]</obj_property>
+            <obj_property name="ObjectShortName">sr[5]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[4]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[4]</obj_property>
+            <obj_property name="ObjectShortName">sr[4]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[3]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[3]</obj_property>
+            <obj_property name="ObjectShortName">sr[3]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[2]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[2]</obj_property>
+            <obj_property name="ObjectShortName">sr[2]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[1]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[1]</obj_property>
+            <obj_property name="ObjectShortName">sr[1]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+         <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/sr[0]" type="array" db_ref_id="1">
+            <obj_property name="ElementShortName">[0]</obj_property>
+            <obj_property name="ObjectShortName">sr[0]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group30" type="group">
+      <obj_property name="label">REGULATOR</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/i_fifo_level" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">i_fifo_level[10:0]</obj_property>
+         <obj_property name="ObjectShortName">i_fifo_level[10:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/i_ratio" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">i_ratio[29:0]</obj_property>
+         <obj_property name="ObjectShortName">i_ratio[29:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/o_ratio" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_ratio[29:0]</obj_property>
+         <obj_property name="ObjectShortName">o_ratio[29:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/o_ratio_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">o_ratio_en</obj_property>
+         <obj_property name="ObjectShortName">o_ratio_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/err_term" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">err_term[10:0]</obj_property>
+         <obj_property name="ObjectShortName">err_term[10:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/err_sign" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">err_sign</obj_property>
+         <obj_property name="ObjectShortName">err_sign</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/err_mag" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">err_mag[10:0]</obj_property>
+         <obj_property name="ObjectShortName">err_mag[10:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/lock_error_block/err_slew" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">err_slew[3:0]</obj_property>
+         <obj_property name="ObjectShortName">err_slew[3:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/lock_error_block/err_buf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">err_buf[10:0]</obj_property>
+         <obj_property name="ObjectShortName">err_buf[10:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group70" type="group">
+      <obj_property name="label">RING_BUFFER</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/regulator_tb/rb/buf_level" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">buf_level[10:0]</obj_property>
+         <obj_property name="ObjectShortName">buf_level[10:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/rb/buf_ptr" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">buf_ptr[27:0]</obj_property>
+         <obj_property name="ObjectShortName">buf_ptr[27:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/rb/wr_ptr" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">wr_ptr[6:0]</obj_property>
+         <obj_property name="ObjectShortName">wr_ptr[6:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/rb/rd_ptr_it" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">rd_ptr_it[6:0]</obj_property>
+         <obj_property name="ObjectShortName">rd_ptr_it[6:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/rb/rd_ptr" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">rd_ptr[36:0]</obj_property>
+         <obj_property name="ObjectShortName">rd_ptr[36:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

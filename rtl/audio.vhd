@@ -191,7 +191,6 @@ package audio is
 			
 			ctrl_width		: in  std_logic_vector( 1 downto 0 );
 			ctrl_locked		: out std_logic;
-			ctrl_ratio		: out unsigned( 23 downto 0 );
 			
 			i_sample_en_i	: in  std_logic;
 			i_sample_en_o	: in  std_logic;
