@@ -18,8 +18,8 @@ entity fir_filter_rom is
 		clk	: in  std_logic;
 		rst	: in  std_logic;
 		
-		addr0	: in  unsigned( 13 downto 0 );
-		addr1	: in  unsigned( 13 downto 0 );
+		addr0	: in  unsigned( 12 downto 0 );
+		addr1	: in  unsigned( 12 downto 0 );
 		
 		data0	: out   signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' );
 		data1	: out   signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' )
@@ -27,7 +27,7 @@ entity fir_filter_rom is
 end fir_filter_rom;
 
 architecture rtl of fir_filter_rom is
-	constant ROM_LIMIT : natural := 3072;
+	constant ROM_LIMIT : natural := 2048;
 	type FIR_ROM_TYPE is array( ROM_LIMIT-1 downto 0 ) of signed( ROM_FILE_BIT-1 downto 0 );
 	
 	impure function FIR_ROM_INIT( rom_file_name : in string ) return FIR_ROM_TYPE is
@@ -61,14 +61,14 @@ architecture rtl of fir_filter_rom is
 	signal rom : FIR_ROM_TYPE := FIR_ROM_INIT( ROM_FILE );
 	constant CENTRE_COEFF	: signed( ROM_FILE_BIT-1 downto 0 ) := FIR_ROM_CENTRE( ROM_FILE );
 	
-	signal buf_addr0	 : unsigned( 13 downto 0 ) := ( others => '0' );
-	signal buf_addr1	 : unsigned( 13 downto 0 ) := ( others => '0' );
+	signal buf_addr0	 : unsigned( 12 downto 0 ) := ( others => '0' );
+	signal buf_addr1	 : unsigned( 12 downto 0 ) := ( others => '0' );
 	
 	signal trans_data0 : signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' );
 	signal trans_data1 : signed( ROM_FILE_BIT-1 downto 0 ) := ( others => '0' );
 	
-	signal trans_addr0 : unsigned( 13 downto 0 );
-	signal trans_addr1 : unsigned( 13 downto 0 );
+	signal trans_addr0 : unsigned( 12 downto 0 );
+	signal trans_addr1 : unsigned( 12 downto 0 );
 begin
 
 	trans_addr0 <= addr0 when addr0 < ROM_LIMIT 

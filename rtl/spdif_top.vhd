@@ -311,7 +311,7 @@ entity spdif_tx_top is
 	port ( 
 		clk			: in  std_logic;
 		rst			: in  std_logic;
-		clk_cnt		: unsigned( 1 downto 0 );
+		clk_cnt		: in  std_logic;
 		
 		i_data0	: in  signed( 23 downto 0 );
 		i_data1	: in  signed( 23 downto 0 );
@@ -434,14 +434,6 @@ begin
 	--*	- strobe on a bit clock edge
 	--*	- this handles preamble and data
 	--**************************************************************
-	bit_en_process : process( clk )
-	begin
-		if rising_edge( clk ) then
-			bit_en <= '0';
-			if clk_cnt = 0 then 
-				bit_en <= '1';
-			end if;
-		end if;
-	end process bit_en_process;
+	bit_en <= clk_cnt;
 	
 end rtl;

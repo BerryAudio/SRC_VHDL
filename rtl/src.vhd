@@ -7,7 +7,7 @@ package src is
 	--******************************************************************
 	-- constants - GENERAL
 	--******************************************************************
-	constant ROM_FILE_SRC			: string  := "rom/rom_src_6144x32b_cand.txt";
+	constant ROM_FILE_SRC			: string  := "rom/rom_src_32b.txt";
 	constant ROM_FILE_BIT			: natural range 24 to 32 := 32;
 	constant ROM_FILE_HB				: string  := "rom/rom_hb.txt";
 	
@@ -18,8 +18,8 @@ package src is
 	constant NOISE_LFSR_WIDTH		: integer range 11 to 34 := 11;
 	constant NOISE_FILT_WIDTH		: integer range 11 to 34 := 16;
 	
-	constant REG_AVE_WIDTH			: integer range 4 to 6 := 4; -- power of 2
-	constant REG_CNT_WIDTH			: integer range 2 to 6 := 2; -- power of 2
+	constant REG_AVE_WIDTH			: integer range 4 to 6 := 6; -- power of 2
+	constant REG_CNT_WIDTH			: integer range 2 to 6 := 4; -- power of 2
 
 	--******************************************************************
 	-- types
@@ -76,7 +76,7 @@ package src is
 			
 			i_sample_en		: in  std_logic;
 			o_sample_en		: in  std_logic;
-			i_fifo_level	: in  unsigned( 10 downto 0 );
+			i_fifo_level	: in  unsigned( 14 downto 0 );
 			
 			o_ratio			: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
 			o_locked			: out std_logic;
@@ -293,8 +293,8 @@ package src is
 			clk			: in  std_logic;
 			rst			: in  std_logic;
 			
-			addr0			: in  unsigned( 13 downto 0 );
-			addr1			: in  unsigned( 13 downto 0 );
+			addr0			: in  unsigned( 12 downto 0 );
+			addr1			: in  unsigned( 12 downto 0 );
 			
 			data0			: out signed( ROM_FILE_BIT-1 downto 0 );
 			data1			: out signed( ROM_FILE_BIT-1 downto 0 )
@@ -344,7 +344,7 @@ package src is
 			clk				: in  std_logic;
 			rst				: in  std_logic;
 			
-			i_fifo_level	: in  unsigned( 10 downto 0 );
+			i_fifo_level	: in  unsigned( 14 downto 0 );
 			i_ratio			: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
 			i_ratio_en		: in  std_logic;
 			o_sample_en		: in  std_logic;
@@ -417,7 +417,7 @@ package src is
 			rst			: in  std_logic;
 			
 			buf_rdy		: out std_logic;
-			buf_level	: out unsigned( 10 downto 0 );
+			buf_level	: out unsigned( 14 downto 0 );
 			buf_ptr		: out unsigned( 27 downto 0 );
 			
 			fir_en		: in  std_logic;

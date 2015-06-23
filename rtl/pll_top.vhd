@@ -96,7 +96,7 @@ begin
 			CLKIN_PERIOD			 => PLL_PERIOD,
 			
 			CLKOUT0_DIVIDE			 => 4,
-			CLKOUT1_DIVIDE			 => 6,
+			CLKOUT1_DIVIDE			 => 12,
 			CLKOUT2_DIVIDE			 => 24,
 			
 			CLK_FEEDBACK			 => "CLKFBOUT",

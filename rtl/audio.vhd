@@ -53,7 +53,7 @@ package audio is
 		port (
 			clk			: in  std_logic;
 			rst			: in  std_logic;
-			clk_cnt		: unsigned( 6 downto 0 );
+			clk_cnt		: unsigned( 5 downto 0 );
 			
 			i_data0		: in  signed( 23 downto 0 );
 			i_data1		: in  signed( 23 downto 0 );
@@ -133,7 +133,7 @@ package audio is
 		port ( 
 			clk			: in  std_logic;
 			rst			: in  std_logic;
-			clk_cnt		: unsigned( 1 downto 0 );
+			clk_cnt		: in  std_logic;
 			
 			i_data0		: in  signed( 23 downto 0 );
 			i_data1		: in  signed( 23 downto 0 );

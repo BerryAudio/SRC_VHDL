@@ -9,7 +9,7 @@ entity dac_top is
 	port (
 		clk			: in  std_logic;
 		rst			: in  std_logic;
-		clk_cnt		: unsigned( 6 downto 0 );
+		clk_cnt		: unsigned( 5 downto 0 );
 		
 		i_data0		: in  signed( 23 downto 0 );
 		i_data1		: in  signed( 23 downto 0 );
@@ -32,7 +32,7 @@ architecture rtl of dac_top is
 	signal buf_shift		: std_logic := '0';
 begin
 	
-	buf_shift <= '1' when clk_cnt( 1 downto 0 ) = "00" else '0';
+	buf_shift <= not clk_cnt( 0 );
 	
 	o_data0 <= buf_data0( 31 );
 	o_data1 <= buf_data1( 31 );
@@ -57,7 +57,7 @@ begin
 
 	GEN_AD1955 : if DAC_IF = "AD_1955" generate
 	begin
-		CLOCK_START <= 4;
+		CLOCK_START <= 2;
 	
 		data_ext0 <= i_data0 & x"00";
 		data_ext1 <= i_data1 & x"00";
@@ -65,9 +65,9 @@ begin
 		output_process : process( clk )
 		begin
 			if rising_edge( clk ) then
-				o_bclk <= not clk_cnt( 1 );
+				o_bclk <= not clk_cnt( 0 );
 				o_lrck <= '0';
-				if clk_cnt( 6 downto 2 ) = 0 then
+				if clk_cnt( 5 downto 1 ) = 0 then
 					o_lrck <= '1';
 				end if;
 			end if;
@@ -84,8 +84,8 @@ begin
 		output_process : process( clk )
 		begin
 			if rising_edge( clk ) then
-				o_bclk <= clk_cnt( 1 );
-				o_lrck <= clk_cnt( 6 );
+				o_bclk <= clk_cnt( 0 );
+				o_lrck <= clk_cnt( 5 );
 			end if;
 		end process output_process;
 	end generate GEN_PCM1794;

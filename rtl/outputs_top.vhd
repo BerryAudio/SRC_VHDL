@@ -34,7 +34,7 @@ end outputs_top;
 architecture rtl of outputs_top is
 
 	signal clk_cnt_wr		: unsigned( 7 downto 0 ) := ( others => '0' );
-	signal clk_cnt_rd		: unsigned( 6 downto 0 ) := ( others => '0' );
+	signal clk_cnt_rd		: unsigned( 5 downto 0 ) := ( others => '0' );
 	
 	signal fifo_out0		: signed( 23 downto 0 ) := ( others => '0' );
 	signal fifo_out1		: signed( 23 downto 0 ) := ( others => '0' );
@@ -61,7 +61,7 @@ architecture rtl of outputs_top is
 	end component output_fifo;
 begin
 
-	fifo_en <= '1' when clk_cnt_rd = 127 else '0';
+	fifo_en <= '1' when clk_cnt_rd = 63 else '0';
 	
 	clk_cnt_wr_process : process( clk_src )
 	begin
@@ -112,7 +112,7 @@ begin
 		port map (
 			clk			=> clk_out,
 			rst			=> rst_sync( 2 ),
-			clk_cnt		=> clk_cnt_rd( 1 downto 0 ),
+			clk_cnt		=> clk_cnt_rd( 0 ),
 			
 			i_data0		=> fifo_out0,
 			i_data1		=> fifo_out1,

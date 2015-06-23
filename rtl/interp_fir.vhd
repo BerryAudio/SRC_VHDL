@@ -42,15 +42,15 @@ architecture rtl of interp_fir is
 	
 	signal state_o	: std_logic := '0';
 	
-	signal rom_ptr		: unsigned( 13 downto 0 ) := ( others => '0' );
-	signal rom_ptr_t	: unsigned( 13 downto 0 ) := ( others => '0' );
-	signal rom_addr0	: unsigned( 13 downto 0 ) := ( others => '0' );
-	signal rom_addr1	: unsigned( 13 downto 0 ) := ( others => '0' );
-	signal rom_addr2	: unsigned( 13 downto 0 ) := ( others => '0' );
-	signal rom_addr3	: unsigned( 13 downto 0 ) := ( others => '0' );
+	signal rom_ptr		: unsigned( 12 downto 0 ) := ( others => '0' );
+	signal rom_ptr_t	: unsigned( 12 downto 0 ) := ( others => '0' );
+	signal rom_addr0	: unsigned( 12 downto 0 ) := ( others => '0' );
+	signal rom_addr1	: unsigned( 12 downto 0 ) := ( others => '0' );
+	signal rom_addr2	: unsigned( 12 downto 0 ) := ( others => '0' );
+	signal rom_addr3	: unsigned( 12 downto 0 ) := ( others => '0' );
 	
-	signal rom_a0		: unsigned( 13 downto 0 ) := ( others => '0' );
-	signal rom_a1		: unsigned( 13 downto 0 ) := ( others => '0' );
+	signal rom_a0		: unsigned( 12 downto 0 ) := ( others => '0' );
+	signal rom_a1		: unsigned( 12 downto 0 ) := ( others => '0' );
 	signal rom_d0		: signed( 34 downto 0 ) := ( others => '0' );
 	signal rom_d1		: signed( 34 downto 0 ) := ( others => '0' );
 	
@@ -63,10 +63,10 @@ architecture rtl of interp_fir is
 	signal l3			: signed( 34 downto 0 ) := ( others => '0' );
 begin
 	
-	rom_addr0 <= RESIZE( rom_ptr    , 14 );
-	rom_addr1 <= RESIZE( rom_ptr + 1, 14 );
-	rom_addr2 <= RESIZE( rom_ptr + 2, 14 );
-	rom_addr3 <= RESIZE( rom_ptr + 3, 14 );
+	rom_addr0 <= rom_ptr    ;
+	rom_addr1 <= rom_ptr + 1;
+	rom_addr2 <= rom_ptr + 2;
+	rom_addr3 <= rom_ptr + 3;
 	
 	coe_sum <= o_mac.data0 + o_mac.data1;
 	
@@ -112,7 +112,7 @@ begin
 				rom_a1 <= rom_addr1;
 				
 				if phase_en = '1' then
-					rom_ptr <= RESIZE( phase, 14 );
+					rom_ptr <= RESIZE( phase, 13 );
 				end if;
 				
 				case state_i is
@@ -130,7 +130,7 @@ begin
 						rom_ptr <= rom_ptr + PTR_INC;
 						state_i <= S2_RUN;
 						
-						if rom_ptr > 6144 then
+						if rom_ptr > 4096 then
 							i_mac.en  <= '0';
 							coe_final( 0 ) <= '1';
 							state_i <= S0_INIT;

@@ -20,7 +20,7 @@ entity regulator_top is
 		-- let's us know how full the buffer is
 		i_sample_en		: in  std_logic;
 		o_sample_en		: in  std_logic;
-		i_fifo_level	: in  unsigned( 10 downto 0 );
+		i_fifo_level	: in  unsigned( 14 downto 0 );
 		
 		-- ratio data - indicate that a ratio has been calculated
 		-- locked status indicator
@@ -182,7 +182,7 @@ entity reg_ratio is
 		clk				: in  std_logic;
 		rst				: in  std_logic;
 		
-		i_fifo_level	: in  unsigned( 10 downto 0 ); -- 7.8
+		i_fifo_level	: in  unsigned( 14 downto 0 ); -- 7.8
 		i_ratio			: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
 		i_ratio_en		: in  std_logic;
 		o_sample_en		: in  std_logic;
@@ -194,13 +194,13 @@ entity reg_ratio is
 end reg_ratio;
 
 architecture rtl of reg_ratio is
-	constant FIFO_SET_PT		: integer := 256;
-	constant THRESHOLD_LOCK	: integer :=  32;
-	constant THRESHOLD_VARI	: integer := 128;
+	constant FIFO_SET_PT		: integer := 256 * 16;
+	constant THRESHOLD_LOCK	: integer :=  32 * 16;
+	constant THRESHOLD_VARI	: integer := 128 * 16;
 	
 	signal ratio_buf		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
-	signal err_term		: unsigned( 10 downto 0 ) := ( others => '0' );
-	signal err_mag			: unsigned( 10 downto 0 ) := ( others => '0' );
+	signal err_term		: unsigned( 14 downto 0 ) := ( others => '0' );
+	signal err_mag			: unsigned( 14 downto 0 ) := ( others => '0' );
 	signal err_sign		: std_logic := '0';
 	
 	signal sum_vari		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
@@ -336,12 +336,11 @@ begin
 	-- Locked rate error calculations
 	-------------------------------------------------------------------------
 	LOCK_ERROR_BLOCK : block
-		constant LOCK_SLEW		: integer range 0 to 15 := 15;
+		constant LOCK_SLEW		: integer range 0 to 31 := 16;
 		constant LOCK_DEADZONE	: integer range 0 to  4 :=  2;
 		
-		signal err_slew	: unsigned(  3 downto 0 ) := ( others => '0' );
-		signal err_buf		: unsigned( 10 downto 0 ) := ( others => '0' );
-		alias  err_en		: std_logic is ratio_en_buf( 4 );
+		signal err_slew	: unsigned(  4 downto 0 ) := ( others => '0' );
+		signal err_buf		: unsigned( 14 downto 0 ) := ( others => '0' );
 	begin
 		
 		clock_process : process( clk )

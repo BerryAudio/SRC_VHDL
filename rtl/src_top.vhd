@@ -44,7 +44,7 @@ architecture rtl of src_top is
 	signal i_sample1			: signed( 23 downto 0 ) := ( others => '0' );
 
 	-- general control signals
-	signal fifo_level			: unsigned( 10 downto 0 ) := ( others => '0' );
+	signal fifo_level			: unsigned( 14 downto 0 ) := ( others => '0' );
 	signal fifo_ptr			: unsigned( 27 downto 0 ) := ( others => '0' );
 	signal locked				: std_logic := '0';
 	signal ratio				: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
