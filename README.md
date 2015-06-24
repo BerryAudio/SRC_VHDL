@@ -21,13 +21,13 @@ XILINX ISE 14.7 Setup
 2. Import all in /tb except folders as associated to simulation
 3. Import all in /ucf as associated to implementation
 4. Sythesis Properties
-- Register Balancing: Yes
+. Register Balancing: Yes
 5. MAP Properties
-- Multithreading: 2
-- Placer Effort: High
-- Extra Effort: Normal
+. Multithreading: 2
+. Placer Effort: High
+. Extra Effort: Normal
 6. PAR Properties
-- Multithreading: 4
-- Placer Effort: High
-- Extra Effort: Normal
+. Multithreading: 4
+. Placer Effort: High
+. Extra Effort: Normal
 7. Add XST Other -infer_ramb8 no
