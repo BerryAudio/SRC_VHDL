@@ -238,7 +238,7 @@ entity reg_ratio is
 end reg_ratio;
 
 architecture rtl of reg_ratio is
-	constant FIFO_SET_PT		: integer := 2**12;
+	constant FIFO_SET_PT		: integer := 2**8;
 	constant THRESHOLD_LOCK	: integer := 0;
 	constant THRESHOLD_VARI	: integer := 2**6;
 	

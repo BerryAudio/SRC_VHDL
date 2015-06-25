@@ -66,6 +66,7 @@ BEGIN
           div_divisor => div_divisor,
           div_dividend => div_dividend
         );
+		  
 	dv : div 
 		port map (
 			clk			=> clk_147,
@@ -82,6 +83,9 @@ BEGIN
 	ratio <= RESIZE( o_ratio, 30 ) sll ( 6-REG_AVE_WIDTH );
 	
 	rb : ring_buffer
+		generic map (
+			PTR_OFFSET	=> 16
+		)
 		port map (
 			clk			=> clk_147,
 			rst			=> rst,
