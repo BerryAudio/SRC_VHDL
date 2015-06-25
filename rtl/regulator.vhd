@@ -561,7 +561,7 @@ begin
 	o_ratio <= lpf_out;
 	o_ratio_en <= lpf_out_en;
 	
-	reg_latch_en <= '1' when err_abs > x"F" else '0';
+	reg_latch_en <= '1' when err_abs > x"1F" else '0';
 	
 	input_process : process( clk )
 	begin
