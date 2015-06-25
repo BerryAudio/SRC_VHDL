@@ -17,7 +17,7 @@ entity regulator_top is
 		-- let's us know how full the buffer is
 		i_sample_en		: in  std_logic;
 		o_sample_en		: in  std_logic;
-		i_fifo_level	: in  unsigned( 14 downto 0 );
+		i_fifo_level	: in  unsigned( 10 downto 0 );
 		
 		-- ratio data - indicate that a ratio has been calculated
 		-- locked status indicator
@@ -67,7 +67,7 @@ architecture rtl of regulator_top is
 			clk				: in  std_logic;
 			rst				: in  std_logic;
 			
-			i_fifo_level	: in  unsigned( 14 downto 0 );
+			i_fifo_level	: in  unsigned( 10 downto 0 );
 			i_ratio			: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
 			i_ratio_en		: in  std_logic;
 			o_sample_en		: in  std_logic;
@@ -226,7 +226,7 @@ entity reg_ratio is
 		clk				: in  std_logic;
 		rst				: in  std_logic;
 		
-		i_fifo_level	: in  unsigned( 14 downto 0 );
+		i_fifo_level	: in  unsigned( 10 downto 0 );
 		i_ratio			: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
 		i_ratio_en		: in  std_logic;
 		o_sample_en		: in  std_logic;
@@ -240,10 +240,10 @@ end reg_ratio;
 architecture rtl of reg_ratio is
 	constant FIFO_SET_PT		: integer := 2**12;
 	constant THRESHOLD_LOCK	: integer := 0;
-	constant THRESHOLD_VARI	: integer := 2**10;
+	constant THRESHOLD_VARI	: integer := 2**6;
 	
-	signal err_term		: unsigned( 14 downto 0 ) := ( others => '0' );
-	signal err_ptr			: unsigned( 14 downto 0 ) := ( others => '0' );
+	signal err_term		: unsigned( 10 downto 0 ) := ( others => '0' );
+	signal err_ptr			: unsigned( 10 downto 0 ) := ( others => '0' );
 	signal err_track		: unsigned( 15 downto 0 ) := ( others => '0' );
 	
 	signal sum_vari		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
@@ -561,7 +561,7 @@ begin
 	o_ratio <= lpf_out;
 	o_ratio_en <= lpf_out_en;
 	
-	reg_latch_en <= '1' when err_abs > x"24" else '0';
+	reg_latch_en <= '1' when err_abs > x"F" else '0';
 	
 	input_process : process( clk )
 	begin

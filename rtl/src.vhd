@@ -76,7 +76,7 @@ package src is
 			
 			i_sample_en		: in  std_logic;
 			o_sample_en		: in  std_logic;
-			i_fifo_level	: in  unsigned( 14 downto 0 );
+			i_fifo_level	: in  unsigned( 10 downto 0 );
 			
 			o_ratio			: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
 			o_locked			: out std_logic;
@@ -362,7 +362,7 @@ package src is
 			rst			: in  std_logic;
 			
 			buf_rdy		: out std_logic;
-			buf_level	: out unsigned( 14 downto 0 );
+			buf_level	: out unsigned( 10 downto 0 );
 			buf_ptr		: out unsigned( 27 downto 0 );
 			
 			fir_en		: in  std_logic;

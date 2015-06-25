@@ -17,7 +17,7 @@ entity ring_buffer is
 		-- Ring Buffer Control
 		--------------------------------------------------
 		buf_rdy		: out std_logic := '0';
-		buf_level	: out unsigned( 14 downto 0 ) := ( others => '0' );
+		buf_level	: out unsigned( 10 downto 0 ) := ( others => '0' );
 		buf_ptr		: out unsigned( 27 downto 0 ) := ( others => '0' );
 		
 		fir_en		: in  std_logic;
@@ -53,7 +53,7 @@ architecture rtl of ring_buffer is
 	signal buf_data0	: signed( 23 downto 0 ) := ( others => '0' );
 	signal buf_data1	: signed( 23 downto 0 ) := ( others => '0' );
 	
-	signal ptr_level	: unsigned( 14 downto 0 ) := ( others => '0' );
+	signal ptr_level	: unsigned( 10 downto 0 ) := ( others => '0' );
 	signal lock_buf	: std_logic := '0';
 	signal lock_stb	: std_logic := '0';
 begin
@@ -102,7 +102,7 @@ begin
 			else
 				-- buffer level
 				if locked = '0' or fir_en = '1' then
-					ptr_level <= ( wr_ptr & x"00" ) - rd_ptr( 36 downto 22 );
+					ptr_level <= ( wr_ptr & x"0" ) - rd_ptr( 36 downto 26 );
 				end if;
 				
 				-- iterator
