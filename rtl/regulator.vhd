@@ -240,7 +240,7 @@ end reg_ratio;
 architecture rtl of reg_ratio is
 	constant FIFO_SET_PT		: integer := 2**12;
 	constant THRESHOLD_LOCK	: integer := 0;
-	constant THRESHOLD_VARI	: integer := 2** 9;
+	constant THRESHOLD_VARI	: integer := 2**10;
 	
 	signal err_term		: unsigned( 14 downto 0 ) := ( others => '0' );
 	signal err_ptr			: unsigned( 14 downto 0 ) := ( others => '0' );
