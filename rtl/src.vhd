@@ -18,7 +18,7 @@ package src is
 	constant NOISE_LFSR_WIDTH		: integer range 11 to 34 := 11;
 	constant NOISE_FILT_WIDTH		: integer range 11 to 34 := 16;
 	
-	constant REG_AVE_WIDTH			: integer range 4 to 6 := 6; -- power of 2
+	constant REG_AVE_WIDTH			: integer range 4 to 6 := 4; -- power of 2
 	constant REG_CNT_WIDTH			: integer range 2 to 6 := 4; -- power of 2
 
 	--******************************************************************
@@ -332,61 +332,6 @@ package src is
 			rd_data1		: out signed( 34 downto 0 )
 		);
 	end component hb_ring_buffer;
-	
-	--******************************************************************
-	-- ratio regulator components
-	--******************************************************************
-	component reg_ratio is
-		generic (
-			REG_AVE_WIDTH	: integer range 2 to 6
-		);
-		port (
-			clk				: in  std_logic;
-			rst				: in  std_logic;
-			
-			i_fifo_level	: in  unsigned( 14 downto 0 );
-			i_ratio			: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
-			i_ratio_en		: in  std_logic;
-			o_sample_en		: in  std_logic;
-			
-			o_locked			: out std_logic;
-			o_ratio			: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
-			o_ratio_en		: out std_logic
-		);
-	end component reg_ratio;
-	
-	component reg_average is
-		generic (
-			REG_AVE_WIDTH	: integer range 2 to 6
-		);
-		port (
-			clk				: in  std_logic;
-			rst				: in  std_logic;
-			
-			ptr_rst			: in  std_logic;
-			
-			ratio				: in  unsigned( 23 downto 0 );
-			ratio_en			: in  std_logic;
-			
-			ave				: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
-			ave_en			: out std_logic
-		);
-	end component reg_average;
-	
-	component reg_count is
-		generic (
-			REG_CNT_WIDTH	: integer range 2 to 6
-		);
-		port (
-			clk				: in  std_logic;
-			rst				: in  std_logic;
-			
-			i_sample_en		: in  std_logic;
-			i_reg_ack		: in  std_logic;
-			o_reg				: out unsigned( 18 downto 0 );
-			o_reg_en			: out std_logic
-		);
-	end component reg_count;
 	
 	--******************************************************************
 	-- ring and fir buffer components

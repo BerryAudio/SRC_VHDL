@@ -112,7 +112,7 @@ begin
 					rd_ptr_it <= rd_ptr_it - 1;
 				end if;
 				
-				-- read pointer
+				-- read pointer - a minor guard band
 				if locked = '0' then
 						rd_ptr( 36 downto 30 ) <= wr_ptr - PTR_OFFSET;
 						rd_ptr( 29 downto  0 ) <= ( others => '0' );

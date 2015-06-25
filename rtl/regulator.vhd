@@ -2,9 +2,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library work;
-use work.src.all;
-
 entity regulator_top is
 	generic (
 		CLOCK_COUNT		: integer := 512;
@@ -62,6 +59,55 @@ architecture rtl of regulator_top is
 	signal reg_out			: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	signal reg_out_en		: std_logic := '0';
 	
+	component reg_ratio is
+		generic (
+			REG_AVE_WIDTH	: integer range 2 to 6
+		);
+		port (
+			clk				: in  std_logic;
+			rst				: in  std_logic;
+			
+			i_fifo_level	: in  unsigned( 14 downto 0 );
+			i_ratio			: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
+			i_ratio_en		: in  std_logic;
+			o_sample_en		: in  std_logic;
+			
+			o_locked			: out std_logic;
+			o_ratio			: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
+			o_ratio_en		: out std_logic
+		);
+	end component reg_ratio;
+	
+	component reg_average is
+		generic (
+			REG_AVE_WIDTH	: integer range 2 to 6
+		);
+		port (
+			clk				: in  std_logic;
+			ptr_rst			: in  std_logic;
+			
+			ratio				: in  unsigned( 23 downto 0 );
+			ratio_en			: in  std_logic;
+			
+			ave				: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
+			ave_en			: out std_logic
+		);
+	end component reg_average;
+	
+	component reg_count is
+		generic (
+			REG_CNT_WIDTH	: integer range 2 to 6
+		);
+		port (
+			clk				: in  std_logic;
+			rst				: in  std_logic;
+			
+			i_sample_en		: in  std_logic;
+			i_reg_ack		: in  std_logic;
+			o_reg				: out unsigned( 18 downto 0 );
+			o_reg_en			: out std_logic
+		);
+	end component reg_count;
 begin
 	o_locked <= locked;
 	
@@ -136,8 +182,6 @@ begin
 		)
 		port map (
 			clk				=> clk,
-			rst				=> rst,
-			
 			ptr_rst			=> ptr_rst,
 			
 			ratio				=> ave_in,
@@ -182,7 +226,7 @@ entity reg_ratio is
 		clk				: in  std_logic;
 		rst				: in  std_logic;
 		
-		i_fifo_level	: in  unsigned( 14 downto 0 ); -- 7.8
+		i_fifo_level	: in  unsigned( 14 downto 0 );
 		i_ratio			: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
 		i_ratio_en		: in  std_logic;
 		o_sample_en		: in  std_logic;
@@ -194,83 +238,57 @@ entity reg_ratio is
 end reg_ratio;
 
 architecture rtl of reg_ratio is
-	constant FIFO_SET_PT		: integer := 256 * 16;
-	constant THRESHOLD_LOCK	: integer :=  32 * 16;
-	constant THRESHOLD_VARI	: integer := 128 * 16;
+	constant FIFO_SET_PT		: integer := 2**12;
+	constant THRESHOLD_LOCK	: integer := 0;
+	constant THRESHOLD_VARI	: integer := 2** 9;
 	
-	signal ratio_buf		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	signal err_term		: unsigned( 14 downto 0 ) := ( others => '0' );
-	signal err_mag			: unsigned( 14 downto 0 ) := ( others => '0' );
-	signal err_sign		: std_logic := '0';
+	signal err_ptr			: unsigned( 14 downto 0 ) := ( others => '0' );
+	signal err_track		: unsigned( 15 downto 0 ) := ( others => '0' );
 	
 	signal sum_vari		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	signal sum_lock		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	
 	signal locked			: std_logic := '0';
 	signal reg_ratio		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
-	
-	signal lock_en			: std_logic := '0';
-	signal lock_en_buf	: std_logic_vector( 3 downto 0 ) := ( others => '0' );
 	signal ratio_en_buf	: std_logic_vector( 5 downto 0 ) := ( others => '0' );
+	
+	component ratio_filter is
+		generic (
+			REG_AVE_WIDTH	: integer range 2 to 6 := 4
+		);
+		port (
+			clk			: in  std_logic;
+			rst			: in  std_logic;
+			ctrl_lock	: in  std_logic;
+			
+			o_sample_en	: in  std_logic;
+			
+			i_ratio		: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
+			i_ratio_en	: in  std_logic;
+			
+			o_error		: out unsigned( 15 downto 0 );
+			o_ratio		: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
+			o_ratio_en	: out std_logic
+		);
+	end component ratio_filter;
 begin
 
 	o_ratio  <= reg_ratio;
 	o_locked <= locked;
-
-	reg_ratio_process : process( clk )
-	begin
-		if rising_edge( clk ) then
-			o_ratio_en <= ratio_en_buf( 5 );
-			if rst = '1' then
-				reg_ratio <= ( others => '0' );
-				o_ratio_en <= '0';
-			elsif ratio_en_buf( 5 ) = '1' then
-				reg_ratio <= sum_vari;
-				if locked = '1' then
-					reg_ratio <= sum_lock;
-				end if;
-			end if;
-		end if;
-	end process reg_ratio_process;
-	
-	ratio_buf_process : process( clk )
-	begin
-		if rising_edge( clk ) then
-			if rst = '1' then
-				ratio_buf <= ( others => '0' );
-				ratio_en_buf <= ( others => '0' );
-			else
-				ratio_en_buf <= ratio_en_buf( 4 downto 0 ) & i_ratio_en;
-				
-				if i_ratio_en = '1' then
-					ratio_buf <= i_ratio;
-				end if;
-			end if;
-		end if;
-	end process ratio_buf_process;
 	
 	lock_process : process( clk )
 	begin
 		if rising_edge( clk ) then
 			if rst = '1' then
-				lock_en_buf <= ( others => '0' );
-				lock_en <= '0';
 				locked <= '0';
-			else
-				if err_mag < THRESHOLD_LOCK and ratio_buf >= 1024 then
-					lock_en <= '1';
-				elsif o_sample_en = '1' then
-					lock_en <= '0';
-				end if;
-				
-				if i_ratio_en = '1' then
-					lock_en_buf <= lock_en_buf( 2 downto 0 ) & lock_en;
-				end if;
-				
-				if err_mag > THRESHOLD_VARI then
-					locked <= '0';
-				elsif lock_en & lock_en_buf = "11111" then
+			elsif i_ratio_en = '1' then
+				if err_track <= THRESHOLD_LOCK and reg_ratio >= 512 then
 					locked <= '1';
+				end if;
+				
+				if locked = '1' and err_ptr > THRESHOLD_VARI then
+					locked <= '0';
 				end if;
 			end if;
 		end if;
@@ -284,110 +302,31 @@ begin
 	err_mag_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			err_sign <= err_term( err_term'length-1 );
-			err_mag <= err_term;
-			if err_term( err_term'length-1 ) = '1' then
-				err_mag <= COMPLEMENT( err_term );
-			end if;
+			err_ptr <= unsigned( abs( signed( err_term ) ) );
 		end if;
 	end process err_mag_process;
 	
 	-------------------------------------------------------------------------
-	-- Variable rate error calculations
+	-- Ramp Generator
 	-------------------------------------------------------------------------
-	VARI_ERROR_BLOCK : block
-		constant VARI_DEADZONE : natural range 0 to 4 := 0;
-		constant VARI_GAIN_LOG : natural range 0 to 4 := 0;
-	
-		signal vari_gain		: unsigned(  2 downto 0 ) := ( others => '0' );
-		signal err_vari_tmp	: unsigned( 19 downto 0 ) := ( others => '0' );
-		signal err_vari_mag	: unsigned( 19 downto 0 ) := ( others => '0' );
-	begin
-		
-		vari_gain_process : process( err_mag )
-			variable gate : std_logic;
-		begin
-			for i in 2 downto 0 loop
-				gate := err_mag( err_mag'length-1 );
-				for j in err_mag'length-2 downto i+3 loop
-					gate := gate or err_mag( j );
-				end loop;
-				vari_gain( i ) <= gate;
-			end loop;
-		end process vari_gain_process;
-		
-		err_vari_tmp <= RESIZE( err_mag, err_vari_tmp'length ) sll ( to_integer( vari_gain ) + VARI_GAIN_LOG )
-							 when ( err_mag > VARI_DEADZONE ) 
-							 else ( others => '0' );
-		
-		clock_process : process( clk )
-		begin
-			if rising_edge( clk ) then
-				err_vari_mag <= err_vari_tmp;
-			end if;
-		end process clock_process;
-		
-		sum_vari <= ( ratio_buf + err_vari_mag ) when err_sign = '1' 
-						else ratio_buf - err_vari_mag;
-		
-	end block VARI_ERROR_BLOCK;
-	
-	-------------------------------------------------------------------------
-	-- Locked rate error calculations
-	-------------------------------------------------------------------------
-	LOCK_ERROR_BLOCK : block
-		constant LOCK_SLEW		: integer range 0 to 31 :=  1;
-		constant LOCK_DEADZONE	: integer range 0 to  4 :=  2;
-		
-		signal err_slew	: unsigned(  4 downto 0 ) := ( others => '0' );
-		signal err_buf		: unsigned( 14 downto 0 ) := ( others => '0' );
-	begin
-		
-		clock_process : process( clk )
-		begin
-			if rising_edge( clk ) then
-				
-				-- *******************************************************
-				-- ** 1st cycle after input sample
-				-- ** - err_buf
-				-- *******************************************************
-				if ratio_en_buf( 1 ) = '1' then
-					err_buf <= ( others => '0' );
-					if err_mag > LOCK_DEADZONE then
-						err_buf <= err_mag - LOCK_DEADZONE;
-					end if;
-				end if;
-				
-				-- *******************************************************
-				-- ** 2nd cycle after input sample
-				-- ** - err_slew
-				-- *******************************************************
-				if ratio_en_buf( 2 ) = '1' then
-					err_slew <= err_buf( err_slew'range );
-					if err_buf > LOCK_SLEW then
-						err_slew <= to_unsigned( LOCK_SLEW, err_slew'length );
-					end if;
-				end if;
-				
-				-- *******************************************************
-				-- ** 3rd cycle after input sample
-				-- ** - err_inc
-				-- ** - err_dec
-				-- *******************************************************
-				if ratio_en_buf( 3 ) = '1' then
-					sum_lock <= reg_ratio;
-					if err_slew /= 0 then
-						if ( reg_ratio < ratio_buf ) then
-							sum_lock <= reg_ratio + err_slew;
-						elsif ( reg_ratio > ratio_buf ) then
-							sum_lock <= reg_ratio - err_slew;
-						end if;
-					end if;
-				end if;
-			end if;
-		end process clock_process;
-		
-	end block LOCK_ERROR_BLOCK;
+	INST_RAMP : ratio_filter
+		generic map (
+			REG_AVE_WIDTH	=> REG_AVE_WIDTH
+		)
+		port map (
+			clk			=> clk,
+			rst			=> rst,
+			ctrl_lock	=> locked,
+			
+			o_sample_en	=> o_sample_en,
+			
+			i_ratio		=> i_ratio,
+			i_ratio_en	=> i_ratio_en,
+			
+			o_error		=> err_track,
+			o_ratio		=> reg_ratio,
+			o_ratio_en	=> o_ratio_en
+		);
 end rtl;
 
 library ieee;
@@ -400,8 +339,6 @@ entity reg_average is
 	);
 	port (
 		clk			: in  std_logic;
-		rst			: in  std_logic;
-		
 		ptr_rst		: in  std_logic;
 		
 		ratio			: in  unsigned( 23 downto 0 );
@@ -438,7 +375,7 @@ begin
 		end if;
 	end process ptr_reset_process;
 	
-	prelaod_process : process( clk )
+	preload_process : process( clk )
 	begin
 		if rising_edge( clk ) then
 			if preload = '0' and ptr_reset( 1 ) = '1' then
@@ -455,7 +392,7 @@ begin
 				preload <= '1';
 			end if;
 		end if;
-	end process prelaod_process;
+	end process preload_process;
 	
 	data_process : process( clk )
 	begin
@@ -562,4 +499,172 @@ begin
 		end if;
 	end process state_process;
 
+end rtl;
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity ratio_filter is
+	generic (
+		REG_AVE_WIDTH	: integer range 2 to 6 := 4
+	);
+	port (
+		clk			: in  std_logic;
+		rst			: in  std_logic;
+		ctrl_lock	: in  std_logic;
+		
+		o_sample_en	: in  std_logic;
+		
+		i_ratio		: in  unsigned( 23 + REG_AVE_WIDTH downto 0 );
+		i_ratio_en	: in  std_logic;
+		
+		o_error		: out unsigned( 15 downto 0 ) := ( others => '0' );
+		o_ratio		: out unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
+		o_ratio_en	: out std_logic := '0'
+	);
+end ratio_filter;
+
+architecture rtl of ratio_filter is
+	
+	signal reg_ratio		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
+	signal reg_latch		: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
+	alias  reg_latch_s	: unsigned( 15 downto 0 ) is reg_latch( 23 + REG_AVE_WIDTH downto 8 + REG_AVE_WIDTH );
+	
+	signal reg_latch_en	: std_logic := '0';
+	signal err_abs			: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
+	signal lpf_in			: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
+	signal lpf_in_en		: std_logic := '0';
+	signal lpf_out			: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
+	alias  lpf_out_s		: unsigned( 15 downto 0 ) is lpf_out( 23 + REG_AVE_WIDTH downto 8 + REG_AVE_WIDTH );
+	signal lpf_out_en		: std_logic := '0';
+	
+	component lpf is
+		generic (
+			LPF_WIDTH	: natural range 16 to 32 := 24 + REG_AVE_WIDTH
+		);
+		port (
+			clk			: in  std_logic;
+			rst			: in  std_logic;
+			ctrl_lock	: in  std_logic;
+			
+			lpf_in		: in  unsigned( LPF_WIDTH-1 downto 0 );
+			lpf_in_en	: in  std_logic;
+			
+			lpf_out		: out unsigned( LPF_WIDTH-1 downto 0 );
+			lpf_out_en	: out std_logic
+		);
+	end component lpf;
+	
+begin
+
+	o_ratio <= lpf_out;
+	o_ratio_en <= lpf_out_en;
+	
+	reg_latch_en <= '1' when err_abs > x"24" else '0';
+	
+	input_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if rst = '1' then
+				reg_ratio <= ( others => '0' );
+			elsif i_ratio_en = '1' then
+				reg_ratio <= i_ratio;
+			end if;
+			
+			if rst = '1' then
+				o_error <= ( others => '0' );
+				err_abs <= ( others => '0' );
+			else
+				o_error <= unsigned( abs( signed( reg_latch_s - lpf_out_s ) ) );
+				err_abs <= unsigned( abs( signed( reg_ratio   - reg_latch ) ) );
+			end if;
+		end if;
+	end process input_process;
+	
+	latch_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if rst = '1' then
+				reg_latch <= ( others => '0' );
+			elsif reg_latch_en = '1' then
+				reg_latch <= reg_ratio;
+			end if;
+		end if;
+	end process latch_process;
+	
+	lpf_input_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			lpf_in_en <= o_sample_en;
+			if rst = '1' then
+				lpf_in <= ( others => '0' );
+				lpf_in_en <= '0';
+			elsif o_sample_en = '1' then
+				lpf_in <= reg_latch;
+			end if;
+		end if;
+	end process lpf_input_process;
+	
+	INST_LPF : lpf
+		port map (
+			clk			=> clk,
+			rst			=> rst,
+			ctrl_lock	=> ctrl_lock,
+			
+			lpf_in		=> lpf_in,
+			lpf_in_en	=> lpf_in_en,
+			
+			lpf_out		=> lpf_out,
+			lpf_out_en	=> lpf_out_en
+		);
+	
+end rtl;
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity lpf is
+	generic (
+		LPF_WIDTH	: natural range 16 to 42 := 17
+	);
+	port (
+		clk			: in  std_logic;
+		rst			: in  std_logic;
+		ctrl_lock	: in  std_logic;
+		
+		lpf_in		: in  unsigned( LPF_WIDTH-1 downto 0 );
+		lpf_in_en	: in  std_logic;
+		
+		lpf_out		: out unsigned( LPF_WIDTH-1 downto 0 ) := ( others => '0' );
+		lpf_out_en	: out std_logic := '0'
+	);
+end lpf;
+
+architecture rtl of lpf is
+	signal reg_add		: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
+	signal reg_shift	: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
+	signal reg_out		: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
+begin
+	
+	lpf_out <= unsigned( reg_out( LPF_WIDTH+10 downto 11 ) );
+	reg_add <= signed( '0' & lpf_in & b"000_0000_0000" ) - reg_out;
+	
+	reg_shift <= shift_right( reg_add,  9 ) when ctrl_lock = '0' else
+					 shift_right( reg_add, 11 );
+	
+	integrator_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			lpf_out_en <= lpf_in_en;
+			if rst = '1' then
+				lpf_out_en <= '0';
+				reg_out <= ( others => '0' );
+			elsif lpf_in_en = '1' then
+				reg_out <= reg_out + reg_shift;
+			end if;
+		end if;
+	end process integrator_process;
+	
 end rtl;
