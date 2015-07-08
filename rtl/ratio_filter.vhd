@@ -628,8 +628,8 @@ entity lpf is
 end lpf;
 
 architecture rtl of lpf is
-	constant SRL_UNLOCKED : integer range 7 to 23 := 7;
-	constant SRL_LOCKED	 : integer range 7 to 23 := 9;
+	constant SRL_UNLOCKED : integer range 7 to 23 := 11;
+	constant SRL_LOCKED	 : integer range 7 to 23 := 13;
 
 	signal reg_add		: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
 	signal reg_shift	: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );

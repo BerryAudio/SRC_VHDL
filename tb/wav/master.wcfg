@@ -27,7 +27,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="29" />
+   <WVObjectSize size="30" />
    <wvobject fp_name="/audio_tb/clk_24" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk_24</obj_property>
       <obj_property name="ObjectShortName">clk_24</obj_property>
@@ -314,6 +314,11 @@
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/o_ratio" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">o_ratio[23:0]</obj_property>
       <obj_property name="ObjectShortName">o_ratio[23:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/o_ratio" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">o_ratio[25:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ratio[25:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/moving_sum" type="array" db_ref_id="1">
