@@ -3,11 +3,10 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/home/charlie/projects/SRC_PRJ/regulator_tb_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/charlie/projects/SRC_PRJ_NEW/regulator_tb_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="numeric_std" />
             <top_module name="regulator_tb" />
-            <top_module name="src" />
             <top_module name="std_logic_1164" />
          </top_modules>
       </db_ref>
@@ -45,14 +44,37 @@
       <obj_property name="label">COUNTER</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
-      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/o_reg" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">o_reg[18:0]</obj_property>
-         <obj_property name="ObjectShortName">o_reg[18:0]</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/o_cnt" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">o_cnt[19:0]</obj_property>
+         <obj_property name="ObjectShortName">o_cnt[19:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
-      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/o_reg_en" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">o_reg_en</obj_property>
-         <obj_property name="ObjectShortName">o_reg_en</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/clock_count" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">clock_count[19:0]</obj_property>
+         <obj_property name="ObjectShortName">clock_count[19:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/frame_buf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">frame_buf[19:0]</obj_property>
+         <obj_property name="ObjectShortName">frame_buf[19:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/frame_count" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">frame_count[5:0]</obj_property>
+         <obj_property name="ObjectShortName">frame_count[5:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/frame_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">frame_en</obj_property>
+         <obj_property name="ObjectShortName">frame_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/cnt_rst" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">cnt_rst</obj_property>
+         <obj_property name="ObjectShortName">cnt_rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/i_locked" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">i_locked</obj_property>
+         <obj_property name="ObjectShortName">i_locked</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group29" type="group">
@@ -67,19 +89,14 @@
          <obj_property name="ElementShortName">preload_in</obj_property>
          <obj_property name="ObjectShortName">preload_in</obj_property>
       </wvobject>
-      <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/ratio" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">ratio[23:0]</obj_property>
-         <obj_property name="ObjectShortName">ratio[23:0]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/moving_sum" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">moving_sum[29:0]</obj_property>
-         <obj_property name="ObjectShortName">moving_sum[29:0]</obj_property>
+         <obj_property name="ElementShortName">moving_sum[25:0]</obj_property>
+         <obj_property name="ObjectShortName">moving_sum[25:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/ave" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">ave[29:0]</obj_property>
-         <obj_property name="ObjectShortName">ave[29:0]</obj_property>
+         <obj_property name="ElementShortName">ave[25:0]</obj_property>
+         <obj_property name="ObjectShortName">ave[25:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_AVERAGE/ave_en" type="logic" db_ref_id="1">
@@ -422,42 +439,28 @@
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/i_ratio" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">i_ratio[29:0]</obj_property>
-         <obj_property name="ObjectShortName">i_ratio[29:0]</obj_property>
+         <obj_property name="ElementShortName">i_ratio[25:0]</obj_property>
+         <obj_property name="ObjectShortName">i_ratio[25:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/o_ratio" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">o_ratio[29:0]</obj_property>
-         <obj_property name="ObjectShortName">o_ratio[29:0]</obj_property>
+         <obj_property name="ElementShortName">o_ratio[25:0]</obj_property>
+         <obj_property name="ObjectShortName">o_ratio[25:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/o_ratio_en" type="logic" db_ref_id="1">
          <obj_property name="ElementShortName">o_ratio_en</obj_property>
          <obj_property name="ObjectShortName">o_ratio_en</obj_property>
       </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/err_track" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">err_track[15:0]</obj_property>
+         <obj_property name="ObjectShortName">err_track[15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/err_term" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">err_term[10:0]</obj_property>
          <obj_property name="ObjectShortName">err_term[10:0]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/err_sign" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">err_sign</obj_property>
-         <obj_property name="ObjectShortName">err_sign</obj_property>
-      </wvobject>
-      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/err_mag" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">err_mag[10:0]</obj_property>
-         <obj_property name="ObjectShortName">err_mag[10:0]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/lock_error_block/err_slew" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">err_slew[3:0]</obj_property>
-         <obj_property name="ObjectShortName">err_slew[3:0]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
-      </wvobject>
-      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/lock_error_block/err_buf" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">err_buf[10:0]</obj_property>
-         <obj_property name="ObjectShortName">err_buf[10:0]</obj_property>
-         <obj_property name="Radix">HEXRADIX</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group70" type="group">
@@ -469,8 +472,8 @@
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/rb/buf_ptr" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">buf_ptr[27:0]</obj_property>
-         <obj_property name="ObjectShortName">buf_ptr[27:0]</obj_property>
+         <obj_property name="ElementShortName">buf_ptr[25:0]</obj_property>
+         <obj_property name="ObjectShortName">buf_ptr[25:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/rb/wr_ptr" type="array" db_ref_id="1">
@@ -484,8 +487,8 @@
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/rb/rd_ptr" type="array" db_ref_id="1">
-         <obj_property name="ElementShortName">rd_ptr[36:0]</obj_property>
-         <obj_property name="ObjectShortName">rd_ptr[36:0]</obj_property>
+         <obj_property name="ElementShortName">rd_ptr[32:0]</obj_property>
+         <obj_property name="ObjectShortName">rd_ptr[32:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
    </wvobject>

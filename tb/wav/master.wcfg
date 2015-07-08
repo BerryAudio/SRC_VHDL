@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/home/charlie/projects/SRC_PRJ/audio_tb_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/charlie/projects/SRC_PRJ_NEW/audio_tb_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="audio" />
             <top_module name="audio_tb" />
@@ -27,7 +27,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="32" />
+   <WVObjectSize size="29" />
    <wvobject fp_name="/audio_tb/clk_24" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk_24</obj_property>
       <obj_property name="ObjectShortName">clk_24</obj_property>
@@ -306,42 +306,29 @@
       <obj_property name="ElementShortName">i_sample_en</obj_property>
       <obj_property name="ObjectShortName">i_sample_en</obj_property>
    </wvobject>
-   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/err_sign" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">err_sign</obj_property>
-      <obj_property name="ObjectShortName">err_sign</obj_property>
-   </wvobject>
-   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/err_mag" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">err_mag[14:0]</obj_property>
-      <obj_property name="ObjectShortName">err_mag[14:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/lock_error_block/err_slew" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">err_slew[4:0]</obj_property>
-      <obj_property name="ObjectShortName">err_slew[4:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/i_ratio" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">i_ratio[29:0]</obj_property>
-      <obj_property name="ObjectShortName">i_ratio[29:0]</obj_property>
+      <obj_property name="ElementShortName">i_ratio[23:0]</obj_property>
+      <obj_property name="ObjectShortName">i_ratio[23:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/o_ratio" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">o_ratio[29:0]</obj_property>
-      <obj_property name="ObjectShortName">o_ratio[29:0]</obj_property>
+      <obj_property name="ElementShortName">o_ratio[23:0]</obj_property>
+      <obj_property name="ObjectShortName">o_ratio[23:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_COUNTER/o_reg" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">o_reg[18:0]</obj_property>
-      <obj_property name="ObjectShortName">o_reg[18:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_COUNTER/o_reg_en" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">o_reg_en</obj_property>
-      <obj_property name="ObjectShortName">o_reg_en</obj_property>
    </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_AVERAGE/moving_sum" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">moving_sum[29:0]</obj_property>
-      <obj_property name="ObjectShortName">moving_sum[29:0]</obj_property>
+      <obj_property name="ElementShortName">moving_sum[23:0]</obj_property>
+      <obj_property name="ObjectShortName">moving_sum[23:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/err_track" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">err_track[15:0]</obj_property>
+      <obj_property name="ObjectShortName">err_track[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/err_term" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">err_term[10:0]</obj_property>
+      <obj_property name="ObjectShortName">err_term[10:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>

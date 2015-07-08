@@ -22,7 +22,6 @@ ARCHITECTURE behavior OF regulator_tb IS
 
  	--Outputs
    signal o_ratio : unsigned( 25 downto 0 );
-	signal ratio : unsigned( 25 downto 0 );
    signal o_locked : std_logic;
    signal o_ratio_en : std_logic;
    signal div_en : std_logic;
