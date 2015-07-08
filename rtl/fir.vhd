@@ -46,10 +46,10 @@ entity fir is
 		o_mac				: in  mac_o;
 		
 		-- divider interfaces
-		i_div_remainder: in  unsigned( 26 downto 0 );
+		i_div_remainder: in  unsigned( 25 downto 0 );
 		o_div_en			: out std_logic := '0';
-		o_div_dividend	: out unsigned( 26 downto 0 ) := to_unsigned( 2**25, 27 );
-		o_div_divisor	: out unsigned( 26 downto 0 ) := ( others => '0' )
+		o_div_dividend	: out unsigned( 25 downto 0 ) := ( 25 => '1', others => '0' );
+		o_div_divisor	: out unsigned( 25 downto 0 ) := ( others => '0' )
 	);
 end fir;
 
@@ -66,7 +66,7 @@ architecture rtl of fir is
 begin
 	-- start the division as soon as the FIR
 	-- filter is enabled
-	o_div_divisor <= unsigned( fbuf_accum( 31 downto 5 ) );
+	o_div_divisor <= unsigned( fbuf_accum( 30 downto 5 ) );
 	o_div_en <= fir_en;
 	
 	-- Ring Buffer Synchronisation
@@ -88,7 +88,7 @@ begin
 	
 	
 	mac_data <= fbuf_data  when fir_run = '1' else 
-					signed( i_div_remainder ) & b"0000_0000";
+					signed( '0' & i_div_remainder ) & b"0000_0000";
 	i_mac.data01 <= mac_data;
 	i_mac.data11 <= mac_data;
 	

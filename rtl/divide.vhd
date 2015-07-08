@@ -9,22 +9,22 @@ entity div_mux is
 		sel			: in  std_logic;
 		
 		i0_en			: in  std_logic;
-		i0_divisor	: in  unsigned( 26 downto 0 );
-		i0_dividend	: in  unsigned( 26 downto 0 );
+		i0_divisor	: in  unsigned( 25 downto 0 );
+		i0_dividend	: in  unsigned( 25 downto 0 );
 		
 		i1_en			: in  std_logic;
-		i1_divisor	: in  unsigned( 26 downto 0 );
-		i1_dividend	: in  unsigned( 26 downto 0 );
+		i1_divisor	: in  unsigned( 25 downto 0 );
+		i1_dividend	: in  unsigned( 25 downto 0 );
 		
 		o_busy		: out std_logic := '0';
-		o_remainder	: out unsigned( 26 downto 0 ) := ( others => '0' )
+		o_remainder	: out unsigned( 25 downto 0 ) := ( others => '0' )
 	);
 end entity div_mux;
 
 architecture rtl of div_mux is
 	signal div_en			: std_logic := '0';
-	signal div_divisor	: unsigned( 26 downto 0 ) := ( others => '0' );
-	signal div_dividend	: unsigned( 26 downto 0 ) := ( others => '0' );
+	signal div_divisor	: unsigned( 25 downto 0 ) := ( others => '0' );
+	signal div_dividend	: unsigned( 25 downto 0 ) := ( others => '0' );
 	
 	component div is 
 		port (
@@ -32,11 +32,11 @@ architecture rtl of div_mux is
 			rst			: in  std_logic;
 			
 			i_en			: in  std_logic;
-			i_divisor	: in  unsigned( 26 downto 0 );
-			i_dividend	: in  unsigned( 26 downto 0 );
+			i_divisor	: in  unsigned( 25 downto 0 );
+			i_dividend	: in  unsigned( 25 downto 0 );
 			
 			o_busy		: out std_logic;
-			o_remainder	: out unsigned( 26 downto 0 )
+			o_remainder	: out unsigned( 25 downto 0 )
 		);
 	end component div;
 begin
@@ -80,33 +80,28 @@ entity div is
 		rst			: in  std_logic;
 		
 		i_en			: in  std_logic;
-		i_divisor	: in  unsigned( 26 downto 0 );
-		i_dividend	: in  unsigned( 26 downto 0 );
+		i_divisor	: in  unsigned( 25 downto 0 );
+		i_dividend	: in  unsigned( 25 downto 0 );
 		
 		o_busy		: out std_logic := '0';
-		o_remainder	: out unsigned( 26 downto 0 ) := ( others => '0' )
+		o_remainder	: out unsigned( 25 downto 0 ) := ( others => '0' )
 	);
 end entity div;
 
 architecture rtl of div is
-	constant R_COUNT_MAX : unsigned(  5 downto 0 ) := b"11_0110";
+	constant R_COUNT_MAX : unsigned( 5 downto 0 ) := b"11_0110";
 
 	signal a				 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal b				 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal acc			 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal add_op_u	 : unsigned(  0 downto 0 ) := ( others => '0' );
 	alias  add_op		 : std_logic is add_op_u( 0 );
-	signal a_neg		 : std_logic := '0';
-	signal b_neg		 : std_logic := '0';
 	signal en			 : std_logic := '0';
-	signal result_neg	 : std_logic := '0';
 	signal sum			 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal count		 : unsigned(  5 downto 0 ) := ( others => '0' );
 	signal result		 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal add_op_rep	 : unsigned( 26 downto 0 ) := ( others => '0' );
 begin
-
-	result_neg <= a_neg XOR b_neg;
 
 	add_op_rep <= ( others => NOT add_op );
 
@@ -118,17 +113,11 @@ begin
 		if rising_edge( clk ) then
 			if (rst = '1') then
 				a <= ( others => '0' );
-				a_neg <= '0';
 			elsif (i_en = '1') then
 				if i_divisor( 25 downto 0 ) = 0 then
-					a_neg <= '0';
 					a <= ( 26 => '0', others => '1' );
-				elsif i_divisor( 26 ) = '1' then
-					a_neg <= '1';
-					a <= '0' & ( not( i_divisor( 25 downto 0 ) ) + 1 );
 				else 
-					a_neg <= '0';
-					a <= i_divisor;
+					a <= '0' & i_divisor;
 				end if;
 			end if;
 		end if;
@@ -140,16 +129,10 @@ begin
 		if rising_edge( clk ) then
 			if rst = '1' then
 				b <= ( others => '0' );
-				b_neg <= '0';
 			elsif i_en = '1' then
 				if i_dividend( 25 downto 0 ) = 0 then
-					b_neg <= '0';
 					b <= ( others => '0' );
-				elsif i_dividend( 26 ) = '1' then
-					b_neg <= '1';
-					b <= ( not( i_dividend( 25 downto 0 ) ) + 1 ) & '0';
 				else 
-					b_neg <= '0';
 					b <= i_dividend( 25 downto 0 ) & '0';
 				end if;
 			else
@@ -223,11 +206,7 @@ begin
 			if rst = '1' then
 				o_remainder <= ( others => '0' );
 			elsif count = R_COUNT_MAX then
-				if result_neg = '1' then
-					o_remainder <= '1' & ( not( result( 26 downto 1 ) ) + 1 );
-				else
-					o_remainder <= '0' &        result( 26 downto 1 );
-				end if;
+				o_remainder <= result( 26 downto 1 );
 			end if;
 		end if;
 	end process;

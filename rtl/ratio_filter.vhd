@@ -26,11 +26,11 @@ entity regulator_top is
 		
 		-- shared divider i/o
 		div_busy			: in  std_logic;
-		div_remainder	: in  unsigned( 26 downto 0 );
+		div_remainder	: in  unsigned( 25 downto 0 );
 		
 		div_en			: out std_logic := '0';
-		div_divisor		: out unsigned( 26 downto 0 ) := ( others => '0' );
-		div_dividend	: out unsigned( 26 downto 0 ) := to_unsigned( CLOCK_COUNT * 16 * 2**REG_AVE_WIDTH, 27 )
+		div_divisor		: out unsigned( 25 downto 0 ) := ( others => '0' );
+		div_dividend	: out unsigned( 25 downto 0 ) := to_unsigned( CLOCK_COUNT * 16 * 2**REG_AVE_WIDTH, 26 )
 		
 	);
 end regulator_top;
@@ -135,7 +135,7 @@ begin
 					
 					when S2_DIVIDE_WAIT =>
 						if div_busy = '0' then
-							o_ratio <= div_remainder( 25 downto 0 );
+							o_ratio <= div_remainder;
 							o_ratio_en <= '1';
 							state <= S0_WAIT;
 						end if;
@@ -628,8 +628,8 @@ entity lpf is
 end lpf;
 
 architecture rtl of lpf is
-	constant SRL_UNLOCKED : integer range 7 to 23 := 11;
-	constant SRL_LOCKED	 : integer range 7 to 23 := 13;
+	constant SRL_UNLOCKED : integer range 7 to 23 := 7;
+	constant SRL_LOCKED	 : integer range 7 to 23 := 9;
 
 	signal reg_add		: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
 	signal reg_shift	: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );

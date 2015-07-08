@@ -94,13 +94,13 @@ architecture rtl of src_top is
 	-- Divider signals
 	signal div_sel				: std_logic := '0';
 	signal div0_en				: std_logic := '0';
-	signal div0_divisor		: unsigned( 26 downto 0 ) := ( others => '0' );
-	signal div0_dividend		: unsigned( 26 downto 0 ) := ( others => '0' );
+	signal div0_divisor		: unsigned( 25 downto 0 ) := ( others => '0' );
+	signal div0_dividend		: unsigned( 25 downto 0 ) := ( others => '0' );
 	signal div1_en				: std_logic := '0';
-	signal div1_divisor		: unsigned( 26 downto 0 ) := ( others => '0' );
-	signal div1_dividend		: unsigned( 26 downto 0 ) := ( others => '0' );
+	signal div1_divisor		: unsigned( 25 downto 0 ) := ( others => '0' );
+	signal div1_dividend		: unsigned( 25 downto 0 ) := ( others => '0' );
 	signal div_busy			: std_logic := '0';
-	signal div_remainder		: unsigned( 26 downto 0 ) := ( others => '0' );
+	signal div_remainder		: unsigned( 25 downto 0 ) := ( others => '0' );
 begin
 
 	o_data_en	<= dither_data_en;

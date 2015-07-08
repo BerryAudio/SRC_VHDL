@@ -81,11 +81,11 @@ package src is
 			o_ratio_en		: out std_logic;
 		
 			div_busy			: in  std_logic;
-			div_remainder	: in  unsigned( 26 downto 0 );
+			div_remainder	: in  unsigned( 25 downto 0 );
 			
 			div_en			: out std_logic;
-			div_divisor		: out unsigned( 26 downto 0 );
-			div_dividend	: out unsigned( 26 downto 0 )
+			div_divisor		: out unsigned( 25 downto 0 );
+			div_dividend	: out unsigned( 25 downto 0 )
 		);
 	end component regulator_top;
 	
@@ -118,10 +118,10 @@ package src is
 			i_mac2			: out mac_i;
 			
 			-- mac signals
-			i_div_remainder: in  unsigned( 26 downto 0 );
+			i_div_remainder: in  unsigned( 25 downto 0 );
 			o_div_en			: out std_logic := '0';
-			o_div_dividend	: out unsigned( 26 downto 0 );
-			o_div_divisor	: out unsigned( 26 downto 0 )
+			o_div_dividend	: out unsigned( 25 downto 0 );
+			o_div_divisor	: out unsigned( 25 downto 0 )
 		);
 	end component filter_top;
 	
@@ -275,10 +275,10 @@ package src is
 			o_mac				: in  mac_o;
 			
 			-- divider interfaces
-			i_div_remainder: in  unsigned( 26 downto 0 );
+			i_div_remainder: in  unsigned( 25 downto 0 );
 			o_div_en			: out std_logic;
-			o_div_dividend	: out unsigned( 26 downto 0 );
-			o_div_divisor	: out unsigned( 26 downto 0 )
+			o_div_dividend	: out unsigned( 25 downto 0 );
+			o_div_divisor	: out unsigned( 25 downto 0 )
 		);
 	end component fir;
 	
@@ -447,31 +447,17 @@ package src is
 			sel			: in  std_logic;
 			
 			i0_en			: in  std_logic;
-			i0_divisor	: in  unsigned( 26 downto 0 );
-			i0_dividend	: in  unsigned( 26 downto 0 );
+			i0_divisor	: in  unsigned( 25 downto 0 );
+			i0_dividend	: in  unsigned( 25 downto 0 );
 			
 			i1_en			: in  std_logic;
-			i1_divisor	: in  unsigned( 26 downto 0 );
-			i1_dividend	: in  unsigned( 26 downto 0 );
+			i1_divisor	: in  unsigned( 25 downto 0 );
+			i1_dividend	: in  unsigned( 25 downto 0 );
 			
 			o_busy		: out std_logic;
-			o_remainder	: out unsigned( 26 downto 0 )
+			o_remainder	: out unsigned( 25 downto 0 )
 		);
 	end component div_mux;
-	
-	component div is 
-		port (
-			clk			: in  std_logic;
-			rst			: in  std_logic;
-			
-			i_en			: in  std_logic;
-			i_divisor	: in  unsigned( 26 downto 0 );
-			i_dividend	: in  unsigned( 26 downto 0 );
-			
-			o_busy		: out std_logic;
-			o_remainder	: out unsigned( 26 downto 0 )
-		);
-	end component div;
 
 	--******************************************************************
 	-- function and procedure definitions

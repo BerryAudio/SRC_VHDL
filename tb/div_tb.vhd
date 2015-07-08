@@ -41,10 +41,10 @@ ARCHITECTURE behavior OF div_tb IS
          clk : IN  std_logic;
          rst : IN  std_logic;
          i_en : IN  std_logic;
-         i_divisor : IN  unsigned(26 downto 0);
-         i_dividend : IN  unsigned(26 downto 0);
+         i_divisor : IN  unsigned(25 downto 0);
+         i_dividend : IN  unsigned(25 downto 0);
          o_busy : OUT  std_logic;
-         o_remainder : OUT  unsigned(26 downto 0)
+         o_remainder : OUT  unsigned(25 downto 0)
         );
     END COMPONENT;
     
@@ -53,12 +53,12 @@ ARCHITECTURE behavior OF div_tb IS
    signal clk : std_logic := '0';
    signal rst : std_logic := '0';
    signal i_en : std_logic := '0';
-   signal i_divisor : unsigned(26 downto 0) := (others => '0');
-   signal i_dividend : unsigned(26 downto 0) := (others => '0');
+   signal i_divisor : unsigned(25 downto 0) := (others => '0');
+   signal i_dividend : unsigned(25 downto 0) := (others => '0');
 
  	--Outputs
    signal o_busy : std_logic;
-   signal o_remainder : unsigned(26 downto 0);
+   signal o_remainder : unsigned(25 downto 0);
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;
@@ -141,16 +141,6 @@ BEGIN
 		wait until rising_edge( clk );
 		
 		wait until o_busy = '0';
-		
-		i_en <= '1';
-		i_divisor <= to_unsigned( 3, i_divisor'length );
-		i_dividend <= unsigned( to_signed( -1, i_dividend'length ) );
-		wait until rising_edge( clk );
-		
-		i_en <= '0';
-		wait until rising_edge( clk );
-		
-		
       wait for clk_period*10;
 
       -- insert stimulus here 

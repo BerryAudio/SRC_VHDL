@@ -34,10 +34,10 @@ entity filter_top is
 		i_mac2			: out mac_i := mac_i_init;
 		
 		-- divider signals
-		i_div_remainder: in  unsigned( 26 downto 0 );
+		i_div_remainder: in  unsigned( 25 downto 0 );
 		o_div_en			: out std_logic := '0';
-		o_div_dividend	: out unsigned( 26 downto 0 ) := ( others => '0' );
-		o_div_divisor	: out unsigned( 26 downto 0 ) := ( others => '0' )
+		o_div_dividend	: out unsigned( 25 downto 0 ) := ( others => '0' );
+		o_div_divisor	: out unsigned( 25 downto 0 ) := ( others => '0' )
 	);
 end filter_top;
 
