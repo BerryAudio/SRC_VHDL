@@ -26,6 +26,11 @@ architecture rtl of pll_top is
 	signal pll0_clk_o_src	: std_logic := '0';
 	signal pll0_clk_o_out	: std_logic := '0';
 	signal pll0_clk_o_i2s	: std_logic := '0';
+		
+	signal dcm1_clk_fb		: std_logic := '0';
+	signal dcm1_clk_o			: std_logic := '0';
+	signal dcm1_locked		: std_logic := '0';
+	signal dcm1_to_pll1		: std_logic := '0';
 	
 	signal pll1_clk_fb		: std_logic := '0';
 	signal pll1_locked		: std_logic := '0';
@@ -38,7 +43,7 @@ architecture rtl of pll_top is
 begin
 	
 	clk_i2s <= buf_clk_i2s;
-	clk_lock <= pll0_locked and pll1_locked;
+	clk_lock <= pll0_locked and pll1_locked and dcm1_locked;
 	
 	clk_sel_process : process( buf_clk_i2s )
 	begin
@@ -69,6 +74,12 @@ begin
 		port map (
 			I	=> pll0_clk_o_i2s,
 			O	=> buf_clk_i2s_24
+		);
+	
+	INST_BUFG_DCM1_TO_PLL1 : BUFG
+		port map (
+			I	=> dcm1_clk_o,
+			O	=> dcm1_to_pll1
 		);
 	
 	INST_BUFG_PLL1_I2S : BUFG
@@ -119,15 +130,44 @@ begin
 			RST		=> '0'
 	);
 
+	INST_DCM1 : DCM_SP
+		generic map (
+			CLKDV_DIVIDE			 => 2.0,
+			CLKFX_DIVIDE			 => 4,
+			CLKFX_MULTIPLY			 => 7,
+			CLKIN_DIVIDE_BY_2		 => FALSE,
+			CLKIN_PERIOD			 => PLL_PERIOD,
+			CLK_FEEDBACK			 => "1X",
+			DESKEW_ADJUST			 => "SYSTEM_SYNCHRONOUS"
+		)
+		port map (
+			CLK0						 => dcm1_clk_fb,
+			CLK90						 => open,
+			CLK180					 => open,
+			CLK270					 => open,
+			CLK2X						 => open,
+			CLK2X180					 => open,
+			CLKDV						 => open,
+			CLKFX						 => dcm1_clk_o,
+			CLKFX180					 => open,
+			LOCKED					 => dcm1_locked,
+			PSDONE					 => open,
+			STATUS					 => open,
+			CLKFB						 => dcm1_clk_fb,
+			CLKIN						 => pll_clk_in,
+			DSSEN						 => '0',
+			PSCLK						 => '0',
+			PSEN						 => '0',
+			PSINCDEC					 => '0',
+			RST						 => '0'
+		);
+
 	INST_PLL1 : PLL_BASE
 		generic map (
 			BANDWIDTH				 => "OPTIMIZED",
-			CLKFBOUT_MULT			 => 34,
+			CLKFBOUT_MULT			 => 21,
 			CLKFBOUT_PHASE			 => 0.0,
-			CLKIN_PERIOD			 => PLL_PERIOD,
-			
-			CLKOUT0_DIVIDE			 => 37,
-			
+			CLKOUT0_DIVIDE			 => 40,
 			CLK_FEEDBACK			 => "CLKFBOUT",
 			COMPENSATION			 => "DCM2PLL",
 			DIVCLK_DIVIDE			 => 1,
@@ -144,7 +184,7 @@ begin
 			CLKOUT5	=> open,
 			LOCKED	=> pll1_locked,
 			CLKFBIN	=> pll1_clk_fb,
-			CLKIN		=> pll_clk_in,
+			CLKIN		=> dcm1_to_pll1,
 			RST		=> '0'
 	);
 
