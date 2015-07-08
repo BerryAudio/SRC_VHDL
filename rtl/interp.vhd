@@ -14,7 +14,7 @@ entity interpolator is
 		int_fin			: out std_logic := '0';
 		
 		i_phase			: in  unsigned(  5 downto 0 );
-		i_delta			: in  unsigned( 21 downto 0 );
+		i_delta			: in  unsigned( 19 downto 0 );
 		
 		fbuf_en			: out std_logic := '0';
 		fbuf_data		: out signed( 34 downto 0 ) := ( others => '0' );

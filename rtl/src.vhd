@@ -19,7 +19,6 @@ package src is
 	constant NOISE_FILT_WIDTH		: integer range 11 to 34 := 16;
 	
 	constant REG_AVE_WIDTH			: integer range 4 to 6 := 4; -- power of 2
-	constant REG_CNT_WIDTH			: integer range 2 to 6 := 4; -- power of 2
 
 	--******************************************************************
 	-- types
@@ -67,8 +66,7 @@ package src is
 	component regulator_top is
 		generic (
 			CLOCK_COUNT		: integer := 512;
-			REG_AVE_WIDTH	: integer range 2 to 6 := REG_AVE_WIDTH;
-			REG_CNT_WIDTH	: integer range 2 to 6 := REG_CNT_WIDTH
+			REG_AVE_WIDTH	: integer range 2 to 6 := REG_AVE_WIDTH
 		);
 		port (
 			clk				: in  std_logic;
@@ -78,12 +76,12 @@ package src is
 			o_sample_en		: in  std_logic;
 			i_fifo_level	: in  unsigned( 10 downto 0 );
 			
-			o_ratio			: out unsigned( 23 + REG_AVE_WIDTH downto 0 );
+			o_ratio			: out unsigned( 25 downto 0 );
 			o_locked			: out std_logic;
 			o_ratio_en		: out std_logic;
 		
 			div_busy			: in  std_logic;
-			div_remainder	: in  unsigned( 24 downto 0 );
+			div_remainder	: in  unsigned( 26 downto 0 );
 			
 			div_en			: out std_logic;
 			div_divisor		: out unsigned( 26 downto 0 );
@@ -97,7 +95,7 @@ package src is
 			rst			: in  std_logic;
 			
 			i_phase		: in  unsigned(  5 downto 0 );
-			i_delta		: in  unsigned( 21 downto 0 );
+			i_delta		: in  unsigned( 19 downto 0 );
 			i_en			: in  std_logic;
 
 			rd_en			: out std_logic := '0';
@@ -120,7 +118,7 @@ package src is
 			i_mac2			: out mac_i;
 			
 			-- mac signals
-			i_div_remainder: in  unsigned( 24 downto 0 );
+			i_div_remainder: in  unsigned( 26 downto 0 );
 			o_div_en			: out std_logic := '0';
 			o_div_dividend	: out unsigned( 26 downto 0 );
 			o_div_divisor	: out unsigned( 26 downto 0 )
@@ -184,7 +182,7 @@ package src is
 			int_fin			: out std_logic := '0';
 			
 			i_phase			: in  unsigned(  5 downto 0 );
-			i_delta			: in  unsigned( 21 downto 0 );
+			i_delta			: in  unsigned( 19 downto 0 );
 			
 			fbuf_en			: out std_logic := '0';
 			fbuf_data		: out signed( 34 downto 0 );
@@ -201,7 +199,7 @@ package src is
 			clk			 : in  std_logic;
 			rst			 : in  std_logic;
 			
-			delta			 : in  unsigned( 21 downto 0 );
+			delta			 : in  unsigned( 19 downto 0 );
 			delta_en		 : in  std_logic;
 			
 			i_mac			 : out mac_i;
@@ -277,7 +275,7 @@ package src is
 			o_mac				: in  mac_o;
 			
 			-- divider interfaces
-			i_div_remainder: in  unsigned( 24 downto 0 );
+			i_div_remainder: in  unsigned( 26 downto 0 );
 			o_div_en			: out std_logic;
 			o_div_dividend	: out unsigned( 26 downto 0 );
 			o_div_divisor	: out unsigned( 26 downto 0 )
@@ -363,14 +361,14 @@ package src is
 			
 			buf_rdy		: out std_logic;
 			buf_level	: out unsigned( 10 downto 0 );
-			buf_ptr		: out unsigned( 27 downto 0 );
+			buf_ptr		: out unsigned( 25 downto 0 );
 			
 			fir_en		: in  std_logic;
 			fir_step		: in  std_logic;
 			fir_fin		: in  std_logic;
 			
 			locked		: in  std_logic;
-			ratio			: in  unsigned( 29 downto 0 );
+			ratio			: in  unsigned( 25 downto 0 );
 			
 			wr_en			: in  std_logic;
 			wr_data0		: in  signed( 23 downto 0 );	
@@ -457,7 +455,7 @@ package src is
 			i1_dividend	: in  unsigned( 26 downto 0 );
 			
 			o_busy		: out std_logic;
-			o_remainder	: out unsigned( 24 downto 0 )
+			o_remainder	: out unsigned( 26 downto 0 )
 		);
 	end component div_mux;
 	
@@ -471,7 +469,7 @@ package src is
 			i_dividend	: in  unsigned( 26 downto 0 );
 			
 			o_busy		: out std_logic;
-			o_remainder	: out unsigned( 24 downto 0 )
+			o_remainder	: out unsigned( 26 downto 0 )
 		);
 	end component div;
 

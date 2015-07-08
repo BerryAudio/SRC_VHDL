@@ -2,9 +2,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library work;
-use work.src.all;
-
 entity div_mux is 
 	port (
 		clk			: in  std_logic;
@@ -20,7 +17,7 @@ entity div_mux is
 		i1_dividend	: in  unsigned( 26 downto 0 );
 		
 		o_busy		: out std_logic := '0';
-		o_remainder	: out unsigned( 24 downto 0 ) := ( others => '0' )
+		o_remainder	: out unsigned( 26 downto 0 ) := ( others => '0' )
 	);
 end entity div_mux;
 
@@ -28,6 +25,20 @@ architecture rtl of div_mux is
 	signal div_en			: std_logic := '0';
 	signal div_divisor	: unsigned( 26 downto 0 ) := ( others => '0' );
 	signal div_dividend	: unsigned( 26 downto 0 ) := ( others => '0' );
+	
+	component div is 
+		port (
+			clk			: in  std_logic;
+			rst			: in  std_logic;
+			
+			i_en			: in  std_logic;
+			i_divisor	: in  unsigned( 26 downto 0 );
+			i_dividend	: in  unsigned( 26 downto 0 );
+			
+			o_busy		: out std_logic;
+			o_remainder	: out unsigned( 26 downto 0 )
+		);
+	end component div;
 begin
 	
 	clock_process : process( clk )
@@ -63,9 +74,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library work;
-use work.src.all;
-
 entity div is 
 	port (
 		clk			: in  std_logic;
@@ -76,12 +84,12 @@ entity div is
 		i_dividend	: in  unsigned( 26 downto 0 );
 		
 		o_busy		: out std_logic := '0';
-		o_remainder	: out unsigned( 24 downto 0 ) := ( others => '0' )
+		o_remainder	: out unsigned( 26 downto 0 ) := ( others => '0' )
 	);
 end entity div;
 
 architecture rtl of div is
-	constant R_COUNT_MAX : unsigned(  5 downto 0 ) := b"11_0100";
+	constant R_COUNT_MAX : unsigned(  5 downto 0 ) := b"11_0110";
 
 	signal a				 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal b				 : unsigned( 26 downto 0 ) := ( others => '0' );
@@ -117,7 +125,7 @@ begin
 					a <= ( 26 => '0', others => '1' );
 				elsif i_divisor( 26 ) = '1' then
 					a_neg <= '1';
-					a <= '0' & COMPLEMENT( i_divisor( 25 downto 0 ) );
+					a <= '0' & ( not( i_divisor( 25 downto 0 ) ) + 1 );
 				else 
 					a_neg <= '0';
 					a <= i_divisor;
@@ -139,7 +147,7 @@ begin
 					b <= ( others => '0' );
 				elsif i_dividend( 26 ) = '1' then
 					b_neg <= '1';
-					b <= COMPLEMENT( i_dividend( 25 downto 0 ) ) & '0';
+					b <= ( not( i_dividend( 25 downto 0 ) ) + 1 ) & '0';
 				else 
 					b_neg <= '0';
 					b <= i_dividend( 25 downto 0 ) & '0';
@@ -216,9 +224,9 @@ begin
 				o_remainder <= ( others => '0' );
 			elsif count = R_COUNT_MAX then
 				if result_neg = '1' then
-					o_remainder <= '1' & COMPLEMENT( result( 24 downto 1 ) );
+					o_remainder <= '1' & ( not( result( 26 downto 1 ) ) + 1 );
 				else
-					o_remainder <= '0' &             result( 24 downto 1 )  ;
+					o_remainder <= '0' &        result( 26 downto 1 );
 				end if;
 			end if;
 		end if;

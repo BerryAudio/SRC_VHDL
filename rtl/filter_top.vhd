@@ -11,7 +11,7 @@ entity filter_top is
 		rst				: in  std_logic;
 		
 		i_phase			: in  unsigned(  5 downto 0 );
-		i_delta			: in  unsigned( 21 downto 0 );
+		i_delta			: in  unsigned( 19 downto 0 );
 		i_en				: in  std_logic;
 
 		rd_en				: out std_logic := '0';
@@ -34,7 +34,7 @@ entity filter_top is
 		i_mac2			: out mac_i := mac_i_init;
 		
 		-- divider signals
-		i_div_remainder: in  unsigned( 24 downto 0 );
+		i_div_remainder: in  unsigned( 26 downto 0 );
 		o_div_en			: out std_logic := '0';
 		o_div_dividend	: out unsigned( 26 downto 0 ) := ( others => '0' );
 		o_div_divisor	: out unsigned( 26 downto 0 ) := ( others => '0' )

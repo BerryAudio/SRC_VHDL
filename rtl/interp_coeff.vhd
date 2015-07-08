@@ -10,7 +10,7 @@ entity interp_lagrange is
 		clk			 : in  std_logic;
 		rst			 : in  std_logic;
 		
-		delta			 : in  unsigned( 21 downto 0 );
+		delta			 : in  unsigned( 19 downto 0 );
 		delta_en		 : in  std_logic;
 		
 		i_mac			 : out mac_i := mac_i_init;
@@ -30,25 +30,27 @@ architecture rtl of interp_lagrange is
 
 	signal state_count : unsigned( 2 downto 0 ) := ( others => '0' );
 	
-	signal d				: unsigned( 21 downto 0 ) := ( others => '0' );
-	signal d0			:   signed( 34 downto 0 ) := ( others => '0' );
-	signal d1			:   signed( 34 downto 0 ) := ( others => '0' );
-	signal d2			:   signed( 34 downto 0 ) := ( others => '0' );
-	signal d3			:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d			: unsigned( 21 downto 0 ) := ( others => '0' );
+	signal d0		:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d1		:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d2		:   signed( 34 downto 0 ) := ( others => '0' );
+	signal d3		:   signed( 34 downto 0 ) := ( others => '0' );
 	
-	signal buf0			: signed( 34 downto 0 ) := ( others => '0' );
-	signal buf1			: signed( 34 downto 0 ) := ( others => '0' );
+	signal buf0		: signed( 34 downto 0 ) := ( others => '0' );
+	signal buf1		: signed( 34 downto 0 ) := ( others => '0' );
 	
-	constant D_N0			: signed( 24 downto 0 ) := "0000000000000000000000000";
-	constant D_N1			: signed( 24 downto 0 ) := "1110000000000000000000000";
-	constant D_N2			: signed( 24 downto 0 ) := "1100000000000000000000000";
-	constant D_N3			: signed( 24 downto 0 ) := "1010000000000000000000000";
+	constant D_N0	: signed( 24 downto 0 ) := b"0_0000_0000_0000_0000_0000_0000";
+	constant D_N1	: signed( 24 downto 0 ) := b"1_1100_0000_0000_0000_0000_0000";
+	constant D_N2	: signed( 24 downto 0 ) := b"1_1000_0000_0000_0000_0000_0000";
+	constant D_N3	: signed( 24 downto 0 ) := b"1_0100_0000_0000_0000_0000_0000";
 begin
 
-	d0 <= ( D_N0 + to_integer( delta ) ) & b"00_0000_0000";
-	d1 <= ( D_N1 + to_integer( delta ) ) & b"00_0000_0000";
-	d2 <= ( D_N2 + to_integer( delta ) ) & b"00_0000_0000";
-	d3 <= ( D_N3 + to_integer( delta ) ) & b"00_0000_0000";
+	d <= delta & b"00";
+
+	d0 <= ( D_N0 + to_integer( d ) ) & b"00_0000_0000";
+	d1 <= ( D_N1 + to_integer( d ) ) & b"00_0000_0000";
+	d2 <= ( D_N2 + to_integer( d ) ) & b"00_0000_0000";
+	d3 <= ( D_N3 + to_integer( d ) ) & b"00_0000_0000";
 
 	state_process : process( clk )
 	begin

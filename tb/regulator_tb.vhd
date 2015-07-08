@@ -2,16 +2,12 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-library work;
-use work.src.all;
-
 ENTITY regulator_tb IS
 END regulator_tb;
  
 ARCHITECTURE behavior OF regulator_tb IS 
  
    -- Component Declaration for the Unit Under Test (UUT)
-	constant REG_CNT_WIDTH : integer range 2 to 6 := 4;
 	constant REG_AVE_WIDTH : integer range 4 to 6 := 6;
 
    --Inputs
@@ -22,18 +18,18 @@ ARCHITECTURE behavior OF regulator_tb IS
    signal o_sample_en : std_logic := '0';
    signal i_fifo_level : unsigned(10 downto 0) := (others => '0');
    signal div_busy : std_logic := '0';
-   signal div_remainder : unsigned(24 downto 0) := (others => '0');
+   signal div_remainder : unsigned(26 downto 0) := (others => '0');
 
  	--Outputs
-   signal o_ratio : unsigned(23 + REG_AVE_WIDTH downto 0);
-	signal ratio : unsigned( 29 downto 0 );
+   signal o_ratio : unsigned( 25 downto 0 );
+	signal ratio : unsigned( 25 downto 0 );
    signal o_locked : std_logic;
    signal o_ratio_en : std_logic;
    signal div_en : std_logic;
    signal div_divisor : unsigned(26 downto 0);
    signal div_dividend : unsigned(26 downto 0);
 	
-	constant zero24 : unsigned( 23 downto 0 ) := ( others => '0' );
+	constant zero24 : unsigned( 19 downto 0 ) := ( others => '0' );
 
    -- Clock period definitions
    constant clk_period : time := 22.676 us;
@@ -41,6 +37,87 @@ ARCHITECTURE behavior OF regulator_tb IS
 	
 	signal clk_edge : std_logic_vector( 1 downto 0 ) := "00";
 	signal rd_en : std_logic := '0';
+	
+	component regulator_top is
+		generic (
+			CLOCK_COUNT		: integer := 384;
+			REG_AVE_WIDTH	: integer range 2 to 6 := 4
+		);
+		port (
+			clk				: in  std_logic;
+			rst				: in  std_logic;
+			
+			-- input/output sample has arrived
+			-- input from ring buffer
+			-- let's us know how full the buffer is
+			i_sample_en		: in  std_logic;
+			o_sample_en		: in  std_logic;
+			i_fifo_level	: in  unsigned( 10 downto 0 );
+			
+			-- ratio data - indicate that a ratio has been calculated
+			-- locked status indicator
+			o_ratio			: out unsigned( 25 downto 0 ) := ( others => '0' );
+			o_locked			: out std_logic := '0';
+			o_ratio_en		: out std_logic := '0';
+			
+			-- shared divider i/o
+			div_busy			: in  std_logic;
+			div_remainder	: in  unsigned( 26 downto 0 );
+			
+			div_en			: out std_logic := '0';
+			div_divisor		: out unsigned( 26 downto 0 ) := ( others => '0' );
+			div_dividend	: out unsigned( 26 downto 0 ) := to_unsigned( CLOCK_COUNT * 16, 27 )
+			
+		);
+	end component regulator_top;
+	
+	component div is 
+		port (
+			clk			: in  std_logic;
+			rst			: in  std_logic;
+			
+			i_en			: in  std_logic;
+			i_divisor	: in  unsigned( 26 downto 0 );
+			i_dividend	: in  unsigned( 26 downto 0 );
+			
+			o_busy		: out std_logic := '0';
+			o_remainder	: out unsigned( 26 downto 0 ) := ( others => '0' )
+		);
+	end component div;
+	
+	component ring_buffer is
+		generic (
+			PTR_OFFSET : natural range 0 to 32 := 16
+		);
+		port (
+			clk			: in  std_logic;
+			rst			: in  std_logic;
+			
+			--------------------------------------------------
+			-- Ring Buffer Control
+			--------------------------------------------------
+			buf_rdy		: out std_logic := '0';
+			buf_level	: out unsigned( 10 downto 0 ) := ( others => '0' );
+			buf_ptr		: out unsigned( 25 downto 0 ) := ( others => '0' );
+			
+			fir_en		: in  std_logic;
+			fir_step		: in  std_logic;
+			fir_fin		: in  std_logic;
+			
+			locked		: in  std_logic;
+			ratio			: in  unsigned( 25 downto 0 );
+			
+			--------------------------------------------------
+			-- Ring Buffer Data
+			--------------------------------------------------
+			wr_en			: in  std_logic;
+			wr_data0		: in  signed( 23 downto 0 );	
+			wr_data1		: in  signed( 23 downto 0 );
+			
+			rd_data0		: out signed( 23 downto 0 ) := ( others => '0' );
+			rd_data1		: out signed( 23 downto 0 ) := ( others => '0' )
+		);
+	end component ring_buffer;
 BEGIN
  
 	i_sample_en <= ( clk_edge( 0 ) xor clk_edge( 1 ) ) and clk_edge( 1 );
@@ -49,8 +126,7 @@ BEGIN
    uut: regulator_top 
 		generic map (
 			CLOCK_COUNT => 384,
-			REG_AVE_WIDTH => REG_AVE_WIDTH,
-			REG_CNT_WIDTH => REG_CNT_WIDTH
+			REG_AVE_WIDTH => REG_AVE_WIDTH
 		) PORT MAP (
           clk => clk_147,
           rst => rst,
@@ -80,8 +156,6 @@ BEGIN
 			o_remainder	=> div_remainder
 		);
 	
-	ratio <= RESIZE( o_ratio, 30 ) sll ( 6-REG_AVE_WIDTH );
-	
 	rb : ring_buffer
 		generic map (
 			PTR_OFFSET	=> 16
@@ -99,7 +173,7 @@ BEGIN
 			fir_fin		=> o_sample_en,
 			
 			locked		=> o_locked,
-			ratio			=> ratio,
+			ratio			=> o_ratio,
 			
 			wr_en			=> i_sample_en,
 			wr_data0		=> ( others => '0' ),

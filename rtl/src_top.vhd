@@ -45,16 +45,15 @@ architecture rtl of src_top is
 
 	-- general control signals
 	signal fifo_level			: unsigned( 10 downto 0 ) := ( others => '0' );
-	signal fifo_ptr			: unsigned( 27 downto 0 ) := ( others => '0' );
+	signal fifo_ptr			: unsigned( 25 downto 0 ) := ( others => '0' );
 	signal locked				: std_logic := '0';
-	signal ratio				: unsigned( 23 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
-	signal ratio_in			: unsigned( 29 downto 0 ) := ( others => '0' );
+	signal ratio_in			: unsigned( 25 downto 0 ) := ( others => '0' );
 	signal ratio_en			: std_logic := '0';
 	signal buf_rdy				: std_logic := '0';
 	signal reg_rst				: std_logic := '0';
 	
 	signal phase				: unsigned(  5 downto 0 ) := ( others => '0' );
-	signal delta				: unsigned( 21 downto 0 ) := ( others => '0' );
+	signal delta				: unsigned( 19 downto 0 ) := ( others => '0' );
 	signal filter_en			: std_logic := '0';
 	signal filter_fin			: std_logic := '0';
 	
@@ -101,7 +100,7 @@ architecture rtl of src_top is
 	signal div1_divisor		: unsigned( 26 downto 0 ) := ( others => '0' );
 	signal div1_dividend		: unsigned( 26 downto 0 ) := ( others => '0' );
 	signal div_busy			: std_logic := '0';
-	signal div_remainder		: unsigned( 24 downto 0 ) := ( others => '0' );
+	signal div_remainder		: unsigned( 26 downto 0 ) := ( others => '0' );
 begin
 
 	o_data_en	<= dither_data_en;
@@ -110,8 +109,8 @@ begin
 	
 	ctrl_locked <= locked;
 	
-	phase <= fifo_ptr( 27 downto 22 );
-	delta <= fifo_ptr( 21 downto  0 );
+	phase <= fifo_ptr( 25 downto 20 );
+	delta <= fifo_ptr( 19 downto  0 );
 	
 	reg_rst <= not buf_rdy;
 	div_sel <= '1'  when state_src = S3_FILTER else '0';
@@ -121,8 +120,6 @@ begin
 	
 	i_sample0 <= shift_right( i_data0, to_integer( i_sample_shift ) );
 	i_sample1 <= shift_right( i_data1, to_integer( i_sample_shift ) );
-	
-	ratio_in <= RESIZE( ratio, 30 ) sll ( 6 - REG_AVE_WIDTH );
 	
 	sample_sel_process : process( clk )
 	begin
@@ -227,7 +224,7 @@ begin
 			i_fifo_level	=> fifo_level,
 			
 			o_locked			=> locked,
-			o_ratio			=> ratio,
+			o_ratio			=> ratio_in,
 			o_ratio_en		=> ratio_en,
 			
 			div_en			=> div0_en,

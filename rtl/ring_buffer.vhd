@@ -2,9 +2,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library work;
-use work.src.all;
-
 entity ring_buffer is
 	generic (
 		PTR_OFFSET : natural range 0 to 32 := 16
@@ -18,14 +15,14 @@ entity ring_buffer is
 		--------------------------------------------------
 		buf_rdy		: out std_logic := '0';
 		buf_level	: out unsigned( 10 downto 0 ) := ( others => '0' );
-		buf_ptr		: out unsigned( 27 downto 0 ) := ( others => '0' );
+		buf_ptr		: out unsigned( 25 downto 0 ) := ( others => '0' );
 		
 		fir_en		: in  std_logic;
 		fir_step		: in  std_logic;
 		fir_fin		: in  std_logic;
 		
 		locked		: in  std_logic;
-		ratio			: in  unsigned( 29 downto 0 );
+		ratio			: in  unsigned( 25 downto 0 );
 		
 		--------------------------------------------------
 		-- Ring Buffer Data
@@ -47,7 +44,7 @@ architecture rtl of ring_buffer is
 	signal wr_state	: std_logic := '0';
 	signal wr_ptr		: unsigned(  6 downto 0 ) := ( others => '0' );
 	
-	signal rd_ptr		: unsigned( 36 downto 0 ) := ( others => '0' );
+	signal rd_ptr		: unsigned( 32 downto 0 ) := ( others => '0' );
 	signal rd_ptr_it	: unsigned(  6 downto 0 ) := ( others => '0' );
 	
 	signal buf_data0	: signed( 23 downto 0 ) := ( others => '0' );
@@ -58,7 +55,7 @@ architecture rtl of ring_buffer is
 	signal lock_stb	: std_logic := '0';
 begin
 	
-	buf_ptr   <= rd_ptr( 29 downto 2 );
+	buf_ptr   <= rd_ptr( 25 downto 0 );
 	buf_level <= ptr_level;
 	lock_stb  <= ( lock_buf and not( locked ) ) or rst;
 	
@@ -102,20 +99,20 @@ begin
 			else
 				-- buffer level
 				if locked = '0' or fir_en = '1' then
-					ptr_level <= ( wr_ptr & x"0" ) - rd_ptr( 36 downto 26 );
+					ptr_level <= ( wr_ptr & x"0" ) - rd_ptr( 32 downto 22 );
 				end if;
 				
 				-- iterator
 				if fir_en = '1' then
-					rd_ptr_it <= rd_ptr( 36 downto 30 );
+					rd_ptr_it <= rd_ptr( 32 downto 26 );
 				elsif fir_step = '1' then
 					rd_ptr_it <= rd_ptr_it - 1;
 				end if;
 				
 				-- read pointer - a minor guard band
 				if locked = '0' then
-						rd_ptr( 36 downto 30 ) <= wr_ptr - PTR_OFFSET;
-						rd_ptr( 29 downto  0 ) <= ( others => '0' );
+						rd_ptr( 32 downto 26 ) <= wr_ptr - PTR_OFFSET;
+						rd_ptr( 25 downto  0 ) <= ( others => '0' );
 				elsif fir_fin = '1' then
 					rd_ptr <= rd_ptr + ratio;
 				end if;
