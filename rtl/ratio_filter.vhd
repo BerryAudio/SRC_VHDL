@@ -218,7 +218,7 @@ end reg_ratio;
 
 architecture rtl of reg_ratio is
 	constant FIFO_SET_PT		: integer := 2**8;
-	constant THRESHOLD_LOCK	: integer := 2;
+	constant THRESHOLD_LOCK	: integer := 1;
 	constant THRESHOLD_VARI	: integer := 2**6;
 	
 	signal err_term		: unsigned( 10 downto 0 ) := ( others => '0' );
@@ -272,7 +272,7 @@ begin
 					locked <= '0';
 				end if;
 				
-				if ratio_en_buf = o"77" then
+				if ratio_en_buf = o"77" and locked = '0' then
 					locked <= '1';
 				end if;
 			end if;
@@ -345,7 +345,6 @@ architecture rtl of ratio_filter is
 	alias  reg_latch_s	: unsigned( 15 downto 0 ) is reg_latch( 19 + REG_AVE_WIDTH downto 4 + REG_AVE_WIDTH );
 	
 	signal reg_latch_en	: std_logic := '0';
-	signal reg_latch_buf	: std_logic_vector( 7 downto 0 ) := ( others => '1' );
 	signal err_abs			: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	
 	signal lpf_in			: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
@@ -377,30 +376,19 @@ begin
 	o_ratio <= lpf_out;
 	o_ratio_en <= lpf_out_en;
 	
-	err_abs <= unsigned( abs( signed( reg_ratio - reg_latch ) ) );
-	reg_latch_en <= '1' when err_abs > 2  or reg_latch_buf = x"FF" else '0';
+	reg_latch_en <= '1' when err_abs > 2 else '0';
 	
 	input_process : process( clk )
 	begin
 		if rising_edge( clk ) then
 			if rst = '1' then
 				reg_ratio <= ( others => '0' );
-				reg_latch_buf <= ( others => '0' );
 			elsif i_ratio_en = '1' then
 				reg_ratio <= i_ratio;
-				
-				reg_latch_buf <= reg_latch_buf( 6 downto 0 ) & '0';
-				if reg_ratio = i_ratio and ctrl_lock = '1' then
-					reg_latch_buf( 0 ) <= '1';
-				end if;
-				
 			end if;
 			
-			if rst = '1' then
-				o_error <= ( others => '0' );
-			else
-				o_error <= unsigned( abs( signed( reg_latch_s - lpf_out_s ) ) );
-			end if;
+			o_error <= unsigned( abs( signed( reg_latch_s - lpf_out_s ) ) );
+			err_abs <= unsigned( abs( signed( reg_ratio   - reg_latch ) ) );
 		end if;
 	end process input_process;
 	
@@ -641,8 +629,8 @@ entity lpf is
 end lpf;
 
 architecture rtl of lpf is
-	constant SRL_UNLOCKED : integer range 7 to 23 := 7;
-	constant SRL_LOCKED	 : integer range 7 to 23 := 9;
+	constant SRL_UNLOCKED : integer range 7 to 23 :=  9;
+	constant SRL_LOCKED	 : integer range 7 to 23 := 13;
 
 	signal reg_add		: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
 	signal reg_shift	: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
