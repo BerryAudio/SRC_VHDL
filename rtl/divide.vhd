@@ -94,18 +94,18 @@ architecture rtl of div is
 	signal a				 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal b				 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal acc			 : unsigned( 26 downto 0 ) := ( others => '0' );
+	signal add_op_r	 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal add_op_u	 : unsigned(  0 downto 0 ) := ( others => '0' );
 	alias  add_op		 : std_logic is add_op_u( 0 );
 	signal en			 : std_logic := '0';
 	signal sum			 : unsigned( 26 downto 0 ) := ( others => '0' );
 	signal count		 : unsigned(  5 downto 0 ) := ( others => '0' );
 	signal result		 : unsigned( 26 downto 0 ) := ( others => '0' );
-	signal add_op_rep	 : unsigned( 26 downto 0 ) := ( others => '0' );
 begin
 
-	add_op_rep <= ( others => NOT add_op );
+	add_op_r <= ( others => NOT add_op );
 
-	sum <= acc + ( a XOR add_op_rep ) + not( add_op_u );
+	sum <= acc + ( a XOR add_op_r ) + not( add_op_u );
 
 	-- register the divisor into storage register a.
 	process( clk )
@@ -114,7 +114,7 @@ begin
 			if (rst = '1') then
 				a <= ( others => '0' );
 			elsif (i_en = '1') then
-				if i_divisor( 25 downto 0 ) = 0 then
+				if i_divisor = 0 then
 					a <= ( 26 => '0', others => '1' );
 				else 
 					a <= '0' & i_divisor;
@@ -130,11 +130,7 @@ begin
 			if rst = '1' then
 				b <= ( others => '0' );
 			elsif i_en = '1' then
-				if i_dividend( 25 downto 0 ) = 0 then
-					b <= ( others => '0' );
-				else 
-					b <= i_dividend( 25 downto 0 ) & '0';
-				end if;
+				b <= i_dividend( 25 downto 0 ) & '0';
 			else
 				b <= b( 25 downto 0 ) & '0';
 			end if;

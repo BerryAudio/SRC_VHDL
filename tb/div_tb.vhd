@@ -141,6 +141,26 @@ BEGIN
 		wait until rising_edge( clk );
 		
 		wait until o_busy = '0';
+		
+		i_en <= '1';
+		i_divisor <= to_unsigned( 0, i_divisor'length );
+		i_dividend <= to_unsigned( 1, i_dividend'length );
+		wait until rising_edge( clk );
+		
+		i_en <= '0';
+		wait until rising_edge( clk );
+		
+		wait until o_busy = '0';
+		
+		i_en <= '1';
+		i_divisor <= to_unsigned( 1, i_divisor'length );
+		i_dividend <= to_unsigned( 0, i_dividend'length );
+		wait until rising_edge( clk );
+		
+		i_en <= '0';
+		wait until rising_edge( clk );
+		
+		wait until o_busy = '0';
       wait for clk_period*10;
 
       -- insert stimulus here 

@@ -17,7 +17,7 @@ entity pll_top is
 end pll_top;
 
 architecture rtl of pll_top is
-	constant PLL_PERIOD		: real := 40.6901;
+	constant PLL_PERIOD		: real := 40.690104;
 	
 	signal pll_clk_in			: std_logic := '0';
 	
@@ -105,11 +105,9 @@ begin
 			CLKFBOUT_MULT			 => 24,
 			CLKFBOUT_PHASE			 => 0.0,
 			CLKIN_PERIOD			 => PLL_PERIOD,
-			
 			CLKOUT0_DIVIDE			 => 4,
 			CLKOUT1_DIVIDE			 => 12,
 			CLKOUT2_DIVIDE			 => 24,
-			
 			CLK_FEEDBACK			 => "CLKFBOUT",
 			COMPENSATION			 => "SYSTEM_SYNCHRONOUS",
 			DIVCLK_DIVIDE			 => 1,
@@ -167,6 +165,7 @@ begin
 			BANDWIDTH				 => "OPTIMIZED",
 			CLKFBOUT_MULT			 => 21,
 			CLKFBOUT_PHASE			 => 0.0,
+			CLKIN_PERIOD			 => PLL_PERIOD*4.0/7.0,
 			CLKOUT0_DIVIDE			 => 40,
 			CLK_FEEDBACK			 => "CLKFBOUT",
 			COMPENSATION			 => "DCM2PLL",
