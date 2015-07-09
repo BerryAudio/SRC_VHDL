@@ -11,30 +11,34 @@ ARCHITECTURE behavior OF regulator_tb IS
 	constant REG_AVE_WIDTH : integer range 4 to 6 := 6;
 
    --Inputs
-   signal clk : std_logic := '0';
+   signal clk_441 : std_logic := '0';
    signal clk_147 : std_logic := '0';
    signal rst : std_logic := '0';
    signal i_sample_en : std_logic := '0';
    signal o_sample_en : std_logic := '0';
    signal i_fifo_level : unsigned(10 downto 0) := (others => '0');
    signal div_busy : std_logic := '0';
-   signal div_remainder : unsigned(26 downto 0) := (others => '0');
+   signal div_remainder : unsigned(25 downto 0) := (others => '0');
 
  	--Outputs
    signal o_ratio : unsigned( 25 downto 0 );
    signal o_locked : std_logic;
    signal o_ratio_en : std_logic;
    signal div_en : std_logic;
-   signal div_divisor : unsigned(26 downto 0);
-   signal div_dividend : unsigned(26 downto 0);
+   signal div_divisor : unsigned(25 downto 0);
+   signal div_dividend : unsigned(25 downto 0);
 	
 	constant zero24 : unsigned( 19 downto 0 ) := ( others => '0' );
 
    -- Clock period definitions
-   constant clk_period : time := 22.676 us;
+	signal i_en_441 : std_logic := '0';
+	signal i_en_192 : std_logic := '0';
+	signal sel : std_logic := '0';
+	
+   constant clk_441_period : time := 22.676 us;
 	constant clk_147_period : time := 6.78 ns;
 	
-	signal clk_edge : std_logic_vector( 1 downto 0 ) := "00";
+	signal clk_edge_441 : std_logic_vector( 1 downto 0 ) := "00";
 	signal rd_en : std_logic := '0';
 	
 	component regulator_top is
@@ -61,11 +65,11 @@ ARCHITECTURE behavior OF regulator_tb IS
 			
 			-- shared divider i/o
 			div_busy			: in  std_logic;
-			div_remainder	: in  unsigned( 26 downto 0 );
+			div_remainder	: in  unsigned( 25 downto 0 );
 			
 			div_en			: out std_logic := '0';
-			div_divisor		: out unsigned( 26 downto 0 ) := ( others => '0' );
-			div_dividend	: out unsigned( 26 downto 0 ) := to_unsigned( CLOCK_COUNT * 16, 27 )
+			div_divisor		: out unsigned( 25 downto 0 ) := ( others => '0' );
+			div_dividend	: out unsigned( 25 downto 0 ) := to_unsigned( CLOCK_COUNT * 16, 26 )
 			
 		);
 	end component regulator_top;
@@ -76,11 +80,11 @@ ARCHITECTURE behavior OF regulator_tb IS
 			rst			: in  std_logic;
 			
 			i_en			: in  std_logic;
-			i_divisor	: in  unsigned( 26 downto 0 );
-			i_dividend	: in  unsigned( 26 downto 0 );
+			i_divisor	: in  unsigned( 25 downto 0 );
+			i_dividend	: in  unsigned( 25 downto 0 );
 			
 			o_busy		: out std_logic := '0';
-			o_remainder	: out unsigned( 26 downto 0 ) := ( others => '0' )
+			o_remainder	: out unsigned( 25 downto 0 ) := ( others => '0' )
 		);
 	end component div;
 	
@@ -119,8 +123,8 @@ ARCHITECTURE behavior OF regulator_tb IS
 	end component ring_buffer;
 BEGIN
  
-	i_sample_en <= ( clk_edge( 0 ) xor clk_edge( 1 ) ) and clk_edge( 1 );
- 
+	i_en_441 <= ( clk_edge_441( 0 ) xor clk_edge_441( 1 ) ) and clk_edge_441( 1 );
+	
 	-- Instantiate the Unit Under Test (UUT)
    uut: regulator_top 
 		generic map (
@@ -193,29 +197,38 @@ BEGIN
 		wait for clk_147_period/2;
    end process;
 	
-	clk_process :process
+	clk_441_process :process
    begin
-		clk <= '0';
-		wait for clk_period/2;
-		clk <= '1';
-		wait for clk_period/2;
+		clk_441 <= '0';
+		wait for clk_441_period/2;
+		clk_441 <= '1';
+		wait for clk_441_period/2;
    end process;
 	
 	process( clk_147 )
 	begin
 		if rising_edge( clk_147 ) then
-			clk_edge <= clk_edge( 0 ) & clk;
+			clk_edge_441 <= clk_edge_441( 0 ) & clk_441;
 		end if;
 	end process;
 	
 	process( clk_147 )
 		variable cnt : integer := 0;
+		variable cnt_192 : integer := 0;
 	begin
 		if rising_edge( clk_147 ) then
 			o_sample_en <= '0';
 			rd_en <= '0';
 			if cnt = 191 then
 				rd_en <= '1';
+			end if;
+			
+			if cnt_192 = 767 then
+				cnt_192 := 0;
+				i_en_192 <= '1';
+			else
+				cnt_192 := cnt_192 + 1;
+				i_en_192 <= '0';
 			end if;
 			
 			if cnt = 383 then
@@ -226,15 +239,27 @@ BEGIN
 			end if;
 		end if;
 	end process;
+	
+	i_sample_en <= i_en_441 when sel = '0' else i_en_192;
  
+	clk_process : process
+	begin
+		
+		sel <= '1';
+		
+		wait for 40 ms;
+		
+		sel <= '0';
+		
+		wait for 40 ms;
+	
+	end process;
 
    -- Stimulus process
    stim_proc: process
    begin		
       -- hold reset state for 100 ns.
-      wait for 100 ns;	
-
-      wait for clk_period*10;
+      wait for 100 ns;
 
       -- insert stimulus here 
 

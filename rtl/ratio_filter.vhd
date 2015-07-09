@@ -30,7 +30,7 @@ entity regulator_top is
 		
 		div_en			: out std_logic := '0';
 		div_divisor		: out unsigned( 25 downto 0 ) := ( others => '0' );
-		div_dividend	: out unsigned( 25 downto 0 ) := to_unsigned( CLOCK_COUNT * 16 * 2**REG_AVE_WIDTH, 26 )
+		div_dividend	: out unsigned( 25 downto 0 ) := to_unsigned( CLOCK_COUNT * 64 * 2**REG_AVE_WIDTH, 26 )
 		
 	);
 end regulator_top;
@@ -218,7 +218,7 @@ end reg_ratio;
 
 architecture rtl of reg_ratio is
 	constant FIFO_SET_PT		: integer := 2**8;
-	constant THRESHOLD_LOCK	: integer := 0;
+	constant THRESHOLD_LOCK	: integer := 2;
 	constant THRESHOLD_VARI	: integer := 2**6;
 	
 	signal err_term		: unsigned( 10 downto 0 ) := ( others => '0' );
@@ -261,13 +261,19 @@ begin
 		if rising_edge( clk ) then
 			if rst = '1' then
 				locked <= '0';
+				ratio_en_buf <= ( others => '0' );
 			elsif i_ratio_en = '1' then
-				if err_track <= THRESHOLD_LOCK and reg_ratio >= 512 then
-					locked <= '1';
+				ratio_en_buf <= ratio_en_buf( 4 downto 0 ) & '0';
+				if err_track <= THRESHOLD_LOCK and reg_ratio >= 384 then
+					ratio_en_buf( 0 ) <= '1';
 				end if;
 				
 				if locked = '1' and err_ptr > THRESHOLD_VARI then
 					locked <= '0';
+				end if;
+				
+				if ratio_en_buf = o"77" then
+					locked <= '1';
 				end if;
 			end if;
 		end if;
@@ -339,6 +345,7 @@ architecture rtl of ratio_filter is
 	alias  reg_latch_s	: unsigned( 15 downto 0 ) is reg_latch( 19 + REG_AVE_WIDTH downto 4 + REG_AVE_WIDTH );
 	
 	signal reg_latch_en	: std_logic := '0';
+	signal reg_latch_buf	: std_logic_vector( 7 downto 0 ) := ( others => '1' );
 	signal err_abs			: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	
 	signal lpf_in			: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
@@ -370,23 +377,29 @@ begin
 	o_ratio <= lpf_out;
 	o_ratio_en <= lpf_out_en;
 	
-	reg_latch_en <= '1' when err_abs > 2 else '0';
+	err_abs <= unsigned( abs( signed( reg_ratio - reg_latch ) ) );
+	reg_latch_en <= '1' when err_abs > 2  or reg_latch_buf = x"FF" else '0';
 	
 	input_process : process( clk )
 	begin
 		if rising_edge( clk ) then
 			if rst = '1' then
 				reg_ratio <= ( others => '0' );
+				reg_latch_buf <= ( others => '0' );
 			elsif i_ratio_en = '1' then
 				reg_ratio <= i_ratio;
+				
+				reg_latch_buf <= reg_latch_buf( 6 downto 0 ) & '0';
+				if reg_ratio = i_ratio and ctrl_lock = '1' then
+					reg_latch_buf( 0 ) <= '1';
+				end if;
+				
 			end if;
 			
 			if rst = '1' then
 				o_error <= ( others => '0' );
-				err_abs <= ( others => '0' );
 			else
 				o_error <= unsigned( abs( signed( reg_latch_s - lpf_out_s ) ) );
-				err_abs <= unsigned( abs( signed( reg_ratio   - reg_latch ) ) );
 			end if;
 		end if;
 	end process input_process;
@@ -584,8 +597,8 @@ begin
 						frame_en		<= '1';
 						
 						frame_buf <= clock_count;
-						if i_locked = '1' then
-							frame_buf <= clock_count srl 2;
+						if i_locked = '0' then
+							frame_buf <= clock_count sll 2;
 						end if;
 					end if;
 				end if;

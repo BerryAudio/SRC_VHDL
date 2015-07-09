@@ -438,6 +438,14 @@
          <obj_property name="ObjectShortName">i_fifo_level[10:0]</obj_property>
          <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/reg_latch_buf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">reg_latch_buf[5:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_latch_buf[5:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/reg_latch_en" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">reg_latch_en</obj_property>
+         <obj_property name="ObjectShortName">reg_latch_en</obj_property>
+      </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/i_ratio" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">i_ratio[25:0]</obj_property>
          <obj_property name="ObjectShortName">i_ratio[25:0]</obj_property>
