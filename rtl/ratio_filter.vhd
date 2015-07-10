@@ -708,17 +708,17 @@ entity lpf is
 end lpf;
 
 architecture rtl of lpf is
-	constant SRL_UNLOCKED : integer range 7 to 23 := 9;
-	constant SRL_LOCKED	 : integer range 7 to 23 := 11;
+	constant SRL_UNLOCKED : integer range 7 to 11 :=  9;
+	constant SRL_LOCKED	 : integer range 7 to 11 := 11;
 
-	signal reg_add		: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
-	signal reg_shift	: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
-	signal reg_out		: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
+	signal reg_add		: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
+	signal reg_shift	: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
+	signal reg_out		: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
 	
 begin
 	
-	lpf_out <= unsigned( reg_out( LPF_WIDTH+12 downto 13 ) );
-	reg_add <= signed( '0' & lpf_in & b"0_0000_0000_0000" ) - reg_out;
+	lpf_out <= unsigned( reg_out( LPF_WIDTH+10 downto 11 ) );
+	reg_add <= signed( '0' & lpf_in & b"000_0000_0000" ) - reg_out;
 	
 	reg_shift <= shift_right( reg_add, SRL_UNLOCKED ) when ctrl_lock = '0' else
 					 shift_right( reg_add, SRL_LOCKED   );

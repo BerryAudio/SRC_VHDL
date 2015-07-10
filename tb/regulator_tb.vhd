@@ -247,7 +247,7 @@ BEGIN
 		
 		sel <= '1';
 		
-		wait for 10 ms;
+		wait for 50 ms;
 		
 		sel <= '0';
 		
