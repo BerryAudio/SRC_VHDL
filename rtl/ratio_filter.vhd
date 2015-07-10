@@ -284,10 +284,12 @@ begin
 	
 	lock_process : process( clk )
 	begin
-		if ( rst or evt_unlock ) = '1' then
-			locked <= '0';
-		elsif evt_lock = '1' then
-			locked <= '1';
+		if rising_edge( clk ) then
+			if ( rst or evt_unlock ) = '1' then
+				locked <= '0';
+			elsif evt_lock = '1' then
+				locked <= '1';
+			end if;
 		end if;
 	end process lock_process;
 	
