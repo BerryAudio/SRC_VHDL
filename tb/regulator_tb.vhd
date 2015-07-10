@@ -247,11 +247,11 @@ BEGIN
 		
 		sel <= '1';
 		
-		wait for 40 ms;
+		wait for 10 ms;
 		
 		sel <= '0';
 		
-		wait for 40 ms;
+		wait for 200 ms;
 	
 	end process;
 

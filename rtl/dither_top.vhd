@@ -82,7 +82,7 @@ architecture rtl of dither_top is
 	signal buf_en	: std_logic_vector( 1 downto 0 ) := ( others => '0' );
 	
 	-- shift input data some number of bits
-	signal sll_cnt	: unsigned( 3 downto 0 ) := ( others => '0' );
+	signal sll_cnt	: unsigned( 2 downto 0 ) := ( others => '0' );
 	signal sll_q0	: signed( 34 downto 0 ) := ( others => '0' );
 	signal sll_q1	: signed( 34 downto 0 ) := ( others => '0' );
 	
@@ -108,16 +108,16 @@ begin
 	
 	o_data_en <= no_en;
 	
-	sll_q0 <= shift_left( q0, to_integer( sll_cnt ) );
-	sll_q1 <= shift_left( q1, to_integer( sll_cnt ) );
+	sll_q0 <= shift_left( q0, to_integer( sll_cnt & '0' ) );
+	sll_q1 <= shift_left( q1, to_integer( sll_cnt & '0' ) );
 	
 	sll_process : process( ctrl_width, i_data0, i_data1 )
 	begin
 		case ctrl_width is
-			when "11"   => sll_cnt <= x"8";
-			when "10"   => sll_cnt <= x"6";
-			when "01"   => sll_cnt <= x"4";
-			when others => sll_cnt <= x"0";
+			when "11"   => sll_cnt <= o"4";
+			when "10"   => sll_cnt <= o"3";
+			when "01"   => sll_cnt <= o"2";
+			when others => sll_cnt <= o"0";
 		end case;
 	end process sll_process;
 	

@@ -39,7 +39,7 @@ architecture rtl of src_top is
 	signal i_sample_en_o0	: std_logic := '0';
 	signal i_sample_en_o1	: std_logic := '0';
 	
-	signal i_sample_shift	: unsigned( 3 downto 0 ) := ( others => '0' );
+	signal i_sample_shift	: unsigned( 2 downto 0 ) := ( others => '0' );
 	signal i_sample0			: signed( 23 downto 0 ) := ( others => '0' );
 	signal i_sample1			: signed( 23 downto 0 ) := ( others => '0' );
 
@@ -118,8 +118,8 @@ begin
 	i_sample_en_o0 <= i_sample_en_o and not( i_sample_sel );
 	i_sample_en_o1 <= i_sample_en_o and      i_sample_sel;
 	
-	i_sample0 <= shift_right( i_data0, to_integer( i_sample_shift ) );
-	i_sample1 <= shift_right( i_data1, to_integer( i_sample_shift ) );
+	i_sample0 <= shift_right( i_data0, to_integer( i_sample_shift & '0' ) );
+	i_sample1 <= shift_right( i_data1, to_integer( i_sample_shift & '0' ) );
 	
 	sample_sel_process : process( clk )
 	begin
@@ -134,10 +134,10 @@ begin
 	begin
 		if rising_edge( clk ) then
 			case ctrl_width is
-				when "11"   => i_sample_shift <= x"8";
-				when "10"   => i_sample_shift <= x"6";
-				when "01"   => i_sample_shift <= x"4";
-				when others => i_sample_shift <= x"0";
+				when "11"   => i_sample_shift <= o"4";
+				when "10"   => i_sample_shift <= o"3";
+				when "01"   => i_sample_shift <= o"2";
+				when others => i_sample_shift <= o"0";
 			end case;
 		end if;
 	end process srl_process;

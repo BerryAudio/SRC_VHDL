@@ -53,6 +53,7 @@ architecture rtl of regulator_top is
 	signal ave			: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	
 	-- I/O - divider to averager
+	signal reg_rst		: std_logic := '0';
 	signal reg_out		: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	signal reg_out_en	: std_logic := '0';
 	
@@ -95,9 +96,9 @@ architecture rtl of regulator_top is
 		port (
 			clk				: in  std_logic;
 			rst				: in  std_logic;
+			ctrl_lock		: in  std_logic;
 			
 			i_sample_en		: in  std_logic;
-			i_locked			: in  std_logic;
 			
 			o_cnt				: out unsigned( 19 downto 0 );
 			o_cnt_rst		: out std_logic;
@@ -108,6 +109,7 @@ begin
 	o_locked <= locked;
 	
 	ptr_rst <= not( locked ) or cnt_rst;
+	reg_rst <= cnt_rst;
 	
 	div_divisor <= RESIZE( reg_out, div_divisor'length );
 	
@@ -149,9 +151,9 @@ begin
 		port map (
 			clk				=> clk,
 			rst				=> rst,
+			ctrl_lock		=> locked,
 			
 			i_sample_en		=> i_sample_en,
-			i_locked			=> locked,
 			
 			o_cnt				=> cnt,
 			o_cnt_rst		=> cnt_rst,
@@ -179,7 +181,7 @@ begin
 		)
 		port map (
 			clk				=> clk,
-			rst				=> cnt_rst,
+			rst				=> reg_rst,
 			
 			i_fifo_level	=> i_fifo_level,
 			o_sample_en		=> o_sample_en,
@@ -229,6 +231,10 @@ architecture rtl of reg_ratio is
 	signal sum_lock		: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	
 	signal locked			: std_logic := '0';
+	signal evt_lock		: std_logic := '0';
+	signal evt_unlock		: std_logic := '0';
+	
+	signal reg_ratio_en	: std_logic := '0';
 	signal reg_ratio		: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 	signal ratio_en_buf	: std_logic_vector( 5 downto 0 ) := ( others => '0' );
 	
@@ -253,31 +259,70 @@ architecture rtl of reg_ratio is
 	end component ratio_filter;
 begin
 
-	o_ratio  <= reg_ratio;
 	o_locked <= locked;
 	
-	lock_process : process( clk )
+	output_process : process( clk )
 	begin
 		if rising_edge( clk ) then
 			if rst = '1' then
-				locked <= '0';
+				o_ratio <= ( others => '0' );
+				o_ratio_en <= '0';
+			elsif reg_ratio_en = '1' then
+				o_ratio_en <= reg_ratio_en;
+				
+				o_ratio <= reg_ratio;
+				if err_track <= 1 then
+					if reg_ratio < i_ratio then
+						o_ratio <= reg_ratio + err_track;
+					else
+						o_ratio <= reg_ratio - err_track;
+					end if;
+				end if;
+			end if;
+		end if;
+	end process output_process;
+	
+	lock_process : process( clk )
+	begin
+		if ( rst or evt_unlock ) = '1' then
+			locked <= '0';
+		elsif evt_lock = '1' then
+			locked <= '1';
+		end if;
+	end process lock_process;
+	
+	evt_lock_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			if ( rst or evt_unlock ) = '1' then
 				ratio_en_buf <= ( others => '0' );
 			elsif i_ratio_en = '1' then
 				ratio_en_buf <= ratio_en_buf( 4 downto 0 ) & '0';
 				if err_track <= THRESHOLD_LOCK and reg_ratio >= 384 then
 					ratio_en_buf( 0 ) <= '1';
 				end if;
-				
-				if locked = '1' and err_ptr > THRESHOLD_VARI then
-					locked <= '0';
-				end if;
-				
-				if ratio_en_buf = o"77" and locked = '0' then
-					locked <= '1';
-				end if;
+			end if;
+			
+			evt_lock <= '0';
+			if ( rst or evt_unlock ) = '1' then
+				evt_lock <= '0';
+			elsif locked = '0' and ratio_en_buf = o"77" then
+				evt_lock <= '1';
 			end if;
 		end if;
-	end process lock_process;
+	end process evt_lock_process;
+	
+	evt_unlock_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			evt_unlock <= '0';
+			if rst = '1' then
+				evt_unlock <= '1';
+			elsif locked = '1' and err_ptr > THRESHOLD_VARI then
+				evt_unlock <= '1';
+			end if;
+		end if;
+	end process evt_unlock_process;
 	
 	-------------------------------------------------------------------------
 	-- Error magnitude terms
@@ -310,7 +355,7 @@ begin
 			
 			o_error		=> err_track,
 			o_ratio		=> reg_ratio,
-			o_ratio_en	=> o_ratio_en
+			o_ratio_en	=> reg_ratio_en
 		);
 end rtl;
 
@@ -354,6 +399,10 @@ architecture rtl of ratio_filter is
 	alias  lpf_out_s		: unsigned( 15 downto 0 ) is lpf_out( 19 + REG_AVE_WIDTH downto 4 + REG_AVE_WIDTH );
 	signal lpf_out_en		: std_logic := '0';
 	
+	-- reset strobe signals
+	signal rst_stb		: std_logic := '0';
+	signal rst_buf		: std_logic := '0';
+	
 	component lpf is
 		generic (
 			LPF_WIDTH	: natural range 16 to 32 := 20 + REG_AVE_WIDTH
@@ -378,10 +427,19 @@ begin
 	
 	reg_latch_en <= '1' when err_abs > 2 else '0';
 	
+	rst_stb <= ( not( ctrl_lock ) xor rst_buf ) and not( ctrl_lock );
+	
+	reset_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			rst_buf <= not ctrl_lock; 
+		end if;
+	end process reset_process;
+	
 	input_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			if rst = '1' then
+			if rst_stb = '1' then
 				reg_ratio <= ( others => '0' );
 			elsif i_ratio_en = '1' then
 				reg_ratio <= i_ratio;
@@ -395,7 +453,7 @@ begin
 	latch_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			if rst = '1' then
+			if rst_stb = '1' then
 				reg_latch <= ( others => '0' );
 			elsif reg_latch_en = '1' then
 				reg_latch <= reg_ratio;
@@ -407,7 +465,7 @@ begin
 	begin
 		if rising_edge( clk ) then
 			lpf_in_en <= o_sample_en;
-			if rst = '1' then
+			if rst_stb = '1' then
 				lpf_in <= ( others => '0' );
 				lpf_in_en <= '0';
 			elsif o_sample_en = '1' then
@@ -419,7 +477,7 @@ begin
 	INST_LPF : lpf
 		port map (
 			clk			=> clk,
-			rst			=> rst,
+			rst			=> rst_stb,
 			ctrl_lock	=> ctrl_lock,
 			
 			lpf_in		=> lpf_in,
@@ -541,12 +599,12 @@ entity reg_count is
 	port (
 		clk			: in  std_logic;
 		rst			: in  std_logic;
+		ctrl_lock	: in  std_logic;
 		
 		--------------------------------------------------
 		-- DATA Interfaces
 		--------------------------------------------------
 		i_sample_en	: in  std_logic;
-		i_locked		: in  std_logic;
 		
 		o_cnt			: out unsigned( 19 downto 0 ) := ( others => '0' );
 		o_cnt_rst	: out std_logic := '1';
@@ -560,33 +618,52 @@ architecture rtl of reg_count is
 	signal frame_count	: unsigned( 5 downto 0 ) := ( others => '0' );
 	signal frame_en		: std_logic := '0';
 	signal cnt_rst			: std_logic := '0';
+	
+	-- reset strobe signals
+	signal rst_stb		: std_logic := '0';
+	signal rst_buf		: std_logic := '0';
 begin
 	
 	o_cnt		 <= frame_buf;
 	o_cnt_en	 <= frame_en;
 	o_cnt_rst <= cnt_rst;
+	
+	rst_stb <= ( not( ctrl_lock ) xor rst_buf ) and not( ctrl_lock );
+	
+	reset_process : process( clk )
+	begin
+		if rising_edge( clk ) then
+			rst_buf <= not ctrl_lock; 
+		end if;
+	end process reset_process;
 
 	count_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			frame_en  <= '0';
-			
-			if cnt_rst = '0' then
-				clock_count <= clock_count + 1;
+			if rst_stb = '1' then
+				clock_count <= ( 0 => '1', others => '0' );
+				frame_count <= ( others => '0' );
+				frame_buf	<= ( others => '0' );
+			else
+				frame_en  <= '0';
 				
-				if i_sample_en = '1' then
-					frame_count <= frame_count + 1;
+				if cnt_rst = '0' then
+					clock_count <= clock_count + 1;
 					
-					if ( frame_count = 15 and i_locked = '0' ) or 
-						( frame_count = 63 and i_locked = '1' )
-					then
-						clock_count <= ( 0 => '1', others => '0' );
-						frame_count <= ( others => '0' );
-						frame_en		<= '1';
+					if i_sample_en = '1' then
+						frame_count <= frame_count + 1;
 						
-						frame_buf <= clock_count;
-						if i_locked = '0' then
-							frame_buf <= clock_count sll 2;
+						if ( frame_count = 15 and ctrl_lock = '0' ) or 
+							( frame_count = 63 and ctrl_lock = '1' )
+						then
+							clock_count <= ( 0 => '1', others => '0' );
+							frame_count <= ( others => '0' );
+							frame_en		<= '1';
+							
+							frame_buf <= clock_count;
+							if ctrl_lock = '0' then
+								frame_buf <= clock_count sll 2;
+							end if;
 						end if;
 					end if;
 				end if;
@@ -629,12 +706,13 @@ entity lpf is
 end lpf;
 
 architecture rtl of lpf is
-	constant SRL_UNLOCKED : integer range 7 to 23 :=  9;
-	constant SRL_LOCKED	 : integer range 7 to 23 := 13;
+	constant SRL_UNLOCKED : integer range 7 to 23 := 7;
+	constant SRL_LOCKED	 : integer range 7 to 23 := 8;
 
 	signal reg_add		: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
 	signal reg_shift	: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
 	signal reg_out		: signed( LPF_WIDTH+13 downto 0 ) := ( others => '0' );
+	
 begin
 	
 	lpf_out <= unsigned( reg_out( LPF_WIDTH+12 downto 13 ) );
@@ -642,6 +720,7 @@ begin
 	
 	reg_shift <= shift_right( reg_add, SRL_UNLOCKED ) when ctrl_lock = '0' else
 					 shift_right( reg_add, SRL_LOCKED   );
+	
 	
 	integrator_process : process( clk )
 	begin

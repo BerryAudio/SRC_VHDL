@@ -11,7 +11,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="11" />
+   <WVObjectSize size="12" />
    <wvobject fp_name="/regulator_tb/uut/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -44,10 +44,14 @@
       <obj_property name="label">COUNTER</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/rst_stb" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">rst_stb</obj_property>
+         <obj_property name="ObjectShortName">rst_stb</obj_property>
+      </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/o_cnt" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">o_cnt[19:0]</obj_property>
          <obj_property name="ObjectShortName">o_cnt[19:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/clock_count" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">clock_count[19:0]</obj_property>
@@ -71,10 +75,6 @@
       <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/cnt_rst" type="logic" db_ref_id="1">
          <obj_property name="ElementShortName">cnt_rst</obj_property>
          <obj_property name="ObjectShortName">cnt_rst</obj_property>
-      </wvobject>
-      <wvobject fp_name="/regulator_tb/uut/INST_COUNTER/i_locked" type="logic" db_ref_id="1">
-         <obj_property name="ElementShortName">i_locked</obj_property>
-         <obj_property name="ObjectShortName">i_locked</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group29" type="group">
@@ -433,6 +433,22 @@
       <obj_property name="label">REGULATOR</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/rst_stb" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">rst_stb</obj_property>
+         <obj_property name="ObjectShortName">rst_stb</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/evt_lock" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">evt_lock</obj_property>
+         <obj_property name="ObjectShortName">evt_lock</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/evt_unlock" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">evt_unlock</obj_property>
+         <obj_property name="ObjectShortName">evt_unlock</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/locked" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">locked</obj_property>
+         <obj_property name="ObjectShortName">locked</obj_property>
+      </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/i_fifo_level" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">i_fifo_level[10:0]</obj_property>
          <obj_property name="ObjectShortName">i_fifo_level[10:0]</obj_property>
@@ -446,6 +462,11 @@
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/reg_latch_en" type="logic" db_ref_id="1">
          <obj_property name="ElementShortName">reg_latch_en</obj_property>
          <obj_property name="ObjectShortName">reg_latch_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/reg_ratio" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">reg_ratio[25:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_ratio[25:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
       <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/reg_latch" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">reg_latch[25:0]</obj_property>
@@ -475,6 +496,35 @@
          <obj_property name="ElementShortName">err_term[10:0]</obj_property>
          <obj_property name="ObjectShortName">err_term[10:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group152" type="group">
+      <obj_property name="label">LPF</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/INST_LPF/lpf_in" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">lpf_in[25:0]</obj_property>
+         <obj_property name="ObjectShortName">lpf_in[25:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/INST_LPF/lpf_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">lpf_out[25:0]</obj_property>
+         <obj_property name="ObjectShortName">lpf_out[25:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/INST_LPF/reg_add" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">reg_add[39:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_add[39:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/INST_LPF/reg_shift" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">reg_shift[39:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_shift[39:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/regulator_tb/uut/INST_RATIO/INST_RAMP/INST_LPF/reg_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">reg_out[39:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_out[39:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group70" type="group">
