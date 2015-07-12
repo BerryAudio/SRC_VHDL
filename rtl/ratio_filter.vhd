@@ -36,7 +36,7 @@ entity regulator_top is
 end regulator_top;
 
 architecture rtl of regulator_top is
-	type STATE_TYPE is ( S0_WAIT, S1_DIVIDE, S2_DIVIDE_WAIT );
+	type STATE_TYPE is ( S0_WAIT, S1_REG_WAIT, S2_DIVIDE, S3_DIVIDE_WAIT );
 	signal state		: STATE_TYPE := S0_WAIT;
 
 	signal ptr_rst		: std_logic := '0';
@@ -112,30 +112,34 @@ begin
 	reg_rst <= cnt_rst;
 	
 	div_divisor <= RESIZE( reg_out, div_divisor'length );
+	div_en <= not div_busy when state = S2_DIVIDE else '0';
 	
 	state_process : process( clk )
 	begin
 		if rising_edge( clk ) then
-			div_en <= '0';
 			o_ratio_en <= '0';
 			
-			if rst = '1' then
+			if ( rst or cnt_rst ) = '1' then
 				state <= S0_WAIT;
 				o_ratio_en <= '0';
 			else
 				case state is
 					when S0_WAIT =>
+						if o_sample_en = '1' then
+							state <= S1_REG_WAIT;
+						end if;
+					
+					when S1_REG_WAIT =>
 						if reg_out_en = '1' then
-							state <= S1_DIVIDE;
+							state <= S2_DIVIDE;
 						end if;
 					
-					when S1_DIVIDE =>
-						div_en <= not div_busy;
+					when S2_DIVIDE =>
 						if div_busy = '1' then
-							state <= S2_DIVIDE_WAIT;
+							state <= S3_DIVIDE_WAIT;
 						end if;
 					
-					when S2_DIVIDE_WAIT =>
+					when S3_DIVIDE_WAIT =>
 						if div_busy = '0' then
 							o_ratio <= div_remainder;
 							o_ratio_en <= '1';
@@ -236,7 +240,7 @@ architecture rtl of reg_ratio is
 	
 	signal reg_ratio_en	: std_logic := '0';
 	signal reg_ratio		: unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
-	signal ratio_en_buf	: std_logic_vector( 5 downto 0 ) := ( others => '0' );
+	signal ratio_en_buf	: std_logic_vector( 3 downto 0 ) := ( others => '0' );
 	
 	component ratio_filter is
 		generic (
@@ -271,11 +275,10 @@ begin
 				o_ratio_en <= reg_ratio_en;
 				
 				o_ratio <= reg_ratio;
-				if err_track <= 1 then
+				if err_track <= THRESHOLD_LOCK then
+					o_ratio <= reg_ratio - err_track;
 					if reg_ratio < i_ratio then
 						o_ratio <= reg_ratio + err_track;
-					else
-						o_ratio <= reg_ratio - err_track;
 					end if;
 				end if;
 			end if;
@@ -299,16 +302,14 @@ begin
 			if ( rst or evt_unlock ) = '1' then
 				ratio_en_buf <= ( others => '0' );
 			elsif i_ratio_en = '1' then
-				ratio_en_buf <= ratio_en_buf( 4 downto 0 ) & '0';
+				ratio_en_buf <= ratio_en_buf( 2 downto 0 ) & '0';
 				if err_track <= THRESHOLD_LOCK and reg_ratio >= 384 then
 					ratio_en_buf( 0 ) <= '1';
 				end if;
 			end if;
 			
 			evt_lock <= '0';
-			if ( rst or evt_unlock ) = '1' then
-				evt_lock <= '0';
-			elsif locked = '0' and ratio_en_buf = o"77" then
+			if locked = '0' and ratio_en_buf = x"F" then
 				evt_lock <= '1';
 			end if;
 		end if;
@@ -441,10 +442,9 @@ begin
 	input_process : process( clk )
 	begin
 		if rising_edge( clk ) then
+			reg_ratio <= i_ratio;
 			if rst_stb = '1' then
 				reg_ratio <= ( others => '0' );
-			elsif i_ratio_en = '1' then
-				reg_ratio <= i_ratio;
 			end if;
 			
 			o_error <= unsigned( abs( signed( reg_latch_s - lpf_out_s ) ) );
@@ -708,8 +708,8 @@ entity lpf is
 end lpf;
 
 architecture rtl of lpf is
-	constant SRL_UNLOCKED : integer range 7 to 11 :=  9;
-	constant SRL_LOCKED	 : integer range 7 to 11 := 11;
+	constant SRL_UNLOCKED : integer range 7 to 11 := 7;
+	constant SRL_LOCKED	 : integer range 7 to 11 := 7;
 
 	signal reg_add		: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
 	signal reg_shift	: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
