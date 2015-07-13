@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity regulator_top is
 	generic (
 		CLOCK_COUNT		: integer := 384;
-		REG_AVE_WIDTH	: integer range 2 to 6 := 4
+		REG_AVE_WIDTH	: integer range 2 to 6 := 6
 	);
 	port (
 		clk				: in  std_logic;
@@ -248,14 +248,11 @@ architecture rtl of reg_ratio is
 		);
 		port (
 			clk			: in  std_logic;
-			rst			: in  std_logic;
 			ctrl_lock	: in  std_logic;
 			
 			o_sample_en	: in  std_logic;
 			
 			i_ratio		: in  unsigned( 19 + REG_AVE_WIDTH downto 0 );
-			i_ratio_en	: in  std_logic;
-			
 			o_error		: out unsigned( 15 downto 0 );
 			o_ratio		: out unsigned( 19 + REG_AVE_WIDTH downto 0 );
 			o_ratio_en	: out std_logic
@@ -348,14 +345,11 @@ begin
 		)
 		port map (
 			clk			=> clk,
-			rst			=> rst,
 			ctrl_lock	=> locked,
 			
 			o_sample_en	=> o_sample_en,
 			
 			i_ratio		=> i_ratio,
-			i_ratio_en	=> i_ratio_en,
-			
 			o_error		=> err_track,
 			o_ratio		=> reg_ratio,
 			o_ratio_en	=> reg_ratio_en
@@ -372,14 +366,11 @@ entity ratio_filter is
 	);
 	port (
 		clk			: in  std_logic;
-		rst			: in  std_logic;
 		ctrl_lock	: in  std_logic;
 		
 		o_sample_en	: in  std_logic;
 		
 		i_ratio		: in  unsigned( 19 + REG_AVE_WIDTH downto 0 );
-		i_ratio_en	: in  std_logic;
-		
 		o_error		: out unsigned( 15 downto 0 ) := ( others => '0' );
 		o_ratio		: out unsigned( 19 + REG_AVE_WIDTH downto 0 ) := ( others => '0' );
 		o_ratio_en	: out std_logic := '0'

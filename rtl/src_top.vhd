@@ -7,7 +7,7 @@ use work.src.all;
 
 entity src_top is
 	generic (
-		CLOCK_COUNT				: integer := 512
+		CLOCK_COUNT				: integer := 384
 	);
 	port (
 		clk						: in  std_logic;

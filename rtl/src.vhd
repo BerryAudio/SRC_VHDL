@@ -18,7 +18,7 @@ package src is
 	constant NOISE_LFSR_WIDTH		: integer range 11 to 34 := 11;
 	constant NOISE_FILT_WIDTH		: integer range 11 to 34 := 16;
 	
-	constant REG_AVE_WIDTH			: integer range 4 to 6 := 4; -- power of 2
+	constant REG_AVE_WIDTH			: integer range 4 to 6 := 6; -- power of 2
 
 	--******************************************************************
 	-- types
