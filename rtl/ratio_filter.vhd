@@ -36,7 +36,7 @@ entity regulator_top is
 end regulator_top;
 
 architecture rtl of regulator_top is
-	type STATE_TYPE is ( S0_WAIT, S1_REG_WAIT, S2_DIVIDE_START, S3_DIVIDE, S4_DIVIDE_WAIT );
+	type STATE_TYPE is ( S0_WAIT, S1_REG_WAIT, S2_DIVIDE, S3_DIVIDE_WAIT );
 	signal state		: STATE_TYPE := S0_WAIT;
 
 	signal ptr_rst		: std_logic := '0';
@@ -108,11 +108,11 @@ architecture rtl of regulator_top is
 begin
 	o_locked <= locked;
 	
-	ptr_rst <= not( locked ) or cnt_rst;
-	reg_rst <= cnt_rst;
+	ptr_rst <= rst or not( locked ) or cnt_rst;
+	reg_rst <= rst or cnt_rst;
 	
 	div_divisor <= RESIZE( reg_out, div_divisor'length );
-	div_en <= not div_busy when state = S3_DIVIDE else '0';
+	div_en <= not div_busy when state = S2_DIVIDE else '0';
 	
 	state_process : process( clk )
 	begin
@@ -131,20 +131,15 @@ begin
 					
 					when S1_REG_WAIT =>
 						if reg_out_en = '1' then
-							state <= S2_DIVIDE_START;
+							state <= S2_DIVIDE;
 						end if;
 					
-					when S2_DIVIDE_START =>
+					when S2_DIVIDE =>
 						if div_busy = '1' then
-							state <= S3_DIVIDE;
+							state <= S3_DIVIDE_WAIT;
 						end if;
 					
-					when S3_DIVIDE =>
-						if div_busy = '1' then
-							state <= S4_DIVIDE_WAIT;
-						end if;
-					
-					when S4_DIVIDE_WAIT =>
+					when S3_DIVIDE_WAIT =>
 						if div_busy = '0' then
 							o_ratio <= div_remainder;
 							o_ratio_en <= '1';
@@ -714,7 +709,7 @@ end lpf;
 
 architecture rtl of lpf is
 	constant SRL_UNLOCKED : integer range 7 to 11 := 7;
-	constant SRL_LOCKED	 : integer range 7 to 11 := 7;
+	constant SRL_LOCKED	 : integer range 7 to 11 := 9;
 
 	signal reg_add		: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );
 	signal reg_shift	: signed( LPF_WIDTH+11 downto 0 ) := ( others => '0' );

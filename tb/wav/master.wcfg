@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="E:/Development/HDL/SRC/SRC_PRJ/audio_tb_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="/home/charlie/projects/SRC_PRJ_NEW/audio_tb_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="audio" />
             <top_module name="audio_tb" />
@@ -27,7 +27,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="39" />
+   <WVObjectSize size="40" />
    <wvobject fp_name="/audio_tb/clk_24" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk_24</obj_property>
       <obj_property name="ObjectShortName">clk_24</obj_property>
@@ -322,9 +322,13 @@
       <obj_property name="ElementShortName">evt_unlock</obj_property>
       <obj_property name="ObjectShortName">evt_unlock</obj_property>
    </wvobject>
+   <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/reg_rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reg_rst</obj_property>
+      <obj_property name="ObjectShortName">reg_rst</obj_property>
+   </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/INST_RATIO/ratio_en_buf" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">ratio_en_buf[5:0]</obj_property>
-      <obj_property name="ObjectShortName">ratio_en_buf[5:0]</obj_property>
+      <obj_property name="ElementShortName">ratio_en_buf[3:0]</obj_property>
+      <obj_property name="ObjectShortName">ratio_en_buf[3:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/audio_tb/uut/INST_SRC/INST_REGULATOR/cnt_rst" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">cnt_rst</obj_property>
