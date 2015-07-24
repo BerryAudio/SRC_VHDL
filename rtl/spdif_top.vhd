@@ -313,8 +313,8 @@ entity spdif_tx_top is
 		rst			: in  std_logic;
 		clk_cnt		: in  std_logic;
 		
-		i_data0	: in  signed( 23 downto 0 );
-		i_data1	: in  signed( 23 downto 0 );
+		i_data0		: in  signed( 23 downto 0 );
+		i_data1		: in  signed( 23 downto 0 );
 		i_data_en	: in  std_logic;
 		
 		o_spdif		: out std_logic := '0'

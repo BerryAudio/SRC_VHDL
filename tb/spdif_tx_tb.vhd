@@ -40,6 +40,7 @@ ARCHITECTURE behavior OF spdif_tx_tb IS
    --Inputs
    signal clk : std_logic := '0';
    signal rst : std_logic := '0';
+   signal clk_cnt : std_logic := '0';
    signal i_sample_0 : signed(23 downto 0) := (           0 => '1', others => '0');
    signal i_sample_1 : signed(23 downto 0) := (23 => '1', 0 => '1', others => '0');
    signal i_sample_en : std_logic := '0';
@@ -62,9 +63,10 @@ BEGIN
    uut: spdif_tx_top PORT MAP (
           clk => clk,
           rst => rst,
-          i_sample_0 => i_sample_0,
-          i_sample_1 => i_sample_1,
-          i_sample_en => i_sample_en,
+			 clk_cnt => clk_cnt,
+          i_data0 => i_sample_0,
+          i_data1 => i_sample_1,
+          i_data_en => i_sample_en,
           o_spdif => o_spdif
         );
 	
@@ -101,6 +103,11 @@ BEGIN
 				i_sample_0 <= i_sample_0 + 1;
 				i_sample_1 <= i_sample_1 + 1;
 				i_sample_en <= '1';
+			end if;
+			
+			clk_cnt <= '0';
+			if cnt( 1 downto 0 ) = 0 then
+				clk_cnt <= '1';
 			end if;
 		end if;
 	end process;
